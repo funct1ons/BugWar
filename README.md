@@ -1,5 +1,7 @@
 # 虫界战争 · 翡翠王冠
 
+**[在线试玩](https://funct1ons.github.io/BugWar/)** · [GitHub 仓库](https://github.com/funct1ons/BugWar) · [问题反馈](https://github.com/funct1ons/BugWar/issues) · [贡献与 PR 规范](CONTRIBUTING.md)
+
 研究驱动的 **Bug War 2 非官方单机重制**。TypeScript + Phaser 3 + Vite，无后端、账户或运行时 CDN。13 张原创重建战场、3 个虫族、生产巢与防御炮塔、多阵营策略 AI、区域魔法、五星评级、12 项成就和自动存档。
 
 > 不是声称精确复原的原版发行版。可确认的玩法框架优先保留；原作地图、数值、魔法效果和AI内部规则未能核实，均明确标为保守重建。详见 [原版机制研究](docs/original-game-analysis.md)。未提取原作素材。
@@ -51,6 +53,16 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\package-releas
 ```
 
 解压后双击 `Start-Game.cmd` 即可。运行时资源全部位于 `dist/`。也可部署到任意静态HTTP站点（含子目录），无需服务端逻辑。
+
+## GitHub 部署与协作
+
+GitHub Pages 游玩地址：**https://funct1ons.github.io/BugWar/**，直接用桌面浏览器打开即可，无需安装。首次点击后启用音乐；进度保存在当前浏览器，本地版和在线版的存档不互通。
+
+`.github/workflows/pages.yml` 使用 Node.js 24，先执行 `npm ci`、回归测试和生产构建，再把 `dist/` 发布到 GitHub Pages。推送/合并到 `main` 或手动执行工作流会发布；PR 只测试和构建，不会覆盖线上游戏。不需要额外部署密钥，发布权限只授予部署任务。
+
+Fork 后自行部署时，在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**，再推送 `main` 或手动运行工作流。Vite 已使用相对资源路径，可部署到仓库子目录。
+
+报告问题、玩法建议或文档改进请使用 [Issue 模板](https://github.com/funct1ons/BugWar/issues/new/choose)；提交修改请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，PR 会自动带出验证与兼容性检查模板。
 
 ## 操作
 
