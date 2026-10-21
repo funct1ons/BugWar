@@ -122,13 +122,15 @@ npm.cmd run build
 npm.cmd run test:browser
 npm.cmd run test:offline
 npm.cmd run test:playthrough
+# 线上站点已部署且联网时：
+npm.cmd run test:online
 # 可选PCM资源校验（需要Python，仅开发验收用）：
 python scripts/check-audio.py
 ```
 
 当前交付：84项逻辑/存档/音频回归通过；浏览器交互、真实音频输出、Windows原生服务器通过。标准首关另以不改世界状态的真实UI驾驶器在23.2秒自然获胜；不宣称13关人工通关。实机预览：[菜单](docs/screenshots/menu.png) · [战斗](docs/screenshots/battle.png) · [战役地图](docs/screenshots/campaign.png)。
 
-浏览器测试使用本机 Edge，默认路径 `C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`；可设置 `$env:EDGE_PATH` 指向兼容Chromium。脚本自行启动/关闭临时本地服务，产出 `test-results/*.png` 和JSON。测试钩子仅在 `?test=1` 开启。
+浏览器测试使用本机 Edge，默认路径 `C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`；可设置 `$env:EDGE_PATH` 指向兼容Chromium。本地验收脚本自行启动/关闭临时服务；`test:online` 直接访问已部署站点。产出 `test-results/*.png` 和JSON。测试钩子仅在 `?test=1` 开启。
 
 验收证据、局限与实际结果见 [测试报告](docs/test-report.md)、[战役平衡](docs/balance-report.md)、[核心参数](docs/core-rules.md)。自动战役对战不等同真人通关；浏览器结算场景的合成fixture会与真实鼠标交互测试分别标明。
 

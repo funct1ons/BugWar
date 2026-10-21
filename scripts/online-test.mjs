@@ -41,6 +41,8 @@ try{
  const digest=buffer=>createHash('sha256').update(buffer).digest('hex');
  report.javascript={file:path.basename(jsFile),localSHA256:digest(await fs.readFile(`dist/assets/${jsFile}`)),remoteSHA256:digest(Buffer.from(await remote.arrayBuffer()))};
  assert.equal(report.javascript.localSHA256,report.javascript.remoteSHA256,'online JavaScript matches the local production build');
+ if(!audio.has('music-battle.wav'))await page.waitForResponse(r=>r.url().endsWith('/music-battle.wav')&&r.status()===200,{timeout:45000});
+ await page.waitForLoadState('networkidle',{timeout:45000});
  report.audioFiles=[...audio].sort();assert.ok(audio.size>=10,'menu, battle and eight SFX served over HTTPS');
  assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);assert.deepEqual(external,[]);
  Object.assign(report,{errors,failedRequests:failed,externalRequests:external,passed:true});

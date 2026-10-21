@@ -12,6 +12,8 @@ npm.cmd run build
 npm.cmd run test:browser
 npm.cmd run test:offline
 npm.cmd run test:playthrough
+# 线上部署完成且联网时：
+npm.cmd run test:online
 python scripts/check-audio.py
 ```
 
@@ -81,3 +83,15 @@ python scripts/check-audio.py
 - 未做13关人工连续通关、多人用户测试、数小时浸泡或所有低端GPU测试；部分无技能机器人仍可长时间拉锯。
 - 未做手机/触屏、Firefox/Safari、系统空间音频或专业主观听音验收。
 - 战役平衡证据支持“所有13关easy/normal有可复现Agile胜利策略”，不支持“所有打法都公平”或“原版数值级复刻”。
+
+## 8. GitHub Pages 正式地址验收
+
+新增执行日期：2026-10-21。公共仓库为 [funct1ons/BugWar](https://github.com/funct1ons/BugWar)，正式游玩地址为 **https://funct1ons.github.io/BugWar/**。
+
+- GitHub Actions [首次部署运行](https://github.com/funct1ons/BugWar/actions/runs/39619946318) 成功：Ubuntu + Node 24 安装锁定依赖、运行回归测试、构建并发布 `dist/`；PR 仅测试/构建，不能发布。
+- `npm run test:online` 使用真实 Edge 打开 HTTPS 正式地址，不带 `?test=1`，并确认生产页面没有暴露 `window.__BUGWAR__`。
+- 验证菜单、13关及初始锁关、进入首关、真实鼠标派兵、自然行军占领中立虫巢（约4模拟秒）、暂停/恢复；没有改写游戏世界。这不是完整通关测试。
+- 首屏 HTTP 200；菜单/战斗配乐与8个音效共10个WAV成功通过HTTPS加载。此项不代替前述音频输出与主观听感边界。
+- 浏览器异常、资源失败、站点运行时的站外请求均为 **0**。站点自身通过HTTPS下载本地托管资源，不依赖运行时CDN。
+- 线上 `index-DIqLbs84.js` 与本地生产构建 SHA-256 完全相同，证明验收针对本次游戏代码；详细快照见 [online-report.json](verification/online-report.json)。
+- 首次线上检查曾过早统计仍在下载的大WAV；脚本改为等待战斗配乐响应及网络空闲后重新执行并通过，不以删除音频检查规避问题。
