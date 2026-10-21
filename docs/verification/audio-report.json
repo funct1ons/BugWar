@@ -1,0 +1,110 @@
+{
+  "music-battle.wav": {
+    "seconds": 29.091,
+    "channels": 2,
+    "sampleRate": 44100,
+    "peak": 0.891235,
+    "rms": 0.165829,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "music-defeat.wav": {
+    "seconds": 11.031,
+    "channels": 2,
+    "sampleRate": 44100,
+    "peak": 0.891205,
+    "rms": 0.196113,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "music-menu.wav": {
+    "seconds": 34.286,
+    "channels": 2,
+    "sampleRate": 44100,
+    "peak": 0.891235,
+    "rms": 0.18248,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "music-victory.wav": {
+    "seconds": 9.9,
+    "channels": 2,
+    "sampleRate": 44100,
+    "peak": 0.891113,
+    "rms": 0.182714,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-capture.wav": {
+    "seconds": 1.06,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.63092,
+    "rms": 0.120937,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-click.wav": {
+    "seconds": 0.18,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.562347,
+    "rms": 0.182055,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-dispatch.wav": {
+    "seconds": 0.86,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.630981,
+    "rms": 0.104337,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-hover.wav": {
+    "seconds": 0.13,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.446503,
+    "rms": 0.109971,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-impact.wav": {
+    "seconds": 0.78,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.707947,
+    "rms": 0.131958,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-march.wav": {
+    "seconds": 1.12,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.562378,
+    "rms": 0.139772,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-select.wav": {
+    "seconds": 0.46,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.562378,
+    "rms": 0.150154,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  },
+  "sfx-skill.wav": {
+    "seconds": 1.38,
+    "channels": 1,
+    "sampleRate": 44100,
+    "peak": 0.707947,
+    "rms": 0.109967,
+    "clippedSamples": 0,
+    "endpointDifference": 0.0
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "mode": "real-time normal level 1, UI-only deterministic visible-state pilot",
+  "orders": 6,
+  "skills": 0,
+  "stateWrites": 0,
+  "status": "won",
+  "elapsed": 23.200000000000195,
+  "stats": {
+    "sent": 79,
+    "kills": 39.20000000000027,
+    "captures": 3,
+    "lost": 0,
+    "skills": 0,
+    "casualties": 57.20000000000027
+  },
+  "browserErrors": [],
+  "passed": true
+}

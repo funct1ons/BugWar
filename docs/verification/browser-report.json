@@ -1,0 +1,162 @@
+{
+  "audioBeforeGesture": {
+    "contextState": "suspended",
+    "decodedBuffers": 8,
+    "decodedFiles": [
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 0,
+    "currentTrack": null,
+    "pendingTrack": "menu",
+    "currentTrackTime": 0,
+    "currentTrackDuration": 0,
+    "musicLoop": false,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./"
+  },
+  "audioSignal": {
+    "playing": {
+      "rms": 0.04728069140597046,
+      "peak": 0.14286752045154572
+    },
+    "muted": {
+      "rms": 0,
+      "peak": 0
+    },
+    "restored": {
+      "rms": 0.19759067893050203,
+      "peak": 0.6839118003845215
+    }
+  },
+  "audio": {
+    "contextState": "running",
+    "decodedBuffers": 10,
+    "decodedFiles": [
+      "music-battle.wav",
+      "music-menu.wav",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "activeVoices": 7,
+    "activeMusicSources": 1,
+    "currentTrack": "battle",
+    "pendingTrack": null,
+    "currentTrackTime": 6.629333333333333,
+    "currentTrackDuration": 29.090895833333335,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": -1.07,
+    "throttledPlays": 2,
+    "master": 0.72,
+    "music": 0.28,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./"
+  },
+  "audioVictory": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-battle.wav",
+      "music-menu.wav",
+      "music-victory.wav",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "activeVoices": 5,
+    "activeMusicSources": 2,
+    "currentTrack": "victory",
+    "pendingTrack": null,
+    "currentTrackTime": 0.3893333333333331,
+    "currentTrackDuration": 9.9,
+    "musicLoop": false,
+    "crossfading": true,
+    "limiterReduction": -0.26,
+    "throttledPlays": 2,
+    "master": 0.72,
+    "music": 0.28,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./"
+  },
+  "performance": {
+    "fps": 77.25,
+    "sprites": 1000,
+    "fleets": 55
+  },
+  "layout": {
+    "maxNumberBottom": 780.5,
+    "hudTop": 792.0000203450521
+  },
+  "audioFinal": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-battle.wav",
+      "music-defeat.wav",
+      "music-menu.wav",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 1,
+    "currentTrack": "defeat",
+    "pendingTrack": null,
+    "currentTrackTime": 1.0106666666666664,
+    "currentTrackDuration": 11.030729166666667,
+    "musicLoop": false,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.28,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./"
+  },
+  "storageFallback": true,
+  "errors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "passed": true
+}

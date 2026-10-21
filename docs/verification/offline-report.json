@@ -1,0 +1,42 @@
+{
+  "server": "Windows PowerShell 5.1 native TCP HTTP",
+  "requests": 44,
+  "errors": [],
+  "failed": [],
+  "external": [],
+  "audio": {
+    "contextState": "running",
+    "decodedBuffers": 10,
+    "decodedFiles": [
+      "music-battle.wav",
+      "music-menu.wav",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "activeVoices": 2,
+    "activeMusicSources": 1,
+    "currentTrack": "battle",
+    "pendingTrack": null,
+    "currentTrackTime": 4.32,
+    "currentTrackDuration": 29.090895833333335,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": -0.17,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./"
+  },
+  "realMouseCapture": true,
+  "passed": true
+}
