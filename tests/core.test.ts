@@ -122,3 +122,64 @@ describe('review regressions',()=>{
   expect(a.world).toEqual(b.world);
  });
 });
+
+describe('cannon-aware AI regressions',()=>{
+ it('clips the circle chord to the route and accounts for race speed',()=>{
+  const s=sim([colony('a',2,100),colony('gun',1,0,500,'cannon')]);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(12);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,100)).toBe(6);
+  expect(estimateCannonLoss(s.world,{x:450,y:300},{x:500,y:300},2,100)).toBe(2);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,72)).toBe(8);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,145)).toBe(4);
+ });
+ it('handles off-path, friendly, neutral and overlapping cannons',()=>{
+  const s=sim([colony('a',2,100),{...colony('off',1,0,500,'cannon'),y:501},colony('friend',2,0,500,'cannon'),colony('neutral',0,0,500,'cannon')]);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(0);
+  s.world.colonies.push({...colony('gun1',1,0,500,'cannon'),production:0},{...colony('gun2',3,0,500,'cannon'),production:0});
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(24);
+ });
+ it('does not dispatch repeatedly doomed small batches toward a cannon',()=>{
+  const s=sim([colony('gun',1,0,500,'cannon'),colony('a',2,10)]);
+  for(let i=0;i<20;i++) plan(s);
+  expect(s.world.fleets).toHaveLength(0);expect(s.world.colonies[1].units).toBe(10);
+  s.world.colonies[1].units=30;plan(s);
+  expect(s.world.fleets).toHaveLength(1);expect(s.world.fleets[0].count).toBeGreaterThanOrEqual(9);
+  expect(s.world.colonies[1].units).toBeGreaterThanOrEqual(5);
+  plan(s);expect(s.world.fleets).toHaveLength(1);
+ });
+ it('does not mistake doomed existing fleets for a successful projected capture',()=>{
+  const s=sim([colony('gun',1,0,500,'cannon'),colony('a',2,31)]);
+  s.dispatch(['a'],'gun',1/31,2);plan(s);
+  expect(s.world.fleets.length).toBe(2);expect(s.world.fleets[0].count).toBe(1);
+  expect(s.world.fleets[1].count).toBeGreaterThanOrEqual(9);
+  // Actual count stays raw; only projection receives the estimated casualties.
+  expect(s.world.fleets[1].initialCount).toBe(s.world.fleets[1].count);
+ });
+ it('uses only remaining route exposure for fleets already past a cannon',()=>{
+  const s=sim([colony('gun',1,100,300,'cannon'),colony('target',0,0,1000),colony('a',2,30)]);
+  s.dispatch(['a'],'target',.5,2);s.world.fleets[0].x=800;
+  plan(s);expect(s.world.fleets.filter(f=>f.to==='target').length).toBe(1);
+  expect(estimateCannonLoss(s.world,s.world.fleets[0],s.world.colonies[1],2,100)).toBe(0);
+ });
+ it.each(['easy','normal','hard'] as const)('Strong accumulates then actually breaks through on %s without one-unit cannon loops',difficulty=>{
+  const l=level([colony('gun',1,0,500,'cannon'),{...colony('a',2,5),production:1}]);
+  l.factions[1].race='strong';const s=new Simulation(l,'agile',difficulty);
+  let elapsed=0;while(elapsed<60&&s.world.status==='playing') {s.step(.05);elapsed+=.05;}
+  expect(s.world.colonies[0].owner).toBe(2);expect(elapsed).toBeLessThan(60);
+  const waves=s.world.events.filter(e=>e.type==='dispatch'&&e.owner===2);
+  expect(waves.length).toBe(1);expect(waves.every(e=>(e.amount??0)>=11)).toBe(true);
+  expect(s.world.colonies[1].units).toBeGreaterThanOrEqual(5);
+ });
+ it('never uses late friendly inbound to cancel an imminent hostile threat',()=>{
+  const s=sim([colony('p',1,40,410),colony('front',2,10,400),colony('rear',2,100,1400),colony('neutral',0,0,390)]);
+  s.dispatch(['p'],'front',1);s.dispatch(['rear'],'front',.9,2);plan(s);
+  expect(s.world.fleets.some(f=>f.from==='front')).toBe(false);
+  expect(s.world.colonies[1].units).toBe(10);
+ });
+ it('deducts production before distant inbound attacks instead of freezing all current troops',()=>{
+  const s=sim([colony('p',1,1000,1000),{...colony('a',2,20),production:5},colony('neutral',0,0,50)]);
+  s.dispatch(['p'],'a',.04);plan(s);
+  expect(s.world.fleets.some(f=>f.owner===2&&f.to==='neutral')).toBe(true);
+  expect(s.world.colonies[1].units).toBeGreaterThanOrEqual(5);
+ });
+});

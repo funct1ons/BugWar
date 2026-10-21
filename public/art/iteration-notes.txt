@@ -1,0 +1,8 @@
+Revision 2 — screenshot-directed surface pass
+Observed test-results/01-menu.png and test-results/03-battle.png.
+- Replaced five parallel stroked roots per edge with three asymmetrically grown closed tapered buttress silhouettes, finite pointed branches, broken bark grain and offset highlights.
+- Added sixteen composed ground-detail islands: mineral grains, lobulated moss, short grasses, fine fissures and five small veined fallen leaves. Four elliptical quiet zones protect nest positions visible in the supplied battle capture. All surface marks remain low contrast.
+- Leaves now carry translucent light/shadow planes, curved midribs and six pairs of fine lateral veins.
+- Preserved meadow flowers, root-forest fungi and brown bark, marsh water/reeds, amber dry-leaf palette. No filters or external dependencies added.
+- Canvas sizes, filenames and sprite frame geometry unchanged. Regenerated all assets and passed XML/dimension/frame-clip assertions. See validation.txt.
+This revision has not yet been captured in Phaser; supplied screenshots show the prior revision.

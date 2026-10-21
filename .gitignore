@@ -4,3 +4,5 @@ release/
 test-results/
 .playwright/
 *.log
+__pycache__/
+*.pyc

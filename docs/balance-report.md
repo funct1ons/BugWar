@@ -1,6 +1,8 @@
 # 战役平衡实测报告
 
-## 范围与复现
+> **交付阅读提示（2026-10-21）：** 本文按时间保留旧版失败与后续修订。当前结论以「授权平衡修订：Agile 首轮流程」之后的「结论与保留风险」「新版完整参考结果」为准：13关easy/normal均有Agile策略胜利；旧版速败表不代表当前版本。文中的旧编译阻塞已修复。最终集成84项通过与实机验收见 [测试报告](test-report.md)。
+
+## 范围与复现（以下至修订章节为历史记录）
 
 执行 `npm test -- --reporter=verbose`：2 个测试文件、67 项测试全部通过；最终运行耗时 1.95 秒（测试部分 1.26 秒）。新增 campaign 文件 44 项测试，其中 39 项为关卡/难度矩阵；每项执行五种策略，共 **195 场真实模拟**，每场最多 600 模拟秒。结果由测试输出 `CAMPAIGN_RESULT` JSON，可重跑获取完整指标。未修改任何生产代码或关卡参数。
 
@@ -216,3 +218,109 @@
     }
 ]
 ```
+
+# 授权平衡修订：Agile 首轮流程（追加，保留以上历史）
+
+## 执行与 AI 版本
+
+收到授权后只修改 levels、campaign 测试和本报告。没有改 core、坐标、建筑类型、生产率、par、阵营种族或关卡提示。
+
+先对旧 AI 做了 0–100、步长 5 的初兵扫描，按每关 easy 与 normal 均至少 P/A 一种胜选第一个候选。期间 core 代理更新 AI 后，首次完整回归出现 8 个失败组合，旧候选**没有被视为最终结果**。重新扫描后落地下表方案，并在新 AI 上完整验证。最终 ai.ts SHA256 为 `419BC4EFB6EDFAB22B3B7EC5BAE0C2BDD94BCEB16B2F32D37800EEB5F28D255F`，扫描前后核对相同。
+
+最终普通运行：`npm test -- --reporter=verbose`，**68 通过、1 按需扫描跳过**，3.59 秒。随后 PowerShell 执行 `$env:CAMPAIGN_SCAN='1'; npm test -- --reporter=verbose; Remove-Item Env:CAMPAIGN_SCAN`，**69 全部通过**，8.84 秒。该次执行含完整 195 场矩阵、75 个扫描候选×4场=300场，以及1场教学延迟测试，共496场。每场最多600模拟秒。扫描采用复制的关卡，不修改 LEVELS；测试中保留原始 a 巢初兵基线，使再次运行不会在已平衡数据上重复加兵。
+
+`npx tsc --noEmit` 再次执行仍因现有 main.ts 的 AudioSystem 缺失失败，未越权修复。
+
+## 最终数值变更
+
+只增 a 巢初兵；第1关只削敌；6/10另调整一座邻近中立生产巢所有权，不增加建筑。单位没有数百堆叠，但第9关 +80 仍是较大补偿，后续需真人确认难度。
+
+|关|a 初兵原→新|额外变化|
+|---|---|---|
+|1|38→38|敌 d 26→16|
+|2|34→34|无|
+|3|40→40|无|
+|4|32→97|无|
+|5|45→50|无|
+|6|38→88|b 由中立转玩家，保留8兵；玩家初始生产巢1→2|
+|7|34→34|无|
+|8|46→91|无|
+|9|44→124|无|
+|10|44→64|c 由中立转玩家，保留10兵；玩家初始生产巢2→3|
+|11|40→70|无|
+|12|46→46|无|
+|13|48→63|无|
+
+这些增量是指定5兵网格、指定只增a巢/6与10固定转巢方案中的首个双难度通过候选，不是全参数最小值，也不声称胜率估计。确定性单场通过不等于对多种真人操作鲁棒。第1关 normal 的 P 在前6秒完全不下令，仍于28.35秒获胜、lost=0；加入专门回归测试，给出有限的教学容错证据，不代表无限等待也能赢。
+
+## 结论与保留风险
+
+- 全13关 easy、normal **均有 Agile P 或 A 在600秒内胜利**；测试现在对这26个组合强制断言，回归将失败。
+- 新矩阵39个关卡难度组合：P胜21场、A胜35场、S胜33场、F胜8场、G胜3场。hard不要求全关可胜。
+- 关6/10原来的速败风险已被本方案缓解，胜利不再依赖未解锁种族；完整参考时刻见下表。
+- **仍有15场超时**（P11、G4），不是“AI停滞全部修好”。新矩阵超时场双方仍频繁派遣，最长连续无impact/capture仅3–8秒；不再复现旧版497/549秒的无接战长空闲。持续拉锯仍存在，尤其无技能策略；技能策略是本次可通标准的一部分。
+- 多阵营仍有非单调结果；不能从 easy/normal 单次确定性获胜推断真人难度曲线。旧风险/旧数据保留作历史，不应用旧版速败时刻描述当前版本。
+
+## 新版完整参考结果
+
+策略缩写沿用历史定义；playing为600秒未结束。所有数据来自最后69项全通过的执行。
+
+|关|难度|G|P|A|S|F|
+|---|---|---|---|---|---|---|
+|1|easy|won@151.15|won@35.1|won@35.1|won@27.6|won@31.4|
+|1|normal|lost@39.6|won@33.6|won@33.6|won@28.35|won@72.65|
+|1|hard|lost@37.35|won@34.35|won@34.35|won@27.6|won@41.15|
+|2|easy|lost@37.85|playing@600|won@94.15|won@62.7|lost@37.9|
+|2|normal|lost@36.4|playing@600|won@118.85|won@70.65|lost@48.4|
+|2|hard|lost@36.4|playing@600|won@127.7|won@66.45|lost@37.9|
+|3|easy|lost@46.85|playing@600|won@159.8|won@67.25|lost@25.85|
+|3|normal|lost@37.85|won@195.85|won@127.85|lost@48.05|lost@474.35|
+|3|hard|lost@34.85|playing@600|won@121.85|lost@45.05|won@259.5|
+|4|easy|lost@56.85|won@41.15|won@41.15|won@54.35|lost@47.15|
+|4|normal|lost@50.15|won@50.75|won@50.75|won@40.95|lost@50.75|
+|4|hard|lost@58.05|won@39.5|won@39.5|won@34.3|lost@48.5|
+|5|easy|won@207.65|won@83.45|won@66.7|won@61.15|lost@94.85|
+|5|normal|lost@57.15|lost@87.15|won@113.1|won@38.85|lost@84.1|
+|5|hard|lost@202.4|lost@44.3|lost@44.3|won@102.4|lost@32.6|
+|6|easy|lost@48.5|won@65.2|won@64.75|won@49.45|lost@32.85|
+|6|normal|lost@33.5|won@53.2|won@53.2|won@49|lost@48.5|
+|6|hard|lost@50.5|won@59.95|won@59.95|won@47.95|lost@44|
+|7|easy|lost@74.6|playing@600|won@68.6|won@69.45|won@127.65|
+|7|normal|playing@600|playing@600|won@122.6|won@94.2|lost@160.6|
+|7|hard|playing@600|playing@600|won@88.7|won@90.2|won@267.25|
+|8|easy|lost@55.8|lost@98.3|won@126.15|lost@149.5|lost@46.05|
+|8|normal|lost@47.3|won@58|won@56.4|won@71.9|lost@61|
+|8|hard|lost@107.3|playing@600|won@72.95|lost@58.6|lost@52.6|
+|9|easy|won@251.7|won@36.15|won@36.15|won@44.05|lost@113.85|
+|9|normal|lost@131.8|won@42.15|won@42.15|won@38.3|lost@21.65|
+|9|hard|lost@94.4|lost@57.2|lost@57.2|won@44.3|lost@28.5|
+|10|easy|lost@40.65|playing@600|won@227.9|won@184.55|won@119.25|
+|10|normal|playing@600|playing@600|won@220.4|won@226.05|lost@16.4|
+|10|hard|playing@600|lost@32.9|lost@32.9|won@122.35|lost@17.15|
+|11|easy|lost@110.45|lost@96.55|won@176.45|lost@93.15|lost@73.55|
+|11|normal|lost@195.4|won@66.45|won@64.15|won@78.35|lost@33.4|
+|11|hard|lost@83.65|won@141.95|won@85.7|won@50.8|lost@89.4|
+|12|easy|lost@81.5|won@134.45|won@87.5|won@112.1|lost@66.05|
+|12|normal|lost@68|won@68.75|won@61.2|won@70.1|won@57.95|
+|12|hard|lost@94.15|won@61.25|won@64.25|won@86.6|lost@73.25|
+|13|easy|lost@76|won@90.4|won@76.9|lost@71.95|lost@73.5|
+|13|normal|lost@83.6|won@57.25|won@57.25|won@96.3|lost@28.3|
+|13|hard|lost@96.35|lost@70.1|lost@73.1|won@58.5|lost@52.25|
+
+## 新AI扫描网格记录
+
+每项为 extra:通过/失败；通过要求 easy/normal 各至少一个 P/A 胜。所有扫描运行均保留不增兵的起点，即使新版不再需要旧候选增兵。
+
+- 关1：0:True
+- 关2：0:True
+- 关3：0:True
+- 关4：0:False, 5:False, 10:False, 15:False, 20:False, 25:False, 30:False, 35:False, 40:False, 45:False, 50:False, 55:False, 60:False, 65:True
+- 关5：0:False, 5:True
+- 关6：0:False, 5:False, 10:False, 15:False, 20:False, 25:False, 30:False, 35:False, 40:False, 45:False, 50:True
+- 关7：0:True
+- 关8：0:False, 5:False, 10:False, 15:False, 20:False, 25:False, 30:False, 35:False, 40:False, 45:True
+- 关9：0:False, 5:False, 10:False, 15:False, 20:False, 25:False, 30:False, 35:False, 40:False, 45:False, 50:False, 55:False, 60:False, 65:False, 70:False, 75:False, 80:True
+- 关10：0:False, 5:False, 10:False, 15:False, 20:True
+- 关11：0:False, 5:False, 10:False, 15:False, 20:False, 25:False, 30:True
+- 关12：0:True
+- 关13：0:False, 5:False, 10:False, 15:True
