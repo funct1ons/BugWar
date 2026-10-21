@@ -62,6 +62,8 @@ GitHub Pages 游玩地址：**https://funct1ons.github.io/BugWar/**，直接用�
 
 Fork 后自行部署时，在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**，再推送 `main` 或手动运行工作流。Vite 已使用相对资源路径，可部署到仓库子目录。
 
+发布后可在装有 Edge 的本机运行 `npm run test:online`，验证正式 URL 的资源、鼠标派兵占领与已发布 JS 哈希；默认不打开调试接口。检查其他部署地址时设置 `GAME_URL` 环境变量。报告写入 `test-results/online-report.json`。
+
 报告问题、玩法建议或文档改进请使用 [Issue 模板](https://github.com/funct1ons/BugWar/issues/new/choose)；提交修改请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，PR 会自动带出验证与兼容性检查模板。
 
 ## 操作

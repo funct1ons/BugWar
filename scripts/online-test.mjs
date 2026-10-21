@@ -1,0 +1,48 @@
+import { chromium } from '@playwright/test';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+
+const url=new URL(process.env.GAME_URL||'https://funct1ons.github.io/BugWar/');
+if(!url.pathname.endsWith('/'))url.pathname+='/';
+const output='test-results';await fs.mkdir(output,{recursive:true});
+const errors=[],failed=[],external=[],audio=new Set();
+const browser=await chromium.launch({headless:true,executablePath:process.env.EDGE_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
+const report={url:url.href,testedAt:new Date().toISOString(),browser:browser.version()};
+try{
+ const page=await browser.newPage({viewport:{width:1600,height:900}});
+ page.on('pageerror',e=>errors.push(e.message));
+ page.on('requestfailed',r=>failed.push(`${r.url()}: ${r.failure()?.errorText}`));
+ page.on('request',r=>{if(!r.url().startsWith(url.origin+url.pathname)&&!r.url().startsWith('data:')&&!r.url().startsWith('blob:'))external.push(r.url());});
+ page.on('response',r=>{if(r.status()>=400)failed.push(`${r.status()} ${r.url()}`);if(r.url().endsWith('.wav')&&r.status()===200)audio.add(new URL(r.url()).pathname.split('/').pop());});
+ const response=await page.goto(url.href,{waitUntil:'networkidle',timeout:60000});
+ assert.equal(response.status(),200);report.httpStatus=response.status();
+ await page.waitForSelector('.menu-screen');await page.waitForSelector('canvas');
+ assert.equal(await page.evaluate(()=>typeof window.__BUGWAR__),'undefined','production URL does not expose the test interface');
+ assert.equal(await page.locator('.hero-emblem').evaluate(el=>el.complete&&el.naturalWidth>0),true);
+ await page.screenshot({path:`${output}/online-menu.png`});
+ await page.locator('[data-action=campaign]').first().click();
+ assert.equal(await page.locator('.level-card').count(),13);
+ assert.equal(await page.locator('.level-card:disabled').count(),12);
+ await page.locator('[data-action=level][data-value="0"]').click();
+ await page.waitForSelector('.battle-bottom');
+ const box=await page.locator('canvas').boundingBox();
+ const click=(x,y)=>page.mouse.click(box.x+x*box.width/1600,box.y+y*box.height/900);
+ await click(320,465);await click(730,330);
+ await page.waitForFunction(()=>document.querySelector('.faction-1 small')?.textContent==='2 巢',undefined,{timeout:20000});
+ report.capture={faction:await page.locator('.faction-1 small').textContent(),time:await page.locator('#timer').textContent(),fps:await page.locator('#perf').textContent(),method:'Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation.'};
+ await page.screenshot({path:`${output}/online-battle.png`});
+ await page.locator('[data-action=pause]').click();await page.waitForSelector('#modal');
+ await page.locator('#modal [data-action=close]').last().click();assert.equal(await page.locator('#modal').count(),0);
+ const jsFile=(await fs.readdir('dist/assets')).find(name=>/^index-.*\.js$/.test(name));
+ assert.ok(jsFile,'Build locally before checking the deployed version');
+ const remote=await fetch(new URL(`assets/${jsFile}`,url));assert.equal(remote.status,200);
+ const digest=buffer=>createHash('sha256').update(buffer).digest('hex');
+ report.javascript={file:path.basename(jsFile),localSHA256:digest(await fs.readFile(`dist/assets/${jsFile}`)),remoteSHA256:digest(Buffer.from(await remote.arrayBuffer()))};
+ assert.equal(report.javascript.localSHA256,report.javascript.remoteSHA256,'online JavaScript matches the local production build');
+ report.audioFiles=[...audio].sort();assert.ok(audio.size>=10,'menu, battle and eight SFX served over HTTPS');
+ assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);assert.deepEqual(external,[]);
+ Object.assign(report,{errors,failedRequests:failed,externalRequests:external,passed:true});
+ await fs.writeFile(`${output}/online-report.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+}catch(error){await fs.writeFile(`${output}/online-report.json`,JSON.stringify({...report,passed:false,error:String(error),errors,failedRequests:failed,externalRequests:external},null,2));throw error;}finally{await browser.close();}
