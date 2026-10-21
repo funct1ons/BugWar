@@ -1,0 +1,17 @@
+{
+  "name": "bug-war-verdant-crown",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build && node scripts/copy-licenses.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:browser": "node scripts/browser-test.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "dependencies": { "phaser": "^3.90.0" },
+  "devDependencies": { "@playwright/test": "^1.56.0", "typescript": "^5.9.3", "vite": "^7.1.12", "vitest": "^3.2.4" }
+}
