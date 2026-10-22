@@ -1,0 +1,53 @@
+{
+  "url": "https://funct1ons.github.io/BugWar/",
+  "testedAt": "2026-10-22T13:41:19.475Z",
+  "browser": "155.0.4283.62",
+  "httpStatus": 200,
+  "cannonGrowth": {
+    "text": "建筑 · DEFENSE\n守望炮塔\n不生产，只拦截\n\n不能自行补兵；会给射程内的敌方在途部队持续造成小额伤害，驻军越多火力越强。\n\n所有关卡可用\n生产\n0 兵/秒\n炮塔不产生任何兵力\n射程\n200\n以炮塔为中心的距离半径，不随驻军变化\n单发伤害\n2\n空塔（0 驻军）基准；每发最多削减 2 只敌方行军中虫兵，驻军越多伤害越高\n射击冷却\n0.9 秒\n空塔（0 驻军）基准；冷却结束后寻找下一支射程内敌军队列，驻军越多间隔越短\n驻军加成\n最多 +4 伤害\n60 人为火力上限；间隔由 0.9 秒缩短到 0.5 秒，超过上限不再提升\n使用要点\n炮塔只自动射击射程内的敌方在途部队，不会攻击建筑驻军。\n火力由实时驻军决定：0 人 2 伤害 / 0.9 秒，10 人 3 伤害 / 0.8 秒，30 人 5 伤害 / 0.65 秒，60 人 6 伤害 / 0.5 秒；节点之间按驻军线性插值，60 人封顶。\n调整驻军立即改变伤害与剩余充能速率，但保留已积累的冷却进度，不会重置冷却或免费补射一发。\n需要友军增援才能长期驻守；炮塔不生产，驻军损失后火力随之下降，无法自行补充。\n选中己方炮塔时，战场会显示射程圈；离开射程的舰队不再被该炮塔锁定。\n当前版本没有炮塔升级、范围伤害或特殊弹药。\n驻军火力成长\n驻军\t单发伤害\t射击间隔\t每秒伤害\n0 人\t2\t0.9 秒\t2.22\n10 人\t3\t0.8 秒\t3.75\n30 人\t5\t0.65 秒\t7.69\n60 人（上限）\t6\t0.5 秒\t12\n\n节点之间按实时驻军分段线性插值；60 人封顶，更多驻军不加伤害、不缩间隔。射程 200 不随驻军变化，炮塔始终不产兵。\n\n没有隐藏升级\n图鉴只列出当前模拟真实存在的机制：生产、驻军、道路与战斗结算。没有升级按钮、科技树或未实现的特殊能力。\n\n出现条件：在第 3 关起出现；中立炮塔同样需要派兵占领。",
+    "rows": [
+      "0 人20.9 秒2.22",
+      "10 人30.8 秒3.75",
+      "30 人50.65 秒7.69",
+      "60 人（上限）60.5 秒12"
+    ]
+  },
+  "storyActs": 4,
+  "capture": {
+    "faction": "2 巢",
+    "time": "00:04",
+    "fps": "147 FPS",
+    "method": "Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation."
+  },
+  "newFeatures": {
+    "menuCodexReadable": true,
+    "lockedRaceStillLocked": true,
+    "illegalRoadToast": true,
+    "battleCodexFreezesTimer": true,
+    "escapeRestoresRunning": true
+  },
+  "loadedJavaScript": "./assets/index--KG0zoJw.js",
+  "javascript": {
+    "file": "index--KG0zoJw.js",
+    "localSHA256": "ea0fcb028f82ec534d339964fe24b282eec8fbca7491d3c765f1acec6435f624",
+    "remoteSHA256": "ea0fcb028f82ec534d339964fe24b282eec8fbca7491d3c765f1acec6435f624"
+  },
+  "audioFiles": [
+    "music-meadow-base.ogg",
+    "music-meadow-motion.ogg",
+    "music-meadow-power.ogg",
+    "music-menu.ogg",
+    "sfx-capture.wav",
+    "sfx-click.wav",
+    "sfx-dispatch.wav",
+    "sfx-hover.wav",
+    "sfx-impact.wav",
+    "sfx-march.wav",
+    "sfx-select.wav",
+    "sfx-skill.wav"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "passed": true
+}
