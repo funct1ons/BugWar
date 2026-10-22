@@ -6,7 +6,7 @@ $target = Join-Path (Get-Location) 'release\BugWar-VerdantCrown'
 if (Test-Path $target) { Remove-Item $target -Recurse -Force }
 New-Item -ItemType Directory -Force $target | Out-Null
 Copy-Item dist $target -Recurse -Force
-Copy-Item Start-Game.ps1,Start-Game.cmd,README.md,ASSET-LICENSES.md $target -Force
+Copy-Item Start-Game.ps1,Start-Game.cmd,README.md,CONTRIBUTING.md,ASSET-LICENSES.md $target -Force
 New-Item -ItemType Directory -Force (Join-Path $target 'docs') | Out-Null
 Copy-Item docs\*.md (Join-Path $target 'docs') -Force
 Copy-Item docs\verification,docs\screenshots (Join-Path $target 'docs') -Recurse -Force

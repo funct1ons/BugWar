@@ -13,7 +13,7 @@
 - **标准难度更循序渐进**：普通AI改为每2.7秒决策、每轮至多一个主攻目标；前几关有可见准备期。第二关双方双巢起步，给扩张、留守与试错留下空间。战术难度仍采用0.75秒快速协同。
 - **统一夜林博物志画风**：植物学细线、古铜蚀刻、种荚守望巢与树脂微光；四种地貌、徽章、虫兵和图鉴式界面一起重绘。
 - **统一「巢灯」音乐动机**：木笛气息、木质拨弦、柔和低弦与稀疏木击。WAV母带保留，网页优先OGG：菜单约570KB，四曲共1.54MB，解码不支持时回退WAV。
-- **旧存档保留**：不需要清空进度；在同一地址刷新即可使用新版。
+- **旧存档保留**：不需要清空进度；在同一地址刷新即可使用新版。如仍显示旧美术，可按Ctrl+F5强制刷新，不会清除存档。
 
 [![雨后灯火 · 夜林博物志主菜单](docs/screenshots/menu.png)](https://funct1ons.github.io/BugWar/)
 
@@ -143,7 +143,7 @@ npm.cmd run test:online
 python scripts/check-audio.py
 ```
 
-当前逻辑回归90项通过、1项按需扫描跳过；保留195场全战役对战。新增前3关18组低频操作测试：先等待8–12秒、每3–4秒最多一个单巢指令，不调用高强度规划器、不用技能，均自然获胜。这是可复现脚本证据，不是人类胜率，也不宣称13关人工通关。实机预览：[菜单](docs/screenshots/menu.png) · [战斗](docs/screenshots/battle.png) · [战役地图](docs/screenshots/campaign.png)。
+当前逻辑回归90项通过、1项按需扫描跳过；保留195场全战役对战。新增前3关18组低频操作测试：先等待8–12秒、每3–4秒最多一个单巢指令，不调用高强度规划器、不用技能，均自然获胜。真实Edge另用低频单巢操作在76.2秒自然通过标准第二关，失守2次。这是可复现脚本证据，不是人类胜率，也不宣称13关人工通关。实机预览：[菜单](docs/screenshots/menu.png) · [战斗](docs/screenshots/battle.png) · [战役地图](docs/screenshots/campaign.png)。
 
 浏览器测试使用本机 Edge，默认路径 `C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`；可设置 `$env:EDGE_PATH` 指向兼容Chromium。本地验收脚本自行启动/关闭临时服务；`test:online` 直接访问已部署站点。产出 `test-results/*.png` 和JSON。测试钩子仅在 `?test=1` 开启。
 

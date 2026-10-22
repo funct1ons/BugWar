@@ -80,9 +80,14 @@ npm.cmd run test:online
 
 ## 6. 正式Pages验收
 
-本轮游戏代码尚待推送部署；完成后更新此节及 [online-report.json](verification/online-report.json)。当前文件中的旧版线上快照不是本轮代码的部署证明。
+游戏提交 `67b3a91` 已推送main；GitHub Actions [39702191844](https://github.com/funct1ons/BugWar/actions/runs/39702191844) 的测试、构建与Pages发布全部成功。正式地址：**https://funct1ons.github.io/BugWar/**。
 
-正式地址：**https://funct1ons.github.io/BugWar/**。线上脚本不带测试参数，验证HTTPS资源、无调试接口、自然行军占领、暂停恢复，并核对远程JS与本地dist的SHA-256。
+`npm run test:online` 已通过，完整结果见 [online-report.json](verification/online-report.json)：
+
+- 首屏HTTPS 200，正常网址不带测试参数，确认没有 `window.__BUGWAR__`。
+- 实际打开并关闭四幕纪事，验证13关初始锁关；鼠标派兵后自然占领第二座巢（约4模拟秒），暂停/恢复正常。这不是完整线上通关测试。
+- 正式页面实际加载 `index-ByE338w_.js`；远程文件与本地生产构建SHA-256完全一致：`37f4294613239d7c424529bee82fbbab390aa4cd120c02a0c5e7148885c0a173`。不是只检查新文件在服务器上存在。
+- 菜单/战斗OGG与八个WAV音效均通过HTTPS成功加载；页面异常、资源失败、运行时站外请求均0。线上加载证明不替代主观听音验收。
 
 ## 已知边界
 
