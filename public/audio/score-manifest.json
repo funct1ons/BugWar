@@ -1,0 +1,63 @@
+{
+  "license": "CC0-1.0",
+  "seed": 5192026,
+  "music": [
+    {
+      "track": "menu",
+      "seconds": 48,
+      "voices": {
+        "flute": 15,
+        "pluck": 17,
+        "bow": 4,
+        "warm": 4
+      },
+      "wavBytes": 8467244,
+      "oggBytes": 570242,
+      "peak": 0.70794677734375,
+      "rms": 0.13484022531232057
+    },
+    {
+      "track": "battle",
+      "seconds": 48,
+      "voices": {
+        "flute": 15,
+        "pluck": 28,
+        "bow": 4,
+        "warm": 3,
+        "wood": 8
+      },
+      "wavBytes": 8467244,
+      "oggBytes": 578819,
+      "peak": 0.70794677734375,
+      "rms": 0.14214930051597333
+    },
+    {
+      "track": "victory",
+      "seconds": 16,
+      "voices": {
+        "flute": 5,
+        "pluck": 6,
+        "bow": 2,
+        "warm": 1
+      },
+      "wavBytes": 2822444,
+      "oggBytes": 196195,
+      "peak": 0.70794677734375,
+      "rms": 0.16057557658465926
+    },
+    {
+      "track": "defeat",
+      "seconds": 16,
+      "voices": {
+        "flute": 5,
+        "bow": 1,
+        "warm": 1,
+        "pluck": 1
+      },
+      "wavBytes": 2822444,
+      "oggBytes": 192004,
+      "peak": 0.707916259765625,
+      "rms": 0.15417208295108487
+    }
+  ]
+}

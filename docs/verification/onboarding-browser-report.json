@@ -1,0 +1,153 @@
+{
+  "level": 2,
+  "difficulty": "normal",
+  "race": "agile",
+  "openingWait": 12,
+  "commandInterval": 4,
+  "skippedCommandSlots": [
+    3
+  ],
+  "skills": 0,
+  "multiselect": false,
+  "worldWrites": 0,
+  "fixture": "Only previous stage 1 completion is seeded in localStorage to unlock stage 2. No stage 2 progress, resources, time or terminal state is injected.",
+  "policy": "Read displayed (floored) current garrisons. Nearest neutral affordable with 50% + 5 reserve margin; otherwise nearest enemy affordable with 75% + 20 margin; otherwise reinforce the front with 75% of the largest rear nest. No fleet prediction, enemy interception or planner.",
+  "commands": [
+    {
+      "time": 12,
+      "source": "a",
+      "target": "c",
+      "ratio": 0.5
+    },
+    {
+      "time": 16.05,
+      "source": "a",
+      "target": "d",
+      "ratio": 0.5
+    },
+    {
+      "time": 24,
+      "source": "c",
+      "target": "d",
+      "ratio": 0.75
+    },
+    {
+      "time": 28.1,
+      "source": "a",
+      "target": "b",
+      "ratio": 0.75
+    },
+    {
+      "time": 32,
+      "source": "b",
+      "target": "e",
+      "ratio": 0.75
+    },
+    {
+      "time": 36.05,
+      "source": "d",
+      "target": "b",
+      "ratio": 0.75
+    },
+    {
+      "time": 44.05,
+      "source": "b",
+      "target": "c",
+      "ratio": 0.75
+    },
+    {
+      "time": 48.1,
+      "source": "a",
+      "target": "e",
+      "ratio": 0.75
+    },
+    {
+      "time": 52,
+      "source": "d",
+      "target": "e",
+      "ratio": 0.75
+    },
+    {
+      "time": 56.05,
+      "source": "b",
+      "target": "e",
+      "ratio": 0.75
+    },
+    {
+      "time": 60.05,
+      "source": "e",
+      "target": "f",
+      "ratio": 0.75
+    },
+    {
+      "time": 64,
+      "source": "e",
+      "target": "b",
+      "ratio": 0.75
+    },
+    {
+      "time": 68.05,
+      "source": "c",
+      "target": "b",
+      "ratio": 0.75
+    },
+    {
+      "time": 72.1,
+      "source": "b",
+      "target": "d",
+      "ratio": 0.75
+    },
+    {
+      "time": 76,
+      "source": "f",
+      "target": "b",
+      "ratio": 0.75
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "startingColonies": [
+    {
+      "id": "a",
+      "owner": 1,
+      "units": 74
+    },
+    {
+      "id": "b",
+      "owner": 1,
+      "units": 8
+    },
+    {
+      "id": "c",
+      "owner": 0,
+      "units": 10
+    },
+    {
+      "id": "d",
+      "owner": 0,
+      "units": 14
+    },
+    {
+      "id": "e",
+      "owner": 2,
+      "units": 24
+    },
+    {
+      "id": "f",
+      "owner": 2,
+      "units": 20
+    }
+  ],
+  "graceSeconds": 13,
+  "status": "won",
+  "elapsed": 76.2,
+  "stats": {
+    "sent": 475,
+    "kills": 176.15000000000043,
+    "captures": 6,
+    "lost": 2,
+    "skills": 0,
+    "casualties": 186.1500000000004
+  },
+  "passed": true
+}

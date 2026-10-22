@@ -14,6 +14,7 @@
     ],
     "pendingLoads": 0,
     "failedFiles": [],
+    "fallbackFiles": [],
     "activeVoices": 0,
     "activeMusicSources": 0,
     "currentTrack": null,
@@ -30,26 +31,27 @@
     "muted": false,
     "baseUrl": "./"
   },
+  "openingGrace": "观察准备期 14秒，双方正常生产",
   "audioSignal": {
     "playing": {
-      "rms": 0.04728069140597046,
-      "peak": 0.14286752045154572
+      "rms": 0.1423487226594338,
+      "peak": 0.41732531785964966
     },
     "muted": {
       "rms": 0,
       "peak": 0
     },
     "restored": {
-      "rms": 0.19759067893050203,
-      "peak": 0.6839118003845215
+      "rms": 0.18118985021849532,
+      "peak": 0.5373883247375488
     }
   },
   "audio": {
     "contextState": "running",
     "decodedBuffers": 10,
     "decodedFiles": [
-      "music-battle.wav",
-      "music-menu.wav",
+      "music-battle.ogg",
+      "music-menu.ogg",
       "sfx-capture.wav",
       "sfx-click.wav",
       "sfx-dispatch.wav",
@@ -61,16 +63,17 @@
     ],
     "pendingLoads": 0,
     "failedFiles": [],
+    "fallbackFiles": [],
     "activeVoices": 7,
     "activeMusicSources": 1,
     "currentTrack": "battle",
     "pendingTrack": null,
-    "currentTrackTime": 6.629333333333333,
-    "currentTrackDuration": 29.090895833333335,
+    "currentTrackTime": 5.8293333333333335,
+    "currentTrackDuration": 48,
     "musicLoop": true,
     "crossfading": false,
-    "limiterReduction": -1.07,
-    "throttledPlays": 2,
+    "limiterReduction": -0.05,
+    "throttledPlays": 8,
     "master": 0.72,
     "music": 0.28,
     "sfx": 0.65,
@@ -81,9 +84,9 @@
     "contextState": "running",
     "decodedBuffers": 11,
     "decodedFiles": [
-      "music-battle.wav",
-      "music-menu.wav",
-      "music-victory.wav",
+      "music-battle.ogg",
+      "music-menu.ogg",
+      "music-victory.ogg",
       "sfx-capture.wav",
       "sfx-click.wav",
       "sfx-dispatch.wav",
@@ -95,16 +98,17 @@
     ],
     "pendingLoads": 0,
     "failedFiles": [],
-    "activeVoices": 5,
+    "fallbackFiles": [],
+    "activeVoices": 7,
     "activeMusicSources": 2,
     "currentTrack": "victory",
     "pendingTrack": null,
-    "currentTrackTime": 0.3893333333333331,
-    "currentTrackDuration": 9.9,
+    "currentTrackTime": 0.1200000000000001,
+    "currentTrackDuration": 16,
     "musicLoop": false,
     "crossfading": true,
-    "limiterReduction": -0.26,
-    "throttledPlays": 2,
+    "limiterReduction": -0.39,
+    "throttledPlays": 8,
     "master": 0.72,
     "music": 0.28,
     "sfx": 0.65,
@@ -112,21 +116,101 @@
     "baseUrl": "./"
   },
   "performance": {
-    "fps": 77.25,
+    "fps": 79.75,
     "sprites": 1000,
-    "fleets": 55
+    "fleets": 49
   },
   "layout": {
-    "maxNumberBottom": 780.5,
+    "maxNumberBottom": 777,
     "hudTop": 792.0000203450521
   },
+  "campaignLayout": [
+    {
+      "level": 1,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 717,
+      "headerClear": true
+    },
+    {
+      "level": 2,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 717,
+      "headerClear": true
+    },
+    {
+      "level": 3,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 757,
+      "headerClear": true
+    },
+    {
+      "level": 4,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 767,
+      "headerClear": true
+    },
+    {
+      "level": 5,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 777,
+      "headerClear": true
+    },
+    {
+      "level": 6,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 767,
+      "headerClear": true
+    },
+    {
+      "level": 7,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 747,
+      "headerClear": true
+    },
+    {
+      "level": 8,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 777,
+      "headerClear": true
+    },
+    {
+      "level": 9,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 757,
+      "headerClear": true
+    },
+    {
+      "level": 10,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 777,
+      "headerClear": true
+    },
+    {
+      "level": 11,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 777,
+      "headerClear": true
+    },
+    {
+      "level": 12,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 777,
+      "headerClear": true
+    },
+    {
+      "level": 13,
+      "hintLabelClashes": [],
+      "maxNumberBottom": 777,
+      "headerClear": true
+    }
+  ],
   "audioFinal": {
     "contextState": "running",
     "decodedBuffers": 11,
     "decodedFiles": [
-      "music-battle.wav",
-      "music-defeat.wav",
-      "music-menu.wav",
+      "music-battle.ogg",
+      "music-defeat.ogg",
+      "music-menu.ogg",
       "sfx-capture.wav",
       "sfx-click.wav",
       "sfx-dispatch.wav",
@@ -138,12 +222,13 @@
     ],
     "pendingLoads": 0,
     "failedFiles": [],
+    "fallbackFiles": [],
     "activeVoices": 0,
     "activeMusicSources": 1,
     "currentTrack": "defeat",
     "pendingTrack": null,
-    "currentTrackTime": 1.0106666666666664,
-    "currentTrackDuration": 11.030729166666667,
+    "currentTrackTime": 0.8293333333333326,
+    "currentTrackDuration": 16,
     "musicLoop": false,
     "crossfading": false,
     "limiterReduction": 0,
@@ -155,6 +240,41 @@
     "baseUrl": "./"
   },
   "storageFallback": true,
+  "audioFormatFallback": {
+    "contextState": "running",
+    "decodedBuffers": 9,
+    "decodedFiles": [
+      "music-menu.wav",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [
+      "music-menu.wav"
+    ],
+    "activeVoices": 0,
+    "activeMusicSources": 1,
+    "currentTrack": "menu",
+    "pendingTrack": null,
+    "currentTrackTime": 0.010666666666666658,
+    "currentTrackDuration": 48,
+    "musicLoop": true,
+    "crossfading": true,
+    "limiterReduction": -10.21,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./"
+  },
   "errors": [],
   "failedRequests": [],
   "externalRequests": [],

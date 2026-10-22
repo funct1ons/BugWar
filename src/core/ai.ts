@@ -1,5 +1,5 @@
 import { RACES, type Colony, type Difficulty, type World } from './types';
-export const THINK_INTERVAL: Record<Difficulty,number> = {easy:3,normal:1.5,hard:0.75};
+export const THINK_INTERVAL: Record<Difficulty,number> = {easy:4,normal:2.7,hard:0.75};
 const distance=(a:{x:number;y:number},b:{x:number;y:number})=>Math.hypot(a.x-b.x,a.y-b.y);
 interface Arrival { time:number; owner:number; count:number; effectiveCount:number; attack:number; order:number }
 /** Conservative ready-to-fire estimate over the clipped straight-line/circle chord.
@@ -60,7 +60,7 @@ export function think(world:World, owner:number, difficulty:Difficulty, send:(so
     }
     return result;
   };
-  const reserve=(c:Colony)=>Math.max(5,...requirements(c).map(r=>r.units));
+  const reserve=(c:Colony)=>Math.max(difficulty==='hard'?5:difficulty==='normal'?8:10,...requirements(c).map(r=>r.units));
   const extra=(source:Colony,target:Colony,count:number,index:number):Arrival=>({time:distance(source,target)/ownRace.speed,owner,count,effectiveCount:Math.max(0,count-estimateCannonLoss(world,source,target,owner,ownRace.speed)),attack:ownRace.attack,order:1e12+index});
   for(const target of owned()) {
     for(const requirement of requirements(target)) {
@@ -113,5 +113,6 @@ export function think(world:World, owner:number, difficulty:Difficulty, send:(so
       // Recheck ownership and available units at dispatch, never fabricate resources.
       if(source.owner===owner&&source.units>0) send([source.id],target.id,plan[i].count/source.units,owner);
     }
+    if(difficulty!=='hard') break; // One main offensive objective; urgent defense above remains unrestricted.
   }
 }

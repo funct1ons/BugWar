@@ -1,46 +1,55 @@
-# 音频交付说明
+# 巢灯：室内乐式林地远征音频
 
-## 资源与来源
+依据完整 `world-and-art-direction.md` 重作四曲与八个操作音。全部原创程序合成，无外部录音、采样或商业旋律；生成音频及衍生文件以 **CC0-1.0** 提供。没有人工主观试听，本交付不代表专业听感或响度验收。
 
-12 个真实本地 WAV 位于 `public/audio/`，由 `scripts/generate-audio.py` 离线原创算法合成；无第三方采样、CDN 或空音频替代。合成采用多声部和声、节奏与音区变化，包括 Karplus–Strong 拨弦、膜鼓、马林巴式音条、气息笛、滤波噪声及 Schroeder 混响。固定随机种子可复现；生成脚本声明原创资源可按 CC0 / public domain 随游戏分发。
+## 动机、编配与材料
 
-均为 44,100 Hz、16-bit PCM；音乐双声道，音效单声道。
+「巢灯」为 D4–A4–B4–F#4–E4（上行五度、点亮的一步、归落），起音间隔 1.7 / 1.4 / 2.2 / 1.8 秒，长短交错且留有句间呼吸。不是连续音阶提示。
 
-| 文件（省略 .wav） | 时长（秒） | 播放 |
-| --- | ---: | --- |
-| music-menu | 34.286 | 循环 |
-| music-battle | 29.091 | 循环 |
-| music-victory | 9.900 | 一次 |
-| music-defeat | 11.031 | 一次 |
-| sfx-hover | 0.130 | 一次 |
-| sfx-click | 0.180 | 一次 |
-| sfx-select | 0.460 | 一次 |
-| sfx-dispatch | 0.860 | 一次 |
-| sfx-march | 1.120 | 一次 |
-| sfx-impact | 0.780 | 一次 |
-| sfx-capture | 1.060 | 一次 |
-| sfx-skill | 1.380 | 一次 |
+- 木笛：基音、少量二三次泛音、慢气息起落、低通微噪声、渐入颤音与气压扰动。
+- 尼龙/木质拨弦：12 个带弦刚度频散的模式，不同模态独立衰减；指触噪声与短攻击；并非芯片方波或单一正弦提示。
+- 低弦与暖持续音：8 层泛音、缓慢弓压包络、细松香噪声；不在全段堆砌三和弦。
+- 木击：非整数倍共振与短木纤维噪声，无大鼓或尖铃。自然底纹为极低音量的平滑叶/水噪声，不是实际野外录音。
+- 左右声部定位、37–827ms 衰减暗色房间反射；所有声部直接混入完整立体声母带，无删减版伴奏。
 
-循环音乐将混响尾部折回开头并做边缘淡化；运行时按解码 buffer 全长循环。
+| 曲目 | 结构 | 时长 | WAV 字节 | OGG 字节 |
+| --- | --- | ---: | ---: | ---: |
+| menu | 2/17/33秒三次笛句，中段下移、末段暖音加入；稀疏拨弦回应，孤独到微暖 | 48s | 8467244 | 570242 |
+| battle | 同一动机，中段上移；1.65秒木弦脉搏，主动空出每八拍的两拍；低强度木击 | 48s | 8467244 | 578819 |
+| victory | 木笛与延迟低八度拨弦汇合，低弦后加入柔暖上声部，不用中奖号角 | 16s | 2822444 | 196195 |
+| defeat | 低八度笛句，减少拨弦回应与声部，末尾温柔退潮 | 16s | 2822444 | 192004 |
 
-## API 与运行行为
+八音效保持 hover/click/select/dispatch/march/impact/capture/skill 契约，时长分别为 .13/.18/.46/.86/1.12/.78/1.06/1.38 秒。木击处理悬停、点击、脚步、碰撞；拨弦处理选择、出发、重燃巢灯与技能。
 
-具名导出 `AudioSystem`，支持 `constructor(settings)`、`unlock(): Promise<void>`、`music(track)`、`play(name)`、`configure(partialSettings)`、`diagnostics()`、`dispose()`。默认 master/music/sfx 为 **0.72 / 0.55 / 0.65**，未静音。首次真实 pointer/key/touch 手势解锁 Web Audio；此前音乐请求保留，音效不排队补播。资源 URL 使用 `import.meta.env.BASE_URL + 'audio/…'`，支持子目录部署；本地文件仍经同源 fetch 读取。
+## 母带与再生
 
-菜单与战斗循环，胜败不循环；切歌交叉淡化，异步加载使用请求序号，陈旧曲目不能抢占最新请求（包括重新请求当前正在播放的曲目）。主 UI 结算应仅调用 `music('victory' | 'defeat')`，不要同时 `play()` 同名音效，避免双播；保留后者仅为接口兼容。主界面已按此方式接入。
+真实 WAV 全部 44,100Hz、16-bit PCM；音乐双声道、音效单声道。音乐峰值约 -3dBFS，不用全段强限幅；慢包络和声部撤离保留动态。音乐 WAV 共约22.58MB；网页只按需加载衍生文件，四首 OGG 合计 **1,537,260 字节**，约为母带的6.8%。菜单首曲仅570KB，无全配乐首次预取。
 
-音效：同名最短间隔分别为 hover 55、click 45、select 80、dispatch 110、march 170、impact 65、capture 150、skill 280、胜败 1200 毫秒。滚动 1000 毫秒最多接受 24 次，同时最多 16 个音效 voice；窗口先原地保留未过期时间戳，再检查限额，不提前清空。未解码音效只预热并丢弃当前请求，避免延迟错位。
+`python scripts/generate-audio.py` 从固定种子 5192026 再生全部文件与 `public/audio/score-manifest.json`。开发再生依赖（不进入 package、不供运行时使用）：
 
-输出链为 music/sfx gain → master gain → DynamicsCompressor → destination；阈值 -10 dB、ratio 8、attack 0.003 秒、release 0.15 秒，减轻并发叠加削波。压缩器不是严格 true-peak 硬限制器，不保证任意输入下绝对无峰值超限。
+```powershell
+python -m pip install --target test-results/audio-tools numpy soundfile
+python scripts/generate-audio.py
+```
 
-`diagnostics()` 返回独立、可 JSON 序列化的只读观察快照，不暴露内部节点：contextState、decodedBuffers/decodedFiles、failedFiles、pendingLoads、activeVoices、activeMusicSources、currentTrack/pendingTrack、播放时间/时长、循环/淡化状态、压缩增益衰减及限流计数等。修改快照不会修改内部资源集合。
+soundfile 随附 libsndfile 的 OGG Vorbis 编码器使用默认质量，将**已量化的 WAV 母带**编码为 OGG；Windows 编码在16MB栈工作线程运行，规避编码器主线程栈溢出。临时工具目录不属于交付资源。WAV 为可独立解释的线性 PCM 母带，不从有损文件反向恢复。生成阶段已用 libsndfile 解码检查四个 OGG 的采样率、精确帧数、有限样本；浏览器实际支持与播放已由主集成验证，见下文。
 
-## 验证与限制
+## 加载与接口
 
-- `npx tsc --noEmit`：编译检查。
-- `npx vitest run tests/audio.test.ts`：默认值、诊断快照、滚动限流、异步陈旧切歌回归。
-- `python scripts/check-audio.py`：独立资源检查已通过 12 项；音乐 peak 约 0.8912，音效 0.4465–0.7079；无空文件、无削波，循环首尾差为 0。报告输出在 `test-results/audio-report.json`。
-- 主集成验收已在Edge默认自动播放策略下验证真实手势解锁、解码与播放、交叉淡化、循环配置、静音/恢复，以及压缩器后真实混音输出。静音稳定后RMS为0，恢复并发7音效peak约0.684；详情与机器报告见 `docs/test-report.md`、`docs/verification/browser-report.json`。
-- 未进行人工主观听音或专业响度认证；PCM首尾样本一致不等于主观听感绝对无缝。
+保留具名 `AudioSystem` 及 constructor(settings)/unlock/music/play/configure/dispose/diagnostics。music() 在 suspended 时仅保存请求，**不主动 resume**；真实 pointer/key/touch 或显式 unlock() 才解锁。小型 UI 音库可预热，但 unlock 不再等待整个音库，不因慢资源阻塞点击与配乐启动。
 
-解码/网络失败只记录并跳过，不产生合成 fallback，也不会自动反复重试；无 Web Audio 时静默降级。首次加载需要等待本地 WAV 下载解码，浏览器后台页或系统音频策略可能暂停上下文。dispose 停止当前/淡出音乐及音效，关闭上下文并释放缓存。
+四曲优先本地 `.ogg`；HTTP 缺失或解码不支持时才尝试同名 `.wav`。请求去重；成功回退不记为整体资源失败，不产生合成占位音。不预取其它配乐。两种格式都失败则跳过，不反复重试。子路径 URL 仍经 BASE_URL。
+
+`decodedFiles` **只报告实际成功解码文件名**（正常为 ogg，不伪报 wav）；新增 `fallbackFiles` 报告成功回退的 WAV；`failedFiles` 只含两种格式均失败的逻辑资源首选文件名。pendingLoads 统计逻辑加载任务。回退缓冲同时供 play('victory'/'defeat') 兼容入口查找。
+
+菜单/战斗循环，胜败不循环；保留请求序号的陈旧切歌保护、等功率淡入淡出、同曲不重启、限流（24次/秒、16并发）、每音效最短间隔、压缩器及音量设置接口。音量持久化仍由调用方通过 settings 保存，不改存档契约。结算应仅调用 music，不同时调用同名 play。
+
+## 自动验证与边界
+
+- `npx vitest run tests/audio.test.ts`：6项通过，含默认/诊断隔离、滚动限流、异步旧切歌取消、OGG缺失回退、OGG解码失败回退、成功OGG真实文件诊断。
+- `python scripts/check-audio.py`：12个PCM文件通过；音乐 RMS .13484–.16058，峰值 .70795，零削波；所有首尾差0。机器报告 `test-results/audio-report.json`。
+- 生成时四个OGG离线解码均为44.1kHz、帧数完整；此项本身不是听音证明。
+- 主集成的真实Edge测试已完成：四曲OGG及八个WAV音效均实际解码；手势前suspended、真实点击后running；菜单/战斗循环，胜败不循环；强制返回不可解码OGG后成功回退WAV。
+- 压缩器后实测播放RMS .14235，静音RMS/peak为0；恢复并叠加7种音效后RMS .18119、peak .53739，本次没有削波。Windows原生离线服务器也成功加载OGG。完整快照见 `docs/verification/browser-report.json`。
+
+15ms循环边缘淡化避免单样本跳变，但端点一致不等于主观无缝；自然声纹为算法材料，不冒充真实录制乐器。已验证实际播放、循环配置与混音输出，仍需由人试听评估接缝、木笛/弦乐真实感与长期听感。

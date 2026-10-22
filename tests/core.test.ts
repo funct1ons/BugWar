@@ -43,7 +43,7 @@ describe('pure deterministic simulation',()=>{
  });
  it('AI coordinates, accounts for incoming, keeps reserves and does not invent units',()=>{
   const s=sim([colony('p',1,100,1400),colony('a',2,25),colony('b',2,25,20),colony('n',0,22,400)]);
-  s.step(3);const fleets=s.world.fleets.filter(f=>f.owner===2);expect(fleets.length).toBe(2);expect(fleets.every(f=>f.to==='n')).toBe(true);
+  think(s.world,2,'hard',(a,b,r,o)=>s.dispatch(a,b,r,o));const fleets=s.world.fleets.filter(f=>f.owner===2);expect(fleets.length).toBe(2);expect(fleets.every(f=>f.to==='n')).toBe(true);
   const sent=fleets.reduce((n,f)=>n+f.count,0);expect(sent).toBeLessThan(40);s.step(3);expect(s.world.fleets.filter(f=>f.owner===2).reduce((n,f)=>n+f.count,0)).toBe(sent);
   expect(s.world.colonies.filter(c=>c.owner===2).reduce((n,c)=>n+c.units,0)+sent).toBe(50);
  });
@@ -53,7 +53,7 @@ describe('pure deterministic simulation',()=>{
  });
 });
 
-const plan=(s:Simulation,owner=2)=>think(s.world,owner,'normal',(a,b,r,o)=>s.dispatch(a,b,r,o));
+const plan=(s:Simulation,owner=2)=>think(s.world,owner,'hard',(a,b,r,o)=>s.dispatch(a,b,r,o));
 describe('review regressions',()=>{
  it('counts lost buildings, not dead soldiers, and excludes neutral kills',()=>{
   const s=sim([colony('a',1,40),colony('n',0,10,10),colony('e',2,100,20)]);

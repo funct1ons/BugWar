@@ -84,7 +84,7 @@ it.skipIf(!scanning)('scans conservative Agile opening garrisons',()=>{
     let found=false;
     for(let extra=0;extra<=100;extra+=5){
       const level={...original,colonies:original.colonies.map(c=>({...c}))};
-      const baseline=[38,34,40,32,45,38,34,46,44,44,40,46,48];
+      const baseline=LEVELS.map(l=>l.colonies.find(c=>c.id==='a')!.units);
       level.colonies.find(c=>c.id==='a')!.units=baseline[level.id-1];
       if(level.id===1)level.colonies.find(c=>c.id==='d')!.units=16;
       if(level.id===6)level.colonies.find(c=>c.id==='b')!.owner=1;

@@ -6,6 +6,19 @@
 
 > 不是声称精确复原的原版发行版。可确认的玩法框架优先保留；原作地图、数值、魔法效果和AI内部规则未能核实，均明确标为保守重建。详见 [原版机制研究](docs/original-game-analysis.md)。未提取原作素材。
 
+## 雨后灯火：本轮更新
+
+暴雨冲断根网，十三座守望巢失去灯火。你带领苔翅行旅，携最后一枚种核穿过四片林地。**翡翠王冠不是帝王的冠冕，而是重新照亮归途的灯环。** 主菜单的「林地纪事」可随时阅读、关闭；这是本重制版的原创故事，不是原作剧情。
+
+- **标准难度更循序渐进**：普通AI改为每2.7秒决策、每轮至多一个主攻目标；前几关有可见准备期。第二关双方双巢起步，给扩张、留守与试错留下空间。战术难度仍采用0.75秒快速协同。
+- **统一夜林博物志画风**：植物学细线、古铜蚀刻、种荚守望巢与树脂微光；四种地貌、徽章、虫兵和图鉴式界面一起重绘。
+- **统一「巢灯」音乐动机**：木笛气息、木质拨弦、柔和低弦与稀疏木击。WAV母带保留，网页优先OGG：菜单约570KB，四曲共1.54MB，解码不支持时回退WAV。
+- **旧存档保留**：不需要清空进度；在同一地址刷新即可使用新版。
+
+[![雨后灯火 · 夜林博物志主菜单](docs/screenshots/menu.png)](https://funct1ons.github.io/BugWar/)
+
+故事与制作方向见 [世界观与视听总纲](docs/world-and-art-direction.md)，难度新旧对比见 [标准前期平衡 v2](docs/balance-v2.md)。
+
 ## Windows 最简单启动
 
 **当前工作目录已经构建过 `dist/`，或者下载了离线包：**
@@ -91,9 +104,9 @@ Fork 后自行部署时，在仓库 **Settings → Pages → Build and deploymen
 
 ## 音乐、美术与设置
 
-原创分层自然场景、雕刻式虫巢与炮塔、六腿昆虫四帧行走动画、阵营旗帜、派兵路线、受击/占领/风暴反馈。四种生态：草甸、根林、湿地、琥珀荒庭。
+四幕故事贯穿晨露草甸、幽根林地、萤火湿地与琥珀荒庭。细线图鉴风场景、种荚虫巢、铜箍鸣炮、六腿昆虫四帧步态与种核守望环均为原创SVG。建筑保留材料本色，阵营由旗帜、细环与虫群色调区分。
 
-本地完整 WAV 配乐和音效，通过 Web Audio 加载播放，不使用空音频或运行时网络合成服务。菜单与战斗音乐循环，胜败短曲、UI/派兵/行军/攻击/占领/施法音效完整。主音量、音乐、音效与静音独立保存；音效限流避免爆音。详细来源及生成测量见 [音频文档](docs/audio.md)、[素材许可](ASSET-LICENSES.md)。
+菜单/战斗各48秒，胜败各16秒；另有8个操作音效。完整WAV母带及同源OGG衍生文件通过Web Audio按需加载，不使用空音频、外部采样或运行时网络合成服务。菜单与战斗音乐循环，胜败短曲、UI/派兵/行军/攻击/占领/施法音效完整。主音量、音乐、音效与静音独立保存；音效限流避免爆音。详细来源及生成测量见 [音频文档](docs/audio.md)、[素材许可](ASSET-LICENSES.md)。
 
 针对16:9 PC屏幕设计，1920×1080最佳，常见笔记本分辨率等比缩放；其他宽高比留边，不裁切战场。设置支持减少环境动画。
 
@@ -101,14 +114,14 @@ Fork 后自行部署时，在仓库 **Settings → Pages → Build and deploymen
 
 ```text
 src/core/             纯逻辑、种族、固定步模拟、交战、技能、效用AI
-src/data/levels.ts   13关不同布局及教学
+src/data/            13关布局、准备期、教学与原创四幕故事
 src/game/            Phaser表现、虫群、输入、选区、特效
 src/audio/           Web Audio解码/音乐/限流音效
 src/storage/         版本化校验存档、最佳成绩、成就
 src/main.ts          菜单/战役/战斗HUD/设置/结算整合
 src/ui/              兵力显示等纯界面格式工具
 public/art/          原创SVG场景、建筑、动画、徽章
-public/audio/        本地配乐与音效WAV
+public/audio/        WAV母带、OGG配乐与编配清单
 scripts/             合成、浏览器测试、构建许可、离线服务和打包
 ```
 
@@ -122,24 +135,26 @@ npm.cmd run build
 npm.cmd run test:browser
 npm.cmd run test:offline
 npm.cmd run test:playthrough
+npm.cmd run test:onboarding
+npm.cmd run test:art
 # 线上站点已部署且联网时：
 npm.cmd run test:online
 # 可选PCM资源校验（需要Python，仅开发验收用）：
 python scripts/check-audio.py
 ```
 
-当前交付：84项逻辑/存档/音频回归通过；浏览器交互、真实音频输出、Windows原生服务器通过。标准首关另以不改世界状态的真实UI驾驶器在23.2秒自然获胜；不宣称13关人工通关。实机预览：[菜单](docs/screenshots/menu.png) · [战斗](docs/screenshots/battle.png) · [战役地图](docs/screenshots/campaign.png)。
+当前逻辑回归90项通过、1项按需扫描跳过；保留195场全战役对战。新增前3关18组低频操作测试：先等待8–12秒、每3–4秒最多一个单巢指令，不调用高强度规划器、不用技能，均自然获胜。这是可复现脚本证据，不是人类胜率，也不宣称13关人工通关。实机预览：[菜单](docs/screenshots/menu.png) · [战斗](docs/screenshots/battle.png) · [战役地图](docs/screenshots/campaign.png)。
 
 浏览器测试使用本机 Edge，默认路径 `C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe`；可设置 `$env:EDGE_PATH` 指向兼容Chromium。本地验收脚本自行启动/关闭临时服务；`test:online` 直接访问已部署站点。产出 `test-results/*.png` 和JSON。测试钩子仅在 `?test=1` 开启。
 
-验收证据、局限与实际结果见 [测试报告](docs/test-report.md)、[战役平衡](docs/balance-report.md)、[核心参数](docs/core-rules.md)。自动战役对战不等同真人通关；浏览器结算场景的合成fixture会与真实鼠标交互测试分别标明。
+验收证据、局限与实际结果见 [测试报告](docs/test-report.md)、[本轮难度对比](docs/balance-v2.md)、[历史战役平衡](docs/balance-report.md)、[核心参数](docs/core-rules.md)。自动战役对战不等同真人通关；浏览器结算场景的合成fixture会与真实鼠标交互测试分别标明。
 
 ## 已知边界
 
 - 13关坐标、敌初兵、种族倍率、战斗/评分公式、技能效果为重建，不宣称原版精确数值。
 - 未成功运行原版或抓取全流程视频，证据主要为作者说明和2010同期评测。
 - 没有地形阻挡/路径寻路；装饰水面与根须不影响行军。
-- 音乐为原创算法作曲、多声部采样合成，未经专业录音棚混音。
+- 音乐为原创算法作曲与多声部离线合成；已检查真实音频输出，但未经人工主观试听或专业混音验收。
 - localStorage被浏览器隐私策略禁用时，只能保留本次会话进度；结果界面会提示。
 - 当前版本面向鼠标PC，未专门适配触屏/手机。
 

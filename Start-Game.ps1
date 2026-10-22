@@ -15,7 +15,7 @@ try { $listener.Start() } catch {
 Write-Host "Bug War: http://127.0.0.1:$Port/" -ForegroundColor Green
 Write-Host 'Offline local server. Keep this window open; Ctrl+C to stop. No Node.js required.'
 if (-not $NoBrowser) { Start-Process "http://127.0.0.1:$Port/" }
-$mime = @{ '.html'='text/html; charset=utf-8'; '.js'='text/javascript; charset=utf-8'; '.css'='text/css; charset=utf-8'; '.svg'='image/svg+xml'; '.wav'='audio/wav'; '.png'='image/png'; '.json'='application/json' }
+$mime = @{ '.html'='text/html; charset=utf-8'; '.js'='text/javascript; charset=utf-8'; '.css'='text/css; charset=utf-8'; '.svg'='image/svg+xml'; '.wav'='audio/wav'; '.ogg'='audio/ogg'; '.mp3'='audio/mpeg'; '.png'='image/png'; '.json'='application/json' }
 try {
     while ($true) {
         if (-not $listener.Pending()) { Start-Sleep -Milliseconds 12; continue }

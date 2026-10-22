@@ -11,7 +11,7 @@
 - 研究代理：docs/research-addendum.md、docs/reference/**。
 
 ## 画布/关卡
-逻辑画面1600×900，战场有效区域 x=120..1480,y=210..740；顶部HUD 0..130、底部HUD 790..900。坐标均绝对逻辑像素。关卡13个，4类生境，布局各异。渲染Phaser，HTML覆盖层提供可访问的游戏UI。
+逻辑画面1600×900，战役建筑中心 x=210..1400,y=230..710；顶部HUD y=20..138、底部HUD y=792..888。提示单行位于y140，最下兵力数字下沿777，不遮挡建筑。坐标均绝对逻辑像素。关卡13个，4类生境，布局各异。渲染Phaser，HTML覆盖层提供可访问的游戏UI。
 
 ## src/core/types.ts (核心代理实现并导出)
 ```ts
@@ -20,7 +20,7 @@ export type BuildingKind = 'nest' | 'cannon';
 export type Difficulty = 'easy' | 'normal' | 'hard';
 export interface ColonyConfig { id:string; x:number; y:number; owner:number; kind:BuildingKind; units:number; production?:number }
 export interface FactionConfig { id:number; race:RaceId }
-export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; factions:FactionConfig[]; colonies:ColonyConfig[]; tip:string }
+export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; factions:FactionConfig[]; colonies:ColonyConfig[]; tip:string; openingGrace?:Partial<Record<Difficulty,number>> }
 export interface Colony extends ColonyConfig { production:number }
 export interface Fleet { id:number; owner:number; race:RaceId; from:string; to:string; x:number; y:number; count:number; initialCount:number }
 export interface GameEvent { type:'dispatch'|'impact'|'capture'|'shot'|'skill'|'end'; x:number; y:number; owner:number; targetX?:number; targetY?:number; amount?:number }
@@ -32,6 +32,7 @@ export const RACES: Record<RaceId,{name:string;speed:number;attack:number;defens
 ```ts
 export class Simulation {
   world: World;
+  readonly openingGrace: number; // seconds, 0 if not configured
   constructor(level:LevelConfig, race:RaceId='agile', difficulty:Difficulty='normal');
   step(dt:number):void; // seconds; fixed substeps, bounds finite values
   dispatch(sources:string[], target:string, ratio?:number, owner?:number):number; // default conservative 0.5, sends integer >=1; return sent
@@ -46,7 +47,7 @@ World events only consumed with drainEvents; AI deterministic utility with incom
 所有SVG viewBox,无外部资源/字体依赖。
 - background-meadow.svg/background-roots.svg/background-marsh.svg/background-amber.svg：1600×900精致自然地表，四周环境框景，中间战场可读。
 - nest.svg/cannon.svg：160×160原生细腻多层结构，暖中性(可叠阵营色环)。建筑形态不是圆节点。
-- bug-agile.svg/bug-fast.svg/bug-strong.svg：96×128 spritesheet，4行走帧横向（每帧24×32，实际总96×32亦可，需在美术文档精确说明）。朝上，可旋转，清楚腿/触角/翅甲。
+- bug-agile.svg/bug-fast.svg/bug-strong.svg：96×32 spritesheet，4行走帧横向，每帧24×32。朝上，可旋转，清楚腿/触角/翅甲。
 - emblem.svg：256×256封面昆虫徽章。
 主代理使用自制图形动态叠加旗帜、光、血条、行军步态、粉尘等。
 
@@ -64,7 +65,7 @@ export class AudioSystem {
  dispose():void;
 }
 ```
-真实本地WAV，不依赖运行时网络。音乐不应只有简单正弦，使用多声部、节奏、合成音色与自然噪声，峰值控制、循环过渡。WebAudio限流。资源路径import.meta.env.BASE_URL。
+真实同源OGG配乐（失败回退WAV）与WAV音效，不依赖运行时CDN或外部请求。音乐不应只有简单正弦，使用多声部、节奏、合成音色与自然噪声，峰值控制、循环过渡。WebAudio限流。资源路径import.meta.env.BASE_URL。
 
 ## 交付阶段
 1. 研究证据→2.架构与并行模块→3.核心/AI+13关+成长→4.绘制与音乐→5.浏览器操作/视觉/音频/性能验收→6.离线静态包和Windows启动脚本。

@@ -65,4 +65,47 @@ describe('audio regressions', () => {
     expect(swapped).not.toHaveBeenCalled();
     expect(audio.diagnostics().pendingTrack).toBeNull();
   });
+  it.each(['missing', 'unsupported'])('falls back honestly when OGG is %s', async (mode) => {
+    const audio = new AudioSystem();
+    const internals = audio as unknown as {
+      ctx: unknown; load: (file: string) => Promise<unknown>;
+      decode: () => Promise<unknown>;
+    };
+    internals.ctx = {};
+    const buffer = { duration: 48 };
+    let decodes = 0;
+    internals.decode = async () => {
+      decodes++;
+      if (mode === 'unsupported' && decodes === 1) throw new Error('codec');
+      return buffer;
+    };
+    const urls: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      urls.push(url);
+      return { ok: !(mode === 'missing' && url.endsWith('.ogg')), status: 404,
+        arrayBuffer: async () => new ArrayBuffer(4) };
+    }));
+    expect(await internals.load('music-menu.ogg')).toBe(buffer);
+    expect(urls.map(url => url.split('/').pop())).toEqual(['music-menu.ogg', 'music-menu.wav']);
+    expect(audio.diagnostics().decodedFiles).toEqual(['music-menu.wav']);
+    expect(audio.diagnostics().fallbackFiles).toEqual(['music-menu.wav']);
+    expect(audio.diagnostics().failedFiles).toEqual([]);
+    expect(audio.diagnostics().pendingLoads).toBe(0);
+    expect(await internals.load('music-menu.ogg')).toBe(buffer);
+    expect(urls).toHaveLength(2);
+    vi.unstubAllGlobals();
+  });
+
+  it('reports the actual compressed decode without a fictitious WAV', async () => {
+    const audio = new AudioSystem();
+    const internals = audio as unknown as { ctx: unknown; load: (file: string) => Promise<unknown>; decode: () => Promise<unknown> };
+    internals.ctx = {};
+    internals.decode = async () => ({});
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(4) })));
+    await internals.load('music-battle.ogg');
+    expect(audio.diagnostics().decodedFiles).toEqual(['music-battle.ogg']);
+    expect(audio.diagnostics().fallbackFiles).toEqual([]);
+    vi.unstubAllGlobals();
+  });
+
 });

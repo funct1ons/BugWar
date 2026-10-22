@@ -4,11 +4,13 @@ const TICK=0.05;
 const safe=(n:number,fallback=0)=>Number.isFinite(n)?Math.max(0,Math.min(1e12,n)):fallback;
 export class Simulation {
   world:World;
+  public readonly openingGrace:number;
   private accumulator=0;
   private nextFleet=1;
   private aiClock=0;
   private shots=new Map<string,number>();
   constructor(level:LevelConfig,race:RaceId='agile',private difficulty:Difficulty='normal') {
+    this.openingGrace=safe(level.openingGrace?.[difficulty]??0);
     this.world={elapsed:0, colonies:level.colonies.map(c=>({...c,x:safe(c.x),y:safe(c.y),units:safe(c.units),production:c.kind==='cannon'?0:safe(c.production ?? 1)})), factions:level.factions.map(f=>({...f,race:f.id===1?race:f.race})),fleets:[],energy:{},status:'playing',stats:{sent:0,kills:0,captures:0,lost:0,skills:0,casualties:0},events:[]};
     for(const f of this.world.factions) this.world.energy[f.id]=0;
   }
@@ -71,7 +73,7 @@ export class Simulation {
     w.fleets=w.fleets.filter(f=>f.count>1e-9);
     this.checkEnd();
     this.aiClock+=TICK;
-    if(w.status==='playing'&&this.aiClock+1e-9>=THINK_INTERVAL[this.difficulty]) {
+    if(w.status==='playing'&&w.elapsed+1e-9>=this.openingGrace&&this.aiClock+1e-9>=THINK_INTERVAL[this.difficulty]) {
       this.aiClock=0;
       for(const f of w.factions.filter(f=>f.id>=2&&f.id<=4).sort((a,b)=>a.id-b.id)) think(w,f.id,this.difficulty,(s,t,r,o)=>this.dispatch(s,t,r,o));
     }

@@ -1,8 +1,8 @@
 /**
  * Bug War — Web Audio playback layer.
  *
- * Every sound is a real local WAV under `public/audio/` (generated offline by
- * `scripts/generate-audio.py`); nothing is fetched from the network at runtime.
+ * Every sound has a real local WAV master under `public/audio/` (generated offline by
+ * `scripts/generate-audio.py`); runtime fetches use only these same-origin assets.
  * All asset URLs go through `import.meta.env.BASE_URL`, so the game also works
  * from a sub-directory deployment or the offline static bundle.
  *
@@ -50,6 +50,8 @@ export interface AudioDiagnostics {
   decodedFiles: string[];
   /** In-flight fetch/decode operations. */
   pendingLoads: number;
+  /** Actual failed preferred formats followed by a successful WAV decode. */
+  fallbackFiles: string[];
   /** Files that failed to load; playback for them is silently skipped. */
   failedFiles: string[];
   /** Playing one-shot SFX voices (excludes the music sources). */
@@ -94,10 +96,10 @@ const DEFAULT_SETTINGS: AudioSettings = {
 };
 
 const MUSIC_FILES: Record<MusicTrack, string> = {
-  menu: 'music-menu.wav',
-  battle: 'music-battle.wav',
-  victory: 'music-victory.wav',
-  defeat: 'music-defeat.wav',
+  menu: 'music-menu.ogg',
+  battle: 'music-battle.ogg',
+  victory: 'music-victory.ogg',
+  defeat: 'music-defeat.ogg',
 };
 
 const LOOPING_MUSIC: Record<MusicTrack, boolean> = {
@@ -132,8 +134,8 @@ const SFX_FILES: Record<SoundName, string> = {
   capture: 'sfx-capture.wav',
   skill: 'sfx-skill.wav',
   // End-of-round cues are music files; play() can fire them as one-shots too.
-  victory: 'music-victory.wav',
-  defeat: 'music-defeat.wav',
+  victory: 'music-victory.ogg',
+  defeat: 'music-defeat.ogg',
 };
 
 const SFX_GAIN: Record<SoundName, number> = {
@@ -218,6 +220,7 @@ export class AudioSystem {
   private readonly decoded = new Map<string, AudioBuffer>();
   private readonly failed = new Set<string>();
   private pendingLoads = 0;
+  private readonly fallbacks = new Set<string>();
   private uiBankPromise: Promise<unknown> | null = null;
 
   private readonly activeSfx = new Set<SfxVoice>();
@@ -275,7 +278,7 @@ export class AudioSystem {
 
     // UI sounds are small (~0.5 MB total) — have them decoded before the first
     // hover so the very first interaction is audible.
-    await this.ensureUiBank();
+    void this.ensureUiBank();
 
     if (this.pendingTrack) {
       const track = this.pendingTrack;
@@ -306,7 +309,6 @@ export class AudioSystem {
 
     this.pendingTrack = track;
     if (ctx.state !== 'running') {
-      void this.unlock();
       return;
     }
     void this.startMusic(track);
@@ -345,7 +347,7 @@ export class AudioSystem {
       this.throttledPlays += 1;
       return;
     }
-    const buffer = this.decoded.get(file);
+    const buffer = this.decoded.get(file) ?? this.decoded.get(file.replace(/\.ogg$/, '.wav'));
     if (!buffer) {
       // Not decoded yet: warm it up and drop this request rather than fire a
       // late, out-of-sync sound.
@@ -418,6 +420,7 @@ export class AudioSystem {
       decodedFiles: [...this.decoded.keys()].sort(),
       pendingLoads: this.pendingLoads,
       failedFiles: [...this.failed].sort(),
+      fallbackFiles: [...this.fallbacks].sort(),
       activeVoices: this.activeSfx.size,
       activeMusicSources: (current && !trackEnded ? 1 : 0) + this.fadingMusic.size,
       currentTrack: current && !trackEnded ? current.track : null,
@@ -610,19 +613,22 @@ export class AudioSystem {
     if (!ctx) return Promise.resolve(null);
 
     const promise = (async (): Promise<AudioBuffer | null> => {
+      const candidates = file.endsWith('.ogg') ? [file, file.replace(/\.ogg$/, '.wav')] : [file];
       try {
-        const res = await fetch(this.urlFor(file));
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const array = await res.arrayBuffer();
-        const buffer = await this.decode(ctx, array);
-        if (this.disposed) return null;
-        this.decoded.set(file, buffer);
-        return buffer;
-      } catch (error) {
-        this.failed.add(file);
-        if (typeof console !== 'undefined' && typeof console.warn === 'function') {
-          console.warn(`[audio] could not load ${file}`, error);
+        for (const candidate of candidates) {
+          try {
+            const res = await fetch(this.urlFor(candidate));
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const buffer = await this.decode(ctx, await res.arrayBuffer());
+            if (this.disposed) return null;
+            this.decoded.set(candidate, buffer);
+            if (candidate !== file) this.fallbacks.add(candidate);
+            return buffer;
+          } catch {
+            // A missing/unsupported preferred format is not an asset failure.
+          }
         }
+        if (!this.disposed) this.failed.add(file);
         return null;
       } finally {
         this.pendingLoads = Math.max(0, this.pendingLoads - 1);

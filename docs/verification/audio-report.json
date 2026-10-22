@@ -1,37 +1,37 @@
 {
   "music-battle.wav": {
-    "seconds": 29.091,
+    "seconds": 48.0,
     "channels": 2,
     "sampleRate": 44100,
-    "peak": 0.891235,
-    "rms": 0.165829,
+    "peak": 0.707947,
+    "rms": 0.142149,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
   "music-defeat.wav": {
-    "seconds": 11.031,
+    "seconds": 16.0,
     "channels": 2,
     "sampleRate": 44100,
-    "peak": 0.891205,
-    "rms": 0.196113,
+    "peak": 0.707916,
+    "rms": 0.154172,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
   "music-menu.wav": {
-    "seconds": 34.286,
+    "seconds": 48.0,
     "channels": 2,
     "sampleRate": 44100,
-    "peak": 0.891235,
-    "rms": 0.18248,
+    "peak": 0.707947,
+    "rms": 0.13484,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
   "music-victory.wav": {
-    "seconds": 9.9,
+    "seconds": 16.0,
     "channels": 2,
     "sampleRate": 44100,
-    "peak": 0.891113,
-    "rms": 0.182714,
+    "peak": 0.707947,
+    "rms": 0.160576,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -39,8 +39,8 @@
     "seconds": 1.06,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.63092,
-    "rms": 0.120937,
+    "peak": 0.5,
+    "rms": 0.111925,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -48,8 +48,8 @@
     "seconds": 0.18,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.562347,
-    "rms": 0.182055,
+    "peak": 0.45282,
+    "rms": 0.094338,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -57,8 +57,8 @@
     "seconds": 0.86,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.630981,
-    "rms": 0.104337,
+    "peak": 0.5,
+    "rms": 0.153418,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -66,8 +66,8 @@
     "seconds": 0.13,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.446503,
-    "rms": 0.109971,
+    "peak": 0.422119,
+    "rms": 0.102083,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -75,8 +75,8 @@
     "seconds": 0.78,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.707947,
-    "rms": 0.131958,
+    "peak": 0.5,
+    "rms": 0.074638,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -84,8 +84,8 @@
     "seconds": 1.12,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.562378,
-    "rms": 0.139772,
+    "peak": 0.5,
+    "rms": 0.076053,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -93,8 +93,8 @@
     "seconds": 0.46,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.562378,
-    "rms": 0.150154,
+    "peak": 0.5,
+    "rms": 0.174594,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   },
@@ -102,8 +102,8 @@
     "seconds": 1.38,
     "channels": 1,
     "sampleRate": 44100,
-    "peak": 0.707947,
-    "rms": 0.109967,
+    "peak": 0.5,
+    "rms": 0.119195,
     "clippedSamples": 0,
     "endpointDifference": 0.0
   }

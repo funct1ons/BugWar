@@ -3,7 +3,7 @@ export type BuildingKind = 'nest' | 'cannon';
 export type Difficulty = 'easy' | 'normal' | 'hard';
 export interface ColonyConfig { id:string; x:number; y:number; owner:number; kind:BuildingKind; units:number; production?:number }
 export interface FactionConfig { id:number; race:RaceId }
-export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; factions:FactionConfig[]; colonies:ColonyConfig[]; tip:string }
+export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; openingGrace?:Partial<Record<Difficulty,number>>; factions:FactionConfig[]; colonies:ColonyConfig[]; tip:string }
 export interface Colony extends ColonyConfig { production:number }
 export interface Fleet { id:number; owner:number; race:RaceId; from:string; to:string; x:number; y:number; count:number; initialCount:number }
 export interface GameEvent { type:'dispatch'|'impact'|'capture'|'shot'|'skill'|'end'; x:number; y:number; owner:number; targetX?:number; targetY?:number; amount?:number }
