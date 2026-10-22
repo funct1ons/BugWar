@@ -1,7 +1,7 @@
 {
   "server": "Windows PowerShell 5.1 native TCP HTTP",
   "unpackedRelease": false,
-  "requests": 44,
+  "requests": 95,
   "errors": [],
   "failed": [],
   "external": [],
@@ -27,7 +27,7 @@
     "activeMusicSources": 1,
     "currentTrack": "battle",
     "pendingTrack": null,
-    "currentTrackTime": 4.210666666666667,
+    "currentTrackTime": 4.570666666666667,
     "currentTrackDuration": 48,
     "musicLoop": true,
     "crossfading": false,

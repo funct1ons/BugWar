@@ -20,7 +20,7 @@ try{
  assert.equal(response.status(),200);report.httpStatus=response.status();
  await page.waitForSelector('.menu-screen');await page.waitForSelector('canvas');
  assert.equal(await page.evaluate(()=>typeof window.__BUGWAR__),'undefined','production URL does not expose the test interface');
- assert.equal(await page.locator('.hero-emblem').evaluate(el=>el.complete&&el.naturalWidth>0),true);
+ assert.equal(await page.locator('img.menu-cover').evaluate(el=>el.complete&&el.naturalWidth===1600&&el.naturalHeight===900),true,'approved sunlit cover is decoded in the live menu');
  await page.screenshot({path:`${output}/online-menu.png`});
  await page.locator('[data-action=lore]').click();
  assert.equal(await page.locator('.lore-grid article').count(),4);report.storyActs=4;
@@ -48,7 +48,7 @@ try{
  assert.equal(report.javascript.localSHA256,report.javascript.remoteSHA256,'online JavaScript matches the local production build');
  if(![...audio].some(name=>/^music-battle\.(ogg|wav|mp3)$/.test(name)))await page.waitForResponse(r=>/\/music-battle\.(ogg|wav|mp3)$/.test(r.url())&&r.status()===200,{timeout:45000});
  await page.waitForLoadState('networkidle',{timeout:45000});
- report.audioFiles=[...audio].sort();assert.ok(audio.size>=10,'menu, battle and eight SFX served over HTTPS');assert.ok(audio.has('music-menu.ogg')&&audio.has('music-battle.ogg'),'compressed music served');
+ report.audioFiles=[...audio].sort();assert.ok(audio.size>=10,`menu, battle and eight SFX served over ${url.protocol}`);assert.ok(audio.has('music-menu.ogg')&&audio.has('music-battle.ogg'),'compressed music served');
  assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);assert.deepEqual(external,[]);
  Object.assign(report,{errors,failedRequests:failed,externalRequests:external,passed:true});
  await fs.writeFile(`${output}/online-report.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

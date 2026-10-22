@@ -4,11 +4,7 @@
 以有来源的规则为基础。13关、Agile/Fast/Strong、Spawn/Cannon、无限驻军、1–5星、通关解锁种族、满能量A施法。禁止声称未知数值为原版精确值。不添加巢穴升级或科技树等未经确认机制。
 
 ## 模块所有权
-- 主代理：工程、src/main.ts、src/game/**、src/ui/**、src/style.css、src/data/**、src/storage/**、集成验收和文档。
-- 核心代理：src/core/** 与 tests/core.test.ts，纯TS，无Phaser/DOM依赖。
-- 美术代理：public/art/**、docs/art-direction.md，自制SVG，禁止编辑其它代码。
-- 音频代理：public/audio/**、src/audio/AudioSystem.ts、scripts/generate-audio.*、docs/audio.md。
-- 研究代理：docs/research-addendum.md、docs/reference/**。
+本轮日光花园迁移按互斥文件分工：主代理负责调度、整合、文档、实机质量检查、清理与提交；资源代理负责 `public/art/**` 与正式封面生成器；界面代理负责 `src/main.ts`／`src/style.css`；场景代理负责 `src/game/BattleScene.ts`；独立验收工具代理负责美术单测与资源／视觉检查脚本。核心、关卡、存档、音频模块冻结，不因改美术更改玩法。
 
 ## 画布/关卡
 逻辑画面1600×900，战役建筑中心 x=210..1400,y=230..710；顶部HUD y=20..138、底部HUD y=792..888。提示单行位于y140，最下兵力数字下沿777，不遮挡建筑。坐标均绝对逻辑像素。关卡13个，4类生境，布局各异。渲染Phaser，HTML覆盖层提供可访问的游戏UI。
@@ -44,12 +40,15 @@ export function rateVictory(time:number,lost:number,par:number):number; //1..5
 World events only consumed with drainEvents; AI deterministic utility with incoming projections, reserve, coordinated attacks; cannot cheat resources. Cannon nonproducing, range fire at enemy marching fleets. Fleet counts logical separate from bounded sprite representation. Movement no mid-path retarget (unsupported). Battle weighted attrition on arrival; race attributes meaningful. Victory after all hostile colonies+fleets eliminated; neutral need not captured. Defeat player colonies+fleets eliminated. Player1. Factions2–4 AI.
 
 ## 美术资源契约
-所有SVG viewBox,无外部资源/字体依赖。
-- background-meadow.svg/background-roots.svg/background-marsh.svg/background-amber.svg：1600×900精致自然地表，四周环境框景，中间战场可读。
-- nest.svg/cannon.svg：160×160原生细腻多层结构，暖中性(可叠阵营色环)。建筑形态不是圆节点。
-- bug-agile.svg/bug-fast.svg/bug-strong.svg：96×32 spritesheet，4行走帧横向，每帧24×32。朝上，可旋转，清楚腿/触角/翅甲。
-- emblem.svg：256×256封面昆虫徽章。
-主代理使用自制图形动态叠加旗帜、光、血条、行军步态、粉尘等。
+全部SVG自含viewBox，无外部资源／字体／脚本依赖，正式共36张。
+- `cover.svg`：1600×900，已确认自然虫族插画，由DOM菜单显示；Phaser菜单背景使用明亮草甸，不叠旧徽章或暗虫。
+- 四张 `background-{meadow,roots,marsh,amber}.svg`：1600×900，明亮自然地表，边缘框景，中央可读。
+- `nest-{0..4}.svg`／`cannon-{0..4}.svg`：160×160，按所有者独立绘制主要色面。默认 `nest.svg`／`cannon.svg` 对应中立0。
+- `bug-{agile,fast,strong}-{0..4}.svg`：96×32 spritesheet，四帧横排、每帧24×32、朝上。默认三张不带所有者后缀的虫兵对应蓝方1，UI只裁单帧。
+- `emblem.svg`：256×256种核甲虫与十三灯环。
+- 所有者色：0中立`#92A18B`、1蓝`#327FC1`、2红`#C85F48`、3紫`#8B70BA`、4金`#C49336`；文字与不同形状同时编码。捕获时切换纹理，不以全图tint代替材质。
+
+表现层负责浅底深字数字牌、蓝选区／路线、行军步态及占领／技能／炮击效果。资源再生不依赖临时设计目录，详见 `art-direction.md`。
 
 ## AudioSystem (音频代理)
 默认导出或具名导出 class AudioSystem，具名优先：

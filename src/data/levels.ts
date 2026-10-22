@@ -2,7 +2,7 @@ import type { ColonyConfig, LevelConfig } from '../core/types';
 const n = (id:string,x:number,y:number,owner:number,units:number,kind:'nest'|'cannon'='nest'):ColonyConfig => ({id,x,y,owner,units,kind});
 const level=(id:number,name:string,subtitle:string,biome:LevelConfig['biome'],par:number,colonies:ColonyConfig[],tip:string):LevelConfig=>({id,name,subtitle,biome,par,colonies,tip,openingGrace:{easy:[16,15,14,10,9,8,7,6,5,4,3,2,2][id-1],normal:[14,13,12,8,7,6,5,4,3,2,1,0,0][id-1],hard:0},factions:[...new Set(colonies.map(c=>c.owner).filter(Boolean))].map(owner=>({id:owner,race:owner===3?'fast':owner===4?'strong':'agile'}))});
 export const LEVELS:LevelConfig[]=[
- level(1,'露珠初醒','FIRST LIGHT','meadow',65,[n('a',320,465,1,38),n('b',730,330,0,8),n('c',830,650,0,10),n('d',1280,465,2,16)],'点击绿巢，再点击目标派兵。占领生产巢，让你的虫群不断成长。'),
+ level(1,'露珠初醒','FIRST LIGHT','meadow',65,[n('a',320,465,1,38),n('b',730,330,0,8),n('c',830,650,0,10),n('d',1280,465,2,16)],'点击蓝巢，再点击目标派兵。占领生产巢，让你的虫群不断成长。'),
  level(2,'苔径岔口','THE FORK','meadow',90,[n('a',250,450,1,74),n('b',560,290,1,8),n('c',560,650,0,10),n('d',930,465,0,14),n('e',1320,290,2,24),n('f',1320,650,2,20)],'不要平均分兵。先占一个近巢，以持续生产创造局部优势。'),
  level(3,'荆棘哨所','THORN WATCH','meadow',110,[n('a',230,450,1,70),n('b',520,285,0,8),n('c',650,590,0,12,'cannon'),n('d',980,350,2,18,'cannon'),n('e',1310,540,2,30),n('f',1020,690,0,10)],'炮塔不生产兵力，却能射击来袭虫群。把援军送入炮塔，筑起防线。'),
  level(4,'根须之下','UNDERROOT','roots',125,[n('a',250,300,1,97),n('b',250,660,1,22),n('c',570,480,0,15,'cannon'),n('d',830,265,0,9),n('e',830,700,0,9),n('f',1140,480,2,22,'cannon'),n('g',1360,285,2,26),n('h',1360,670,2,26)],'在空地拖框可多选己方虫巢，再点击一个目标联合进攻。'),

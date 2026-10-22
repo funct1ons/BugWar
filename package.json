@@ -15,6 +15,7 @@
     "test:playthrough": "node scripts/playthrough-test.mjs",
     "test:onboarding": "node scripts/onboarding-browser-test.mjs",
     "test:art": "node scripts/art-preview.cjs",
+    "test:visual": "node scripts/visual-test.mjs",
     "serve": "node scripts/serve.mjs"
   },
   "dependencies": { "phaser": "^3.90.0" },

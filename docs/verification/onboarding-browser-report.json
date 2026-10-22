@@ -20,13 +20,13 @@
       "ratio": 0.5
     },
     {
-      "time": 16.05,
+      "time": 16,
       "source": "a",
       "target": "d",
       "ratio": 0.5
     },
     {
-      "time": 24,
+      "time": 24.05,
       "source": "c",
       "target": "d",
       "ratio": 0.75
@@ -44,7 +44,7 @@
       "ratio": 0.75
     },
     {
-      "time": 36.05,
+      "time": 36.1,
       "source": "d",
       "target": "b",
       "ratio": 0.75
@@ -56,50 +56,56 @@
       "ratio": 0.75
     },
     {
-      "time": 48.1,
+      "time": 48,
       "source": "a",
       "target": "e",
       "ratio": 0.75
     },
     {
-      "time": 52,
+      "time": 52.05,
       "source": "d",
       "target": "e",
       "ratio": 0.75
     },
     {
-      "time": 56.05,
-      "source": "b",
+      "time": 56,
+      "source": "c",
       "target": "e",
       "ratio": 0.75
     },
     {
-      "time": 60.05,
+      "time": 60,
       "source": "e",
       "target": "f",
       "ratio": 0.75
     },
     {
-      "time": 64,
+      "time": 64.05,
+      "source": "f",
+      "target": "b",
+      "ratio": 0.75
+    },
+    {
+      "time": 68,
       "source": "e",
       "target": "b",
       "ratio": 0.75
     },
     {
-      "time": 68.05,
-      "source": "c",
+      "time": 72.05,
+      "source": "a",
       "target": "b",
       "ratio": 0.75
     },
     {
-      "time": 72.1,
+      "time": 76,
       "source": "b",
       "target": "d",
       "ratio": 0.75
     },
     {
-      "time": 76,
-      "source": "f",
+      "time": 80.05,
+      "source": "c",
       "target": "b",
       "ratio": 0.75
     }
@@ -140,14 +146,14 @@
   ],
   "graceSeconds": 13,
   "status": "won",
-  "elapsed": 76.2,
+  "elapsed": 80.15,
   "stats": {
-    "sent": 475,
-    "kills": 176.15000000000043,
+    "sent": 522,
+    "kills": 180.0500000000005,
     "captures": 6,
     "lost": 2,
     "skills": 0,
-    "casualties": 186.1500000000004
+    "casualties": 190.05000000000047
   },
   "passed": true
 }

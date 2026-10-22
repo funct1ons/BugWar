@@ -34,16 +34,16 @@
   "openingGrace": "观察准备期 14秒，双方正常生产",
   "audioSignal": {
     "playing": {
-      "rms": 0.1423487226594338,
-      "peak": 0.41732531785964966
+      "rms": 0.13070386386481836,
+      "peak": 0.40727466344833374
     },
     "muted": {
       "rms": 0,
       "peak": 0
     },
     "restored": {
-      "rms": 0.18118985021849532,
-      "peak": 0.5373883247375488
+      "rms": 0.26254268839692246,
+      "peak": 0.6698142290115356
     }
   },
   "audio": {
@@ -68,12 +68,12 @@
     "activeMusicSources": 1,
     "currentTrack": "battle",
     "pendingTrack": null,
-    "currentTrackTime": 5.8293333333333335,
+    "currentTrackTime": 6.010666666666666,
     "currentTrackDuration": 48,
     "musicLoop": true,
     "crossfading": false,
-    "limiterReduction": -0.05,
-    "throttledPlays": 8,
+    "limiterReduction": -0.8,
+    "throttledPlays": 7,
     "master": 0.72,
     "music": 0.28,
     "sfx": 0.65,
@@ -99,16 +99,16 @@
     "pendingLoads": 0,
     "failedFiles": [],
     "fallbackFiles": [],
-    "activeVoices": 7,
+    "activeVoices": 8,
     "activeMusicSources": 2,
     "currentTrack": "victory",
     "pendingTrack": null,
-    "currentTrackTime": 0.1200000000000001,
+    "currentTrackTime": 0.08000000000000007,
     "currentTrackDuration": 16,
     "musicLoop": false,
     "crossfading": true,
-    "limiterReduction": -0.39,
-    "throttledPlays": 8,
+    "limiterReduction": -0.79,
+    "throttledPlays": 7,
     "master": 0.72,
     "music": 0.28,
     "sfx": 0.65,
@@ -116,91 +116,91 @@
     "baseUrl": "./"
   },
   "performance": {
-    "fps": 79.75,
+    "fps": 77.5625,
     "sprites": 1000,
     "fleets": 49
   },
   "layout": {
-    "maxNumberBottom": 777,
+    "maxNumberBottom": 776,
     "hudTop": 792.0000203450521
   },
   "campaignLayout": [
     {
       "level": 1,
       "hintLabelClashes": [],
-      "maxNumberBottom": 717,
+      "maxNumberBottom": 716,
       "headerClear": true
     },
     {
       "level": 2,
       "hintLabelClashes": [],
-      "maxNumberBottom": 717,
+      "maxNumberBottom": 716,
       "headerClear": true
     },
     {
       "level": 3,
       "hintLabelClashes": [],
-      "maxNumberBottom": 757,
+      "maxNumberBottom": 756,
       "headerClear": true
     },
     {
       "level": 4,
       "hintLabelClashes": [],
-      "maxNumberBottom": 767,
+      "maxNumberBottom": 766,
       "headerClear": true
     },
     {
       "level": 5,
       "hintLabelClashes": [],
-      "maxNumberBottom": 777,
+      "maxNumberBottom": 776,
       "headerClear": true
     },
     {
       "level": 6,
       "hintLabelClashes": [],
-      "maxNumberBottom": 767,
+      "maxNumberBottom": 766,
       "headerClear": true
     },
     {
       "level": 7,
       "hintLabelClashes": [],
-      "maxNumberBottom": 747,
+      "maxNumberBottom": 746,
       "headerClear": true
     },
     {
       "level": 8,
       "hintLabelClashes": [],
-      "maxNumberBottom": 777,
+      "maxNumberBottom": 776,
       "headerClear": true
     },
     {
       "level": 9,
       "hintLabelClashes": [],
-      "maxNumberBottom": 757,
+      "maxNumberBottom": 756,
       "headerClear": true
     },
     {
       "level": 10,
       "hintLabelClashes": [],
-      "maxNumberBottom": 777,
+      "maxNumberBottom": 776,
       "headerClear": true
     },
     {
       "level": 11,
       "hintLabelClashes": [],
-      "maxNumberBottom": 777,
+      "maxNumberBottom": 776,
       "headerClear": true
     },
     {
       "level": 12,
       "hintLabelClashes": [],
-      "maxNumberBottom": 777,
+      "maxNumberBottom": 776,
       "headerClear": true
     },
     {
       "level": 13,
       "hintLabelClashes": [],
-      "maxNumberBottom": 777,
+      "maxNumberBottom": 776,
       "headerClear": true
     }
   ],
@@ -227,7 +227,7 @@
     "activeMusicSources": 1,
     "currentTrack": "defeat",
     "pendingTrack": null,
-    "currentTrackTime": 0.8293333333333326,
+    "currentTrackTime": 0.7706666666666662,
     "currentTrackDuration": 16,
     "musicLoop": false,
     "crossfading": false,
@@ -263,11 +263,11 @@
     "activeMusicSources": 1,
     "currentTrack": "menu",
     "pendingTrack": null,
-    "currentTrackTime": 0.010666666666666658,
+    "currentTrackTime": 0,
     "currentTrackDuration": 48,
     "musicLoop": true,
     "crossfading": true,
-    "limiterReduction": -10.21,
+    "limiterReduction": -10.55,
     "throttledPlays": 0,
     "master": 0.72,
     "music": 0.55,

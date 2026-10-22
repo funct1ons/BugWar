@@ -1,0 +1,180 @@
+{
+  "testedAt": "2026-10-22T03:54:28.933083+00:00",
+  "passed": true,
+  "files": 7,
+  "testsPassed": 195,
+  "testsFailed": 0,
+  "testsSkipped": 1,
+  "skippedReason": "Opt-in extra opening-garrison search (CAMPAIGN_SCAN), not a campaign matrix case.",
+  "artTestsPassed": 105,
+  "campaign": {
+    "runs": 195,
+    "exactMatchToHistoricalV2Report": true,
+    "playingAt600Seconds": 13,
+    "rawResults": "campaign-v2-report.json"
+  },
+  "lowFrequencyOnboarding": [
+    {
+      "id": 1,
+      "period": 3,
+      "delay": 8,
+      "hesitate": false,
+      "status": "won",
+      "time": 46.45,
+      "lost": 1
+    },
+    {
+      "id": 1,
+      "period": 3,
+      "delay": 8,
+      "hesitate": true,
+      "status": "won",
+      "time": 47.4,
+      "lost": 1
+    },
+    {
+      "id": 1,
+      "period": 3.5,
+      "delay": 10,
+      "hesitate": false,
+      "status": "won",
+      "time": 65.9,
+      "lost": 2
+    },
+    {
+      "id": 1,
+      "period": 3.5,
+      "delay": 10,
+      "hesitate": true,
+      "status": "won",
+      "time": 65.9,
+      "lost": 2
+    },
+    {
+      "id": 1,
+      "period": 4,
+      "delay": 12,
+      "hesitate": false,
+      "status": "won",
+      "time": 75.4,
+      "lost": 2
+    },
+    {
+      "id": 1,
+      "period": 4,
+      "delay": 12,
+      "hesitate": true,
+      "status": "won",
+      "time": 75.4,
+      "lost": 2
+    },
+    {
+      "id": 2,
+      "period": 3,
+      "delay": 8,
+      "hesitate": false,
+      "status": "won",
+      "time": 78.35,
+      "lost": 4
+    },
+    {
+      "id": 2,
+      "period": 3,
+      "delay": 8,
+      "hesitate": true,
+      "status": "won",
+      "time": 84.3,
+      "lost": 4
+    },
+    {
+      "id": 2,
+      "period": 3.5,
+      "delay": 10,
+      "hesitate": false,
+      "status": "won",
+      "time": 97.35,
+      "lost": 5
+    },
+    {
+      "id": 2,
+      "period": 3.5,
+      "delay": 10,
+      "hesitate": true,
+      "status": "won",
+      "time": 91.3,
+      "lost": 3
+    },
+    {
+      "id": 2,
+      "period": 4,
+      "delay": 12,
+      "hesitate": false,
+      "status": "won",
+      "time": 83.6,
+      "lost": 3
+    },
+    {
+      "id": 2,
+      "period": 4,
+      "delay": 12,
+      "hesitate": true,
+      "status": "won",
+      "time": 68.3,
+      "lost": 2
+    },
+    {
+      "id": 3,
+      "period": 3,
+      "delay": 8,
+      "hesitate": false,
+      "status": "won",
+      "time": 143.45,
+      "lost": 4
+    },
+    {
+      "id": 3,
+      "period": 3,
+      "delay": 8,
+      "hesitate": true,
+      "status": "won",
+      "time": 83.35,
+      "lost": 3
+    },
+    {
+      "id": 3,
+      "period": 3.5,
+      "delay": 10,
+      "hesitate": false,
+      "status": "won",
+      "time": 111.45,
+      "lost": 5
+    },
+    {
+      "id": 3,
+      "period": 3.5,
+      "delay": 10,
+      "hesitate": true,
+      "status": "won",
+      "time": 140.65,
+      "lost": 7
+    },
+    {
+      "id": 3,
+      "period": 4,
+      "delay": 12,
+      "hesitate": false,
+      "status": "won",
+      "time": 87.45,
+      "lost": 2
+    },
+    {
+      "id": 3,
+      "period": 4,
+      "delay": 12,
+      "hesitate": true,
+      "status": "won",
+      "time": 131.45,
+      "lost": 6
+    }
+  ]
+}

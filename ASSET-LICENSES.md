@@ -2,7 +2,7 @@
 
 ## 成品原创资源
 
-- `public/art/*.svg`：本项目原创矢量绘制的背景、巢穴、炮塔、虫兵四帧动画与徽章，不包含原版游戏提取素材。来源、尺寸与方法见 `docs/art-direction.md`。
+- `public/art/*.svg`：本项目原创矢量曲线／程序绘制的自然虫族封面、四幕背景、五阵营巢穴与炮塔、三族四帧虫兵及徽章，不包含原版提取素材或第三方商业角色。正式封面由已确认的原创样张提升；生成器为 `scripts/generate-cover.cjs`，其余为 `public/art/generate_art.py`。没有复用素材检索中的作者作品，也没有调用图像生成接口。来源、尺寸与方法见 `docs/art-direction.md`。
 - `public/audio/*.wav`、`*.ogg`：本项目原创算法作曲/离线合成，OGG由WAV母带编码，无外部采样或第三方录音，不模仿原作旋律；生成脚本在 `scripts/`，编配清单为 `public/audio/score-manifest.json`，参数与测量见 `docs/audio.md`。
 - 关卡地图、中文文本、UI、粒子与战斗效果：本项目原创。「雨后灯火」四幕剧情、巢灯与种核设定为本重制版新增，不声称来自原作。
 - 字体：调用操作系统已安装的 Microsoft YaHei / PingFang / SimSun / Songti SC / Georgia 等字体，没有分发字体文件。

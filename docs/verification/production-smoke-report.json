@@ -1,0 +1,35 @@
+{
+  "url": "http://127.0.0.1:4182/",
+  "testedAt": "2026-10-22T04:07:29.970Z",
+  "browser": "155.0.4283.62",
+  "httpStatus": 200,
+  "storyActs": 4,
+  "capture": {
+    "faction": "2 巢",
+    "time": "00:04",
+    "fps": "149 FPS",
+    "method": "Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation."
+  },
+  "loadedJavaScript": "./assets/index-By5VNHWi.js",
+  "javascript": {
+    "file": "index-By5VNHWi.js",
+    "localSHA256": "21f8127f9f5e7ab3026ce9e09c87c3411b82c33217ba00cc5991b92fd9ae86d9",
+    "remoteSHA256": "21f8127f9f5e7ab3026ce9e09c87c3411b82c33217ba00cc5991b92fd9ae86d9"
+  },
+  "audioFiles": [
+    "music-battle.ogg",
+    "music-menu.ogg",
+    "sfx-capture.wav",
+    "sfx-click.wav",
+    "sfx-dispatch.wav",
+    "sfx-hover.wav",
+    "sfx-impact.wav",
+    "sfx-march.wav",
+    "sfx-select.wav",
+    "sfx-skill.wav"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "passed": true
+}

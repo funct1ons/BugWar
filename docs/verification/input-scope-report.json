@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "frozenPaths": [
+    "src/core",
+    "src/storage",
+    "src/audio",
+    "src/data/lore.ts",
+    "public/audio"
+  ],
+  "changedFrozenPaths": [],
+  "inputMethods": [
+    {
+      "name": "selectAll",
+      "unchanged": true,
+      "found": true
+    },
+    {
+      "name": "armSkill",
+      "unchanged": true,
+      "found": true
+    },
+    {
+      "name": "hit",
+      "unchanged": true,
+      "found": true
+    },
+    {
+      "name": "down",
+      "unchanged": true,
+      "found": true
+    },
+    {
+      "name": "cancelGesture",
+      "unchanged": true,
+      "found": true
+    },
+    {
+      "name": "up",
+      "unchanged": true,
+      "found": true
+    },
+    {
+      "name": "send",
+      "unchanged": true,
+      "found": true
+    }
+  ],
+  "levels": "Exact HEAD match except first-level hint: 点击绿巢 → 点击蓝巢. No layout, garrison or rule changes."
+}
