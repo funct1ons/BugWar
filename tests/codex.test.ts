@@ -21,16 +21,19 @@ import {
 const shown = (value: number) => Number.isInteger(value) ? String(value) : String(Number(value.toFixed(2)));
 
 describe('codex data uses the shared battle numbers', () => {
-  it('lists three races with no locked entry hidden', () => {
+  it('lists four races and four buildings with no locked entry hidden', () => {
     expect(CODEX_TABS.map((tab) => tab.id)).toEqual(['races', 'buildings', 'command']);
-    expect(RACE_CODEX_ENTRIES).toHaveLength(3);
-    expect(BUILDING_CODEX_ENTRIES).toHaveLength(2);
+    expect(RACE_CODEX_ENTRIES).toHaveLength(4);
+    expect(BUILDING_CODEX_ENTRIES).toHaveLength(4);
     expect(COMMAND_CODEX_ENTRIES).toHaveLength(4);
     expect(Object.values(CODEX_ENTRIES).flat().map((entry) => entry.id)).toEqual([
       'race-agile',
       'race-fast',
       'race-strong',
+      'race-brood',
       'building-nest',
+      'building-hatchery',
+      'building-wind',
       'building-cannon',
       'command-roads',
       'command-storm',
@@ -39,14 +42,14 @@ describe('codex data uses the shared battle numbers', () => {
     ]);
   });
 
-  it.each(['agile', 'fast', 'strong'] as RaceId[])('renders %s from RACES without drift', (race) => {
+  it.each(['agile', 'fast', 'strong', 'brood'] as RaceId[])('renders %s from RACES without drift', (race) => {
     const entry = RACE_CODEX_ENTRIES.find((candidate) => candidate.race === race)!;
     const source = RACES[race];
     expect({ speed: entry.speed, attack: entry.attack, defense: entry.defense, production: entry.production })
       .toEqual({ speed: source.speed, attack: source.attack, defense: source.defense, production: source.production });
     expect(entry.perSecond).toBe(source.production * BATTLE_RULES.nestProduction);
 
-    const html = renderCodex({ tab: 'races', entryId: entry.id, raceUnlocked: { agile: true, fast: false, strong: false } });
+    const html = renderCodex({ tab: 'races', entryId: entry.id, raceUnlocked: { agile: true, fast: false, strong: false, brood: false } });
     expect(html).toContain(`data-codex-detail="${entry.id}"`);
     expect(html).toContain(`>${shown(source.speed)}</strong>`);
     expect(html).toContain(`>×${source.attack.toFixed(2)}</strong>`);
@@ -81,9 +84,10 @@ describe('codex buildings and rules reflect live mechanics', () => {
   it('renders nest production and cannon values from BATTLE_RULES', () => {
     const nest = renderCodex({ tab: 'buildings', entryId: 'building-nest' });
     expect(nest).toContain(`${shown(BATTLE_RULES.nestProduction)} 兵/秒`);
-    expect(nest).toContain('地图倍率 × 种族倍率');
+    expect(nest).toContain('关卡可用 production 字段覆盖');
+    expect(nest).toContain(`${BATTLE_RULES.productionCap} 兵`);
     expect(nest).toContain('没有隐藏升级');
-    expect(nest).toContain('没有建筑升级、科技树或特殊弹药');
+    expect(nest).toContain('没有建筑升级、人口建筑、科技树或特殊弹药');
 
     const cannon = renderCodex({ tab: 'buildings', entryId: 'building-cannon' });
     expect(cannon).toContain(`>${shown(BATTLE_RULES.cannonRange)}</strong>`);
@@ -104,7 +108,7 @@ describe('codex buildings and rules reflect live mechanics', () => {
       ],
     });
     const blueRate = 2.5 * RACES.fast.production;
-    expect(html).toContain('战场实测 · 已选生产巢');
+    expect(html).toContain('战场实测 · 已选生产建筑');
     expect(html).toContain(`${shown(blueRate)} 兵/秒`);
     expect(html).toContain('2.5 地图倍率');
     expect(html).toContain('中立不生产');
@@ -113,15 +117,17 @@ describe('codex buildings and rules reflect live mechanics', () => {
   it('omits live production outside battle and explains when nothing is selected', () => {
     expect(renderCodex({ tab: 'buildings', entryId: 'building-nest' })).not.toContain('战场实测');
     expect(renderCodex({ tab: 'buildings', entryId: 'building-nest', inBattle: true, selectedColonies: [] }))
-      .toContain('打开图鉴前选中生产巢');
+      .toContain('打开图鉴前选中生产建筑');
   });
 
   it('renders road, storm, ownership and control rules with real values', () => {
     const roads = renderCodex({ tab: 'command', entryId: 'command-roads' });
-    expect(roads).toContain('与目标直接相邻的所选己方建筑');
-    expect(roads).toContain('不存在');
-    expect(roads).toContain('不会自动继续行军');
-    expect(roads).toContain('是本次命令的上限');
+    expect(roads).toContain('能沿你控制的建筑连通目标的所选己方建筑');
+    expect(roads).toContain('只有己方建筑可中转');
+    expect(roads).toContain('经过己方建筑自动继续下一段');
+    expect(roads).toContain('最短几何路线');
+    expect(roads).toContain('无可用路径');
+    expect(roads).toContain('道路遭遇');
     expect(roads).toContain('不是连线经济');
 
     const storm = renderCodex({ tab: 'command', entryId: 'command-storm' });
@@ -133,8 +139,9 @@ describe('codex buildings and rules reflect live mechanics', () => {
 
     const ownership = renderCodex({ tab: 'command', entryId: 'command-ownership' });
     expect(ownership).toContain('攻方兵力 × 攻击 &gt; 守方驻军 × 防御');
-    expect(ownership).toContain('敌方建筑与在途部队全灭');
-    expect(ownership).toContain('中立建筑不是胜利目标');
+    expect(ownership).toContain('敌方建筑与在途部队全部清空即胜');
+    expect(ownership).toContain('蓝方占领它即胜利');
+    expect(ownership).toContain('中立建筑不是默认胜利目标');
     expect(ownership).toContain('在途军队');
 
     const controls = renderCodex({ tab: 'command', entryId: 'command-controls' });
@@ -164,7 +171,7 @@ describe('codex state and markup', () => {
     expect(html).toContain('role="tablist"');
     expect(html).toContain('role="tabpanel"');
     expect(html.match(/data-action="codex-tab"/g)).toHaveLength(3);
-    expect(html.match(/data-action="codex-entry"/g)).toHaveLength(3);
+    expect(html.match(/data-action="codex-entry"/g)).toHaveLength(4);
     expect(html.match(/aria-selected="true"/g)).toHaveLength(1);
     expect(html.match(/aria-current="true"/g)).toHaveLength(1);
     expect(html).toContain('data-value="race-fast"');
@@ -178,7 +185,7 @@ describe('codex state and markup', () => {
 
   it('renders only the selected category list while keeping detail title clear', () => {
     const buildings = renderCodex({ tab: 'buildings', entryId: 'building-cannon' });
-    expect(buildings.match(/data-action="codex-entry"/g)).toHaveLength(2);
+    expect(buildings.match(/data-action="codex-entry"/g)).toHaveLength(4);
     expect(buildings).toContain('data-value="building-cannon"');
     expect(buildings).not.toContain('data-value="race-agile"');
     expect(buildings).toContain('<h3>守望炮塔');
@@ -248,7 +255,7 @@ describe('minimap roads', () => {
     expect(html).toContain('data-road="b-c"');
   });
 
-  it('renders every configured road on all 13 campaign minimaps', () => {
+  it('renders every configured road on all 18 campaign minimaps', () => {
     for (const level of LEVELS) {
       const html = renderMinimapRoads(level.colonies, level.roads);
       expect(html.match(/data-road=/g)?.length ?? 0).toBe(level.roads.length);

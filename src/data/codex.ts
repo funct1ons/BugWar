@@ -1,11 +1,14 @@
-import { RACES, type RaceId, type Road } from '../core/types';
+import { RACES, type BuildingKind, type RaceId, type Road } from '../core/types';
 import {
   BATTLE_RULES,
   CANNON_BASE_FIREPOWER,
   CANNON_FIREPOWER_NODES,
   CANNON_GARRISON_CAP,
   cannonFirepower,
+  defaultProduction,
+  isProductive,
 } from '../core/rules';
+import { RACE_UNLOCK_LEVELS } from '../storage/SaveSystem';
 
 /**
  * Pure codex data and renderers.
@@ -26,9 +29,9 @@ export interface CodexTabInfo {
 }
 
 export const CODEX_TABS: readonly CodexTabInfo[] = [
-  { id: 'races', label: '族群', caption: '3 支虫族', summary: '真实移动、攻防与生产倍率；没有石头剪刀布式互克。' },
-  { id: 'buildings', label: '建筑', caption: '2 种建筑', summary: '生产巢与守望炮塔的真实职能、数值和使用方式。' },
-  { id: 'command', label: '指挥', caption: '4 条规则', summary: '固定道路、逐巢派兵、孢子风暴与胜负条件。' },
+  { id: 'races', label: '族群', caption: '4 支虫族', summary: '四族的真实移动、攻防与生产倍率；没有石头剪刀布式互克。' },
+  { id: 'buildings', label: '建筑', caption: '4 种建筑', summary: '生产巢、孵育巢、疾风巢与守望炮塔的真实职能、数值和使用方式。' },
+  { id: 'command', label: '指挥', caption: '4 条规则', summary: '固定道路与自动中转、孢子风暴、归属胜负与操作速查。' },
 ] as const;
 
 const tabsById = new Map<string, CodexTabInfo>(CODEX_TABS.map((tab) => [tab.id, tab]));
@@ -36,6 +39,28 @@ const number = (value: number, digits = 2) => Number.isInteger(value) ? String(v
 const factor = (value: number) => `×${value.toFixed(2)}`;
 const percent = (value: number) => `${Math.round(value * 100)}%`;
 const productionFor = (race: RaceId) => RACES[race].production * BATTLE_RULES.nestProduction;
+const naturalCap = BATTLE_RULES.productionCap;
+
+/**
+ * Unlock requirements are shared with SaveSystem/UI so the codex and the
+ * campaign race cards can never disagree about when a race becomes playable.
+ */
+export function raceUnlockRequirement(race: RaceId): number {
+  return RACE_UNLOCK_LEVELS[race] ?? 0;
+}
+
+export function raceUnlockLabel(race: RaceId): string {
+  const need = raceUnlockRequirement(race);
+  return need > 0 ? `敏捷族通关 ${need} 关后解锁` : '默认可用';
+}
+
+/** Human label for every building kind; the art/UI share the same vocabulary. */
+export const BUILDING_KIND_LABELS: Readonly<Record<BuildingKind, string>> = {
+  nest: '生产巢',
+  cannon: '守望炮塔',
+  hatchery: '孵育巢',
+  wind: '疾风巢',
+};
 /** Growth prose is generated from the shared table, never retyped by hand. */
 const FIREPOWER_GROWTH_TEXT = CANNON_FIREPOWER_NODES
   .map((node) => `${number(node.garrison)} 人 ${number(node.damage)} 伤害 / ${number(node.cooldown)} 秒`)
@@ -73,7 +98,7 @@ export interface BuildingCodexEntry {
   id: string;
   tab: 'buildings';
   kind: 'building';
-  building: 'nest' | 'cannon';
+  building: BuildingKind;
   glyph: string;
   name: string;
   title: string;
@@ -129,13 +154,13 @@ const raceCopy: Record<RaceId, Omit<RaceCodexEntry, 'id' | 'tab' | 'kind' | 'rac
     ],
     weaknesses: [
       `攻击 ${factor(RACES.fast.attack)}、防御 ${factor(RACES.fast.defense)}；同等数量正面交锋弱于敏捷族和重甲族。`,
-      '速度快不能越过道路，也不能自动中转，仍然要逐巢下令。',
+      '速度快不能越过道路，也不能途中改道；路线在出发时确定，只会经过己方控制的建筑。',
     ],
     tactics: [
       '抢先占近处中立生产巢，再用新巢产出补下一波，不要一次把驻军抽空。',
       '避开同等兵力硬碰；集中多座相邻巢的兵力，或先让炮塔与风暴削减守军。',
     ],
-    unlock: '通关敏捷族全部 13 关后解锁；未解锁也可以在本图鉴中完整查看。',
+    unlock: `${raceUnlockLabel('fast')}；未解锁也可以在本图鉴中完整查看。`,
   },
   strong: {
     glyph: '甲',
@@ -154,11 +179,31 @@ const raceCopy: Record<RaceId, Omit<RaceCodexEntry, 'id' | 'tab' | 'kind' | 'rac
       '先守住道路交汇附近的生产巢，等兵力形成规模再推进。',
       '利用防御倍率守住关键巢，迫使对手在窄路上反复消耗。',
     ],
-    unlock: '通关敏捷族全部 13 关后解锁；未解锁也可以在本图鉴中完整查看。',
+    unlock: `${raceUnlockLabel('strong')}；未解锁也可以在本图鉴中完整查看。`,
+  },
+  brood: {
+    glyph: '孵',
+    name: '孵化族',
+    title: '扩张的巢群',
+    summary: '正面属性略低，却能把新占的中立生产建筑立刻变成下一波兵力；适合稳步铺路。',
+    strengths: [
+      `速度 ${number(RACES.brood.speed)}、攻击 ${factor(RACES.brood.attack)}、防御 ${factor(RACES.brood.defense)}：攻防都比敏捷族低 10%，正面硬碰需要更多兵力。`,
+      `首次占领中立生产建筑时额外获得 ${number(BATTLE_RULES.broodCaptureBonus)} 驻军；奖励只帮助站稳新巢，不改变攻防倍率。`,
+      `生产倍率 ${factor(RACES.brood.production)}，默认每座生产巢 ${number(productionFor('brood'))} 兵/秒；与其它族共用 ${number(naturalCap)} 自然生产上限和友方中转。`,
+    ],
+    weaknesses: [
+      `攻击 ${factor(RACES.brood.attack)}、防御 ${factor(RACES.brood.defense)} 意味着同等数量的正面战斗更吃亏。`,
+      `额外驻军只在首次占领中立生产建筑时出现；占领敌方或非生产建筑没有奖励。奖励不是自然生产，可以和到达援军一样超过 ${number(naturalCap)}，但不提高自然生产上限。`,
+    ],
+    tactics: [
+      '优先沿最短道路吃下中立生产巢，用额外驻军省下一次增援命令。',
+      '避开与重甲族的等兵硬碰；让炮塔和风暴先削减守军，再用数量优势占领。',
+    ],
+    unlock: `${raceUnlockLabel('brood')}；未解锁也可以在本图鉴中完整查看。`,
   },
 };
 
-export const RACE_CODEX_ENTRIES: readonly RaceCodexEntry[] = (['agile', 'fast', 'strong'] as RaceId[]).map((race) => {
+export const RACE_CODEX_ENTRIES: readonly RaceCodexEntry[] = (['agile', 'fast', 'strong', 'brood'] as RaceId[]).map((race) => {
   const data = RACES[race];
   return {
     id: `race-${race}`,
@@ -183,20 +228,69 @@ export const BUILDING_CODEX_ENTRIES: readonly BuildingCodexEntry[] = [
     glyph: '巢',
     name: '生产巢',
     title: '持续产兵的根基',
-    summary: '中立时不生产；被任一参战方占领后，立即按新归属持续累积兵力。',
+    summary: '中立时不生产；被任一参战方占领后，立即按新归属持续累积兵力，直到自然上限。',
     stats: [
-      { label: '默认生产', value: `${number(BATTLE_RULES.nestProduction)} 兵/秒`, note: '关卡可用 production 字段覆盖' },
-      { label: '生产公式', value: '地图倍率 × 种族倍率', note: '实际产速 = production × RACES.production' },
-      { label: '人口建筑', value: '无额外上限', note: '当前版本没有人口建筑或人口科技' },
-      { label: '友军抵达', value: '并入驻军', note: '不会自动继续向前派兵' },
+      { label: '默认生产', value: `${number(defaultProduction('nest'))} 兵/秒`, note: '关卡可用 production 字段覆盖' },
+      { label: '自然上限', value: `${number(naturalCap)} 兵`, note: `自然生产只累积到 ${number(naturalCap)}` },
+      { label: '超出上限', value: '只能靠增援', note: `增援可让驻军超过 ${number(naturalCap)}，自然生产不会继续累积` },
+      { label: '中转', value: '友方自动续行', note: '沿己方控制道路经过时继续下一段' },
     ],
     notes: [
       '生产只在 owner > 0 时进行；owner 0 的中立生产巢不会自己涨兵。',
       '归属切换后，生产巢立即为新主人生产；防守方留下的驻军会被战斗结算消耗。',
+      `自然生产到达 ${number(naturalCap)} 后停止；超过 ${number(naturalCap)} 的兵来自增援或繁育奖励，驻军回落到上限以下才会恢复自然生产。`,
       '生产巢本身没有攻击能力，它的价值是持续补兵和作为道路节点。',
-      '当前版本没有建筑升级、科技树或特殊弹药。',
+      '沿己方控制的道路经过生产巢时，行军会自动继续下一段；敌人或中立建筑不能作为中转站。',
+      '当前版本没有建筑升级、人口建筑、科技树或特殊弹药。',
     ],
     unlock: '所有关卡均存在；占领方式见“道路与派兵”。',
+  },
+  {
+    id: 'building-hatchery',
+    tab: 'buildings',
+    kind: 'building',
+    building: 'hatchery',
+    glyph: '孵',
+    name: '孵育巢',
+    title: '更快的自然生产',
+    summary: '孵化族偏好的生产建筑：自然产速更高，但和所有生产建筑共用同一条自然生产上限。',
+    stats: [
+      { label: '默认生产', value: `${number(defaultProduction('hatchery'))} 兵/秒`, note: '来自 BATTLE_RULES.hatcheryProduction；关卡仍可用 production 覆盖' },
+      { label: '自然上限', value: `${number(naturalCap)} 兵`, note: '与生产巢共用上限；到达后停止自然产兵' },
+      { label: '超出上限', value: '只能靠增援', note: `增援可超过 ${number(naturalCap)}，自然生产不会继续累积` },
+      { label: '中转', value: '友方自动续行', note: '沿己方控制道路经过时继续下一段' },
+    ],
+    notes: [
+      '孵育巢是生产建筑：归属切换后立即为新主人产兵，中立时不生产。',
+      `实际自然产速 = 关卡 production × 种族 production，默认基准 ${number(BATTLE_RULES.hatcheryProduction)} 兵/秒；累积到 ${number(naturalCap)} 后停止。`,
+      `孵育巢不提高自然上限：${number(naturalCap)} 人之后必须用增援继续堆积。`,
+      '沿己方控制的道路经过孵育巢时，行军会自动继续下一段，与生产巢相同。',
+      '当前版本没有升级、科技或额外人口建筑。',
+    ],
+    unlock: '按关卡配置出现；占领方式与生产巢相同。',
+  },
+  {
+    id: 'building-wind',
+    tab: 'buildings',
+    kind: 'building',
+    building: 'wind',
+    glyph: '风',
+    name: '疾风巢',
+    title: '只加速下一段路程',
+    summary: '不产兵，也不提高上限；让从这里出发的下一段行军更快，适合缩短增援距离。',
+    stats: [
+      { label: '生产', value: '0 兵/秒', note: '疾风巢不产生任何兵力' },
+      { label: '行军加速', value: `×${number(BATTLE_RULES.windSpeedMultiplier)}`, note: `来自 BATTLE_RULES.windSpeedMultiplier；只作用于从疾风巢出发的下一段` },
+      { label: '叠加', value: '不叠加', note: '多座疾风巢不会相乘，也不会延长作用段数' },
+      { label: '作用范围', value: '下一段路程', note: '跨过该段后立即恢复种族基础速度' },
+    ],
+    notes: [
+      '疾风巢是道路节点，不生产、不提高自然生产上限、也不直接改变攻击或防御。',
+      '加速只作用于从该疾风巢出发的下一段行军；进入再下一段时恢复种族基础速度，多座疾风巢不叠加。',
+      '路线在出发时由自动中转确定，行军途中不能改道去蹭另一座疾风巢。',
+      '当前版本没有额外科技、建筑升级或持续加速效果。',
+    ],
+    unlock: '按关卡配置出现；占领后，从这里出发的下一段行军获得加速。',
   },
   {
     id: 'building-cannon',
@@ -220,9 +314,9 @@ export const BUILDING_CODEX_ENTRIES: readonly BuildingCodexEntry[] = [
       '调整驻军立即改变伤害与剩余充能速率，但保留已积累的冷却进度，不会重置冷却或免费补射一发。',
       '需要友军增援才能长期驻守；炮塔不生产，驻军损失后火力随之下降，无法自行补充。',
       '选中己方炮塔时，战场会显示射程圈；离开射程的舰队不再被该炮塔锁定。',
-      '当前版本没有炮塔升级、范围伤害或特殊弹药。',
+      '炮塔对所有种族使用同一套结算，没有额外的重甲抗性、范围伤害或特殊弹药。',
     ],
-    unlock: '在第 3 关起出现；中立炮塔同样需要派兵占领。',
+    unlock: '按关卡配置出现；中立炮塔同样需要派兵占领。',
   },
 ] as const;
 
@@ -232,38 +326,43 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
     tab: 'command',
     kind: 'command',
     glyph: '路',
-    name: '道路与派兵',
-    title: '固定道路，逐巢推进',
-    summary: '每条命令只从与目标直接相邻的建筑出发；没有自动中转，也没有连线经济。',
+    name: '道路与中转',
+    title: '固定道路，自动中转',
+    summary: '命令只沿固定道路行军；经过你控制的建筑时自动继续下一段，路线在出发时确定。',
     facts: [
-      { label: '合法来源', value: '与目标直接相邻的所选己方建筑' },
-      { label: '自动中转', value: '不存在' },
-      { label: '多选规则', value: '逐个来源检查；不相邻来源保留驻军' },
-      { label: '非法命令', value: '不扣兵、不计派遣、不生成舰队' },
-      { label: '行军路径', value: '沿道路直线段移动，不能改道' },
+      { label: '合法来源', value: '能沿你控制的建筑连通目标的所选己方建筑' },
+      { label: '自动中转', value: '经过己方建筑自动继续下一段' },
+      { label: '中转限制', value: '只有己方建筑可中转；目标本身可任意归属' },
+      { label: '路径选择', value: '出发时选择确定性的最短几何路线' },
+      { label: '多选规则', value: '逐个来源计算路径；无路径来源保留驻军' },
+      { label: '非法命令', value: '不扣兵、不计派遣、不生成舰队；提示“无可用路径”' },
+      { label: '行军路径', value: '沿真实道路逐段移动，出发后不能改道' },
+      { label: '道路遭遇', value: '敌我舰队在同一路段相遇会交战' },
       { label: '经济效果', value: '无；道路不产兵、不共享驻军' },
     ],
     sections: [
       {
-        heading: '一次命令只走一段',
+        heading: '一条命令可以走多段',
         body: [
-          '选中己方建筑后，只能点击有直接道路相连的目标。即使 A—B—C 是连通的，A 也不能直接下令到 C。',
-          '要向前推进，先把兵派到 B；抵达后再次选择 B，再向 C 下一道命令。抵达友方只会增加驻军，不会自动继续行军。',
+          '如果 A—B—C 是连通的，且 B 已经属于你，那么从 A 可以直接下令到 C：部队先走 A→B，抵达友方 B 后自动继续 B→C。',
+          '自动中转只经过你控制的建筑。B 还是中立或敌方时，A→C 没有合法路径；先占领 B，再从 B 继续向前。',
+          '路线在命令下达时确定，途中不能改道、不能临时改目标，也不会因为沿途又占领了别的巢而重新规划。',
         ],
       },
       {
-        heading: '多选只帮助相邻来源',
+        heading: '多选只帮助有路径的来源',
         body: [
-          '拖框、Shift 追加或空格全选可以一次选中多座建筑，但每条命令仍会逐个来源检查道路。',
-          '只有与目标直接相邻的已选建筑会出兵；其余建筑保留全部驻军，也不会被扣兵。',
-          '战场底部的派兵数按全部已选建筑计算，是本次命令的上限，不代表每个来源都能抵达同一目标。',
+          '拖框、Shift 追加或空格全选可以一次选中多座建筑，但每条命令仍会逐个来源计算真实路径。',
+          '能连通目标的已选建筑才会出兵；无法连通的建筑保留全部驻军，也不会被扣兵，界面会提示部分来源未派出。',
+          '没有任何已选来源能连通目标时，命令不会扣兵、不会生成舰队，战场提示“无可用路径”。',
         ],
       },
       {
         heading: '道路不是连线经济',
         body: [
-          '道路是固定的无向行军约束，不提供自动输送、额外生产、驻军共享或资源连线。',
-          '战场会绘制本关的全部固定道路；选中建筑时，仅对直接相邻的目标显示合法路线。',
+          '道路是固定的无向行军路径，不提供自动输送、额外生产、驻军共享或资源连线。',
+          '战场会绘制本关的全部固定道路；选中建筑时，只有真实可达的目标会显示高亮，悬停时显示实际的多段路线。',
+          '敌对舰队在同一路段相遇会发生道路遭遇战，双方都可能在抵达建筑前被消耗。',
         ],
       },
     ],
@@ -315,8 +414,9 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
       { label: '中立', value: 'owner 0；不生产，不计入胜负' },
       { label: '蓝方', value: 'owner 1；玩家' },
       { label: '敌方', value: 'owner 2–4；彼此也敌对' },
-      { label: '胜利', value: '敌方建筑与在途部队全灭' },
+      { label: '胜利', value: '全灭，或占领金色目标建筑' },
       { label: '失败', value: '己方建筑与在途部队全灭' },
+      { label: '目标关', value: '只有被标记的目标决定胜负' },
     ],
     sections: [
       {
@@ -327,21 +427,29 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
         ],
       },
       {
+        heading: '目标关如何结束',
+        body: [
+          '带金色标记的目标建筑决定胜负：蓝方占领它即胜利，目标仍在敌方手里时战斗继续。',
+          '目标之外的中立或敌方据点不参与目标关的胜负判定；它们仍然影响生产、道路中转和炮塔火力。',
+          '没有金色目标的关卡按全灭结算：敌方建筑与在途部队全部清空即胜，中立方始终不计入胜负。',
+        ],
+      },
+      {
         heading: '增援与归属',
         body: [
-          '友军抵达只增加驻军；建筑归属不变。',
-          '占领成功后归属立即切换；如果它是生产巢，会从新归属方开始继续生产。',
+          '友军抵达只增加驻军；建筑归属不变。沿己方控制道路行军时，经过友方建筑会自动继续下一段。',
+          '占领成功后归属立即切换；如果它是生产建筑，会从新归属方开始继续生产，但自然生产仍受上限约束。',
         ],
       },
       {
         heading: '中立在终局之外',
         body: [
-          '中立建筑不是胜利目标；可以绕开，但它们常常是道路上的关键节点。',
+          '中立建筑不是默认胜利目标；可以绕开，但它们常常是道路上的关键中转节点。',
           '即使己方建筑全部失守，只要还有己方在途军队，战斗尚未结束。敌方在途军队同样必须清零才算胜利。',
         ],
       },
     ],
-    unlock: '所有战斗通用。',
+    unlock: '所有战斗通用；目标关的具体标记以战场金色圆环和顶部目标文字为准。',
   },
   {
     id: 'command-controls',
@@ -350,10 +458,11 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
     glyph: '键',
     name: '操作速查',
     title: '选择、派兵与图鉴',
-    summary: '战场操作与键盘入口；道路相邻规则优先于所有选择技巧。',
+    summary: '战场操作与键盘入口；道路中转与目标规则优先于所有选择技巧。',
     facts: [
       { label: '选择', value: '点击 / 拖框 / Shift 追加 / 空格全选' },
-      { label: '派兵', value: '选中己方建筑后点击相邻目标；也可从建筑拖向目标' },
+      { label: '派兵', value: '选中己方建筑后点击可达目标；也可从建筑拖向目标' },
+      { label: '路径', value: '沿固定道路自动中转；无路径时提示“无可用路径”' },
       { label: '比例', value: '25 / 50 / 75 / 100%；按每座来源向下取整' },
       { label: '技能', value: 'A 或点技能；右键 / Esc 取消瞄准' },
       { label: '系统', value: 'P 暂停 · M 静音 · C 打开图鉴 · Esc 关闭/暂停' },
@@ -363,7 +472,7 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
         heading: '选择与命令',
         body: [
           '点击己方建筑选择；在空地拖框多选；Shift 追加或取消；空格选择全部己方建筑。',
-          '选中后点击有直接道路的目标派兵。点相邻友方是增援；点非相邻目标不会出兵。',
+          '选中后点击高亮的目标派兵。点可达友方是增援；点不可达目标不会出兵、不扣兵，并提示“无可用路径”。',
         ],
       },
       {
@@ -374,7 +483,7 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
         ],
       },
     ],
-    unlock: '道路相邻规则见“道路与派兵”；本页不改变任何战斗数值。',
+    unlock: '道路中转规则见“道路与中转”；本页不改变任何战斗数值。',
   },
 ] as const;
 
@@ -447,7 +556,7 @@ export function pauseKeyIntent(
 export interface SelectedColonyInfo {
   id: string;
   owner: number;
-  kind: 'nest' | 'cannon';
+  kind: BuildingKind;
   units: number;
   production: number;
   race?: RaceId;
@@ -521,27 +630,31 @@ function renderRaceDetail(entry: RaceCodexEntry, options: CodexRenderOptions): s
     <section class="codex-block"><h4>局限</h4><ul>${entry.weaknesses.map((text) => `<li>${escapeHtml(text)}</li>`).join('')}</ul></section>
   </div>
   <section class="codex-block codex-tactics"><h4>战术用法</h4><ul>${entry.tactics.map((text) => `<li>${escapeHtml(text)}</li>`).join('')}</ul></section>
-  <div class="codex-callout"><b>没有石头剪刀布式克制</b><span>三族共用同一套攻击 / 防御结算；数值只改变同等兵力下的结果，不提供隐藏的族群互克。生产倍率全部为 ${factor(entry.production)}，差异来自移动与战斗，而非额外产能。</span></div>
+  <div class="codex-callout"><b>没有石头剪刀布式克制</b><span>四族共用同一套攻击 / 防御结算；数值只改变同等兵力下的结果，不提供隐藏的族群互克。生产倍率全部为 ${factor(entry.production)}，差异来自移动与战斗，而非额外产能。孵化族额外的 ${number(BATTLE_RULES.broodCaptureBonus)} 驻军只在首次占领中立生产建筑时出现。</span></div>
   <p class="codex-note">解锁条件：${escapeHtml(entry.unlock)}</p>`;
 }
 
 function renderSelectedProduction(options: CodexRenderOptions): string {
   if (!options.inBattle) return '';
   const selected = options.selectedColonies ?? [];
-  const nests = selected.filter((colony) => colony.kind === 'nest');
+  const nests = selected.filter((colony) => isProductive(colony.kind));
   if (!nests.length) {
-    return `<div class="codex-live"><b>战场实测</b><p>打开图鉴前选中生产巢，可在这里查看该建筑的实际产兵速度；未选中时只显示默认规则。</p></div>`;
+    return `<div class="codex-live"><b>战场实测</b><p>打开图鉴前选中生产建筑，可在这里查看该建筑的实际产兵速度与自然上限；未选中时只显示默认规则。</p></div>`;
   }
   const rows = nests.slice(0, 3).map((colony) => {
     const raceProduction = colony.race ? RACES[colony.race].production : 1;
     const rate = colony.owner > 0 ? colony.production * raceProduction : 0;
-    const formula = colony.owner > 0
-      ? `${number(colony.production)} 地图倍率 × ${factor(raceProduction)} 种族倍率`
-      : '中立不生产；占领后按地图倍率与归属种族倍率计算';
-    return `<li><b>${escapeHtml(colony.id)}</b><span>${ownerLabel(colony.owner)} · ${number(rate)} 兵/秒</span><small>${escapeHtml(formula)}</small></li>`;
+    const capReached = colony.units >= BATTLE_RULES.productionCap;
+    const label = BUILDING_KIND_LABELS[colony.kind] ?? '生产建筑';
+    const formula = colony.owner <= 0
+      ? '中立不生产；占领后按地图倍率与归属种族倍率计算'
+      : capReached
+        ? `已达 ${number(BATTLE_RULES.productionCap)} 自然上限，继续增援可超过上限`
+        : `${number(colony.production)} 地图倍率 × ${factor(raceProduction)} 种族倍率 · 再 ${number(Math.max(0, Math.ceil(BATTLE_RULES.productionCap - colony.units)))} 兵到自然上限`;
+    return `<li><b>${escapeHtml(colony.id)} · ${escapeHtml(label)}</b><span>${ownerLabel(colony.owner)} · ${number(rate)} 兵/秒 · 驻军 ${number(colony.units)} / ${number(BATTLE_RULES.productionCap)}</span><small>${escapeHtml(formula)}</small></li>`;
   }).join('');
-  const more = nests.length > 3 ? `<small class="codex-live-more">另有 ${nests.length - 3} 座已选生产巢未展开。</small>` : '';
-  return `<div class="codex-live"><b>战场实测 · 已选生产巢</b><ul>${rows}</ul>${more}<p>数值来自当前地图 production 与归属种族的生产倍率；打开图鉴不会改变战局。</p></div>`;
+  const more = nests.length > 3 ? `<small class="codex-live-more">另有 ${nests.length - 3} 座已选生产建筑未展开。</small>` : '';
+  return `<div class="codex-live"><b>战场实测 · 已选生产建筑</b><ul>${rows}</ul>${more}<p>自然生产只累积到 ${number(BATTLE_RULES.productionCap)}；超过 ${number(BATTLE_RULES.productionCap)} 的驻军可来自增援或繁育奖励。数值来自当前地图 production 与归属种族的生产倍率，打开图鉴不会改变战局。</p></div>`;
 }
 
 /** Always-visible firepower baseline + growth table (the no-selection view). */
@@ -581,19 +694,26 @@ function renderSelectedCannon(options: CodexRenderOptions): string {
 
 function renderBuildingDetail(entry: BuildingCodexEntry, options: CodexRenderOptions): string {
   const art = `${options.artBase ?? ''}art/${entry.building}.svg`;
+  const role = entry.building === 'cannon' ? 'DEFENSE' : entry.building === 'wind' ? 'BOOST' : 'PRODUCTION';
+  const roleName = entry.building === 'cannon' ? '防御' : entry.building === 'wind' ? '加速' : '生产';
+  const live = entry.building === 'cannon'
+    ? `${renderCannonGrowth()}${renderSelectedCannon(options)}`
+    : isProductive(entry.building)
+      ? renderSelectedProduction(options)
+      : '';
   return `<div class="codex-detail-head">
     <div class="codex-building-window"><img class="codex-building-art" src="${escapeAttribute(art)}" alt="${escapeAttribute(entry.name)}插画"></div>
     <div class="codex-detail-title">
-      <span class="codex-kicker">建筑 · ${entry.building === 'nest' ? 'PRODUCTION' : 'DEFENSE'}</span>
+      <span class="codex-kicker">建筑 · ${roleName} · ${role}</span>
       <h3>${escapeHtml(entry.name)}<small>${escapeHtml(entry.title)}</small></h3>
       <p>${escapeHtml(entry.summary)}</p>
-      <div class="codex-badges"><span class="codex-badge unlocked">所有关卡可用</span></div>
+      <div class="codex-badges"><span class="codex-badge unlocked">按关卡配置出现</span></div>
     </div>
   </div>
   <div class="codex-stat-grid">${entry.stats.map((stat) => `<article class="codex-stat"><span>${escapeHtml(stat.label)}</span><strong>${escapeHtml(stat.value)}</strong><small>${escapeHtml(stat.note)}</small></article>`).join('')}</div>
   <section class="codex-block codex-rules"><h4>使用要点</h4><ul>${entry.notes.map((text) => `<li>${escapeHtml(text)}</li>`).join('')}</ul></section>
-  ${entry.building === 'nest' ? renderSelectedProduction(options) : `${renderCannonGrowth()}${renderSelectedCannon(options)}`}
-  <div class="codex-callout"><b>没有隐藏升级</b><span>图鉴只列出当前模拟真实存在的机制：生产、驻军、道路与战斗结算。没有升级按钮、科技树或未实现的特殊能力。</span></div>
+  ${live}
+  <div class="codex-callout"><b>没有隐藏升级</b><span>图鉴只列出当前模拟真实存在的机制：生产、自然上限、驻军、道路中转与战斗结算。没有升级按钮、科技树或未实现的特殊能力；超过 ${number(BATTLE_RULES.productionCap)} 的驻军可来自增援或繁育奖励。</span></div>
   <p class="codex-note">出现条件：${escapeHtml(entry.unlock)}</p>`;
 }
 

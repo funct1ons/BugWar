@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Independent art contact sheet for the 36 formal SVG assets.
+// Independent art contact sheet for the 54 formal SVG assets.
 //
 // - No application server, no source changes and no game state.
 // - Real system Edge decodes every file; SVG dimensions and the four-frame
@@ -16,7 +16,8 @@ const ROOT = path.resolve(__dirname, '..');
 const ART = path.resolve(process.env.BUGWAR_ART_DIR || path.join(ROOT, 'public/art'));
 const OUTPUT = path.resolve(process.env.ART_SHEET_OUT || path.join(ROOT, 'test-results/art-sheet.png'));
 
-const RACES = ['agile', 'fast', 'strong'];
+const RACES = ['agile', 'fast', 'strong', 'brood'];
+const BUILDINGS = ['nest', 'cannon', 'hatchery', 'wind'];
 const OWNERS = [0, 1, 2, 3, 4];
 const OWNER_LABEL = ['neutral #92A18B', 'blue #327FC1', 'red #C85F48', 'purple #8B70BA', 'gold #C49336'];
 const EXPECTED = new Map();
@@ -24,13 +25,9 @@ const add = (name, width, height) => EXPECTED.set(name, { width, height });
 
 add('cover.svg', 1600, 900);
 for (const biome of ['meadow', 'roots', 'marsh', 'amber']) add(`background-${biome}.svg`, 1600, 900);
-for (const owner of OWNERS) {
-  add(`nest-${owner}.svg`, 160, 160);
-  add(`cannon-${owner}.svg`, 160, 160);
-}
+for (const kind of BUILDINGS) for (const owner of OWNERS) add(`${kind}-${owner}.svg`, 160, 160);
 for (const race of RACES) for (const owner of OWNERS) add(`bug-${race}-${owner}.svg`, 96, 32);
-add('nest.svg', 160, 160);
-add('cannon.svg', 160, 160);
+for (const kind of BUILDINGS) add(`${kind}.svg`, 160, 160);
 for (const race of RACES) add(`bug-${race}.svg`, 96, 32);
 add('emblem.svg', 256, 256);
 
@@ -40,8 +37,7 @@ const BUG_FILES = [
   ...RACES.map(race => `bug-${race}.svg`),
 ];
 const DEFAULT_PAIRS = [
-  ['nest.svg', 'nest-0.svg', 160, 160],
-  ['cannon.svg', 'cannon-0.svg', 160, 160],
+  ...BUILDINGS.map(kind => [`${kind}.svg`, `${kind}-0.svg`, 160, 160]),
   ...RACES.map(race => [`bug-${race}.svg`, `bug-${race}-1.svg`, 96, 32]),
 ];
 
@@ -82,12 +78,7 @@ function imageCard(file, className = '') {
 
 function sheetHtml(edgeVersion, extraFiles) {
   const backgrounds = ['meadow', 'roots', 'marsh', 'amber'].map(biome => imageCard(`background-${biome}.svg`, 'scene'));
-  const buildings = [
-    ...OWNERS.map(owner => imageCard(`nest-${owner}.svg`, 'building')),
-    ...OWNERS.map(owner => imageCard(`cannon-${owner}.svg`, 'building')),
-    imageCard('nest.svg', 'building'),
-    imageCard('cannon.svg', 'building'),
-  ];
+  const buildings = BUILDINGS.flatMap(kind => [...OWNERS.map(owner => imageCard(`${kind}-${owner}.svg`, 'building')), imageCard(`${kind}.svg`, 'building')]);
   const bugs = BUG_FILES.map(file => imageCard(file, 'bug'));
   const emblem = imageCard('emblem.svg', 'emblem');
   return `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -129,9 +120,9 @@ function sheetHtml(edgeVersion, extraFiles) {
     <h2>Ownership buildings (160\u00d7160) + emblem (256\u00d7256)</h2>
     <div class="grid buildings">${buildings.join('')}${emblem}</div>
     <h2>Unit sheets (96\u00d732, four 24\u00d732 frames; checkerboard = transparent)</h2>
-    <div class="note">Red lines mark the four frame boundaries. Owner variants 0\u20134, then the three blue default UI entries.</div>
+    <div class="note">Red lines mark the four frame boundaries. Owner variants 0\u20134, then the four blue default UI entries.</div>
     <div class="grid bugs">${bugs.join('')}</div>
-    ${extraFiles.length ? `<p class="note extras">Extra SVG files in this directory (decoded but not part of the 36-file contract): ${extraFiles.map(escape).join(', ')}</p>` : ''}
+    ${extraFiles.length ? `<p class="note extras">Extra SVG files in this directory (decoded but not part of the 54-file contract): ${extraFiles.map(escape).join(', ')}</p>` : ''}
   </main></body></html>`;
 }
 

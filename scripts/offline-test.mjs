@@ -19,13 +19,13 @@ try{
  assert.match(await page.locator('#modal .codex-detail').innerText(),/未解锁/);
  await page.locator('#modal [data-action="codex-tab"][data-value="command"]').click();
  await page.locator('#modal [data-action="codex-entry"][data-value="command-roads"]').click();
- assert.match(await page.locator('#modal .codex-detail').innerText(),/直接相邻/);
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/己方|中转|路径/);
  await page.locator('#modal [data-action=close]').first().click();
- await page.locator('[data-action=campaign]').first().click();await page.locator('[data-action=level][data-value="0"]').click();
+ await page.locator('[data-action=campaign]').first().click();assert.equal(await page.locator('.level-card').count(),18);assert.equal(await page.locator('.race-card').count(),4);await page.locator('[data-action=level][data-value="0"]').click();
  const before=await page.evaluate(()=>{const w=window.__BUGWAR__.scene.sim.world;return {sent:w.stats.sent,units:w.colonies.find(c=>c.id==='a').units};});
  await page.mouse.click(320,465);await page.mouse.click(1280,465);
  const illegal=await page.evaluate(()=>{const w=window.__BUGWAR__.scene.sim.world;return {sent:w.stats.sent,units:w.colonies.find(c=>c.id==='a').units,fleets:w.fleets.filter(f=>f.owner===1).length};});
- assert.equal(illegal.sent,before.sent);assert.equal(illegal.fleets,0);assert.ok(illegal.units>=before.units);assert.match(await page.locator('#toast.show').innerText(),/相邻|道路|连接/);
+ assert.equal(illegal.sent,before.sent);assert.equal(illegal.fleets,0);assert.ok(illegal.units>=before.units);assert.match(await page.locator('#toast.show').innerText(),/无可用路径/);
  await page.mouse.click(50,450,{button:'right'});await page.mouse.click(320,465);await page.mouse.click(730,330);await page.waitForFunction(()=>window.__BUGWAR__.scene.sim.world.colonies.find(c=>c.id==='b').owner===1);
  await page.locator('[data-action=codex]:visible').first().click();
  const frozen=await page.evaluate(()=>window.__BUGWAR__.scene.sim.world.elapsed);

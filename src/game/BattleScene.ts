@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import { Simulation } from '../core/Simulation';
-import { BATTLE_RULES } from '../core/rules';
+import { BATTLE_RULES, isProductive } from '../core/rules';
 import { formatUnits } from '../ui/format';
-import { directSources, previewSourceSet, roadPreview, roadSegments, type RoadSegment } from './roadRender';
+import { previewSourceSet, reachableSources, roadSegments, routePreview, type RoadSegment } from './roadRender';
 import type { BuildingKind, Colony, Difficulty, GameEvent, LevelConfig, RaceId } from '../core/types';
 
 /**
@@ -20,29 +20,29 @@ import type { BuildingKind, Colony, Difficulty, GameEvent, LevelConfig, RaceId }
  * skill/ballistic feedback, and a clean menu backdrop. Roads are permanently
  * visible straight lanes because fleets travel in a straight line along the same
  * logical edge; they are only trimmed outside the building art. Selecting a
- * friendly nest highlights its direct neighbours and the actual lanes to them. A
- * preview never draws a synthetic line between non-adjacent colonies: highlighting
- * is derived from the same road segments and hasRoad checks that dispatch uses.
+ * friendly nest highlights every colony reachable through owned intermediates and,
+ * on hover, paints the actual multi-edge route returned by core findDispatchPath
+ * (the same call Simulation.dispatch uses). A preview never draws a synthetic line
+ * between non-connected colonies.
  *
  * Feedback contract (onAction names consumed by the DOM UI):
- *   'no-road'           target is not directly connected to any selected source.
+ *   'no-road'           no selected source can reach the target along owned roads.
  *                       Nothing was dispatched; units and statistics are unchanged.
- *                       UI should toast a road/adjacency message, e.g.
- *                       "目标未与所选巢穴直接相连，无法派兵".
+ *                       UI must toast the exact text "无可用路径" for about 2 seconds.
  *   'partial-dispatch'  at least one selected source was skipped because it had no
- *                       road to the target, while road-connected sources did send.
- *                       It replaces 'dispatch' for that order (successful, but not
- *                       from every selected source). UI may toast
- *                       "只有与目标相邻的巢穴派出了兵力".
+ *                       legal path, while others did send. It replaces 'dispatch'
+ *                       for that order (successful, but not from every selected
+ *                       source). UI must say the remaining sources kept their troops.
  *   Existing names keep their meaning: 'select', 'dispatch', 'invalid', 'cancel',
- *   'not-ready', 'cast'. 'invalid' now only covers non-road failures such as a
- *   connected source with no available units.
+ *   'not-ready', 'cast', 'clash' (a road encounter happened; reuse impact audio).
+ *   'invalid' now only covers non-road failures such as a connected source with no
+ *   available units.
  *
  * Asset contract under public/art:
  *   background-{meadow,roots,marsh,amber}.svg  1600x900 daylight garden
- *   nest-{0..4}.svg, cannon-{0..4}.svg         160x160, faction roof/shell material
- *   bug-{agile,fast,strong}-{0..4}.svg         96x32, four clipped 24x32 frames
- *   nest.svg, cannon.svg, bug-*.svg            compatibility files kept for the UI
+ *   nest|hatchery|wind|cannon-{0..4}.svg       160x160 faction material
+ *   bug-{agile,fast,strong,brood}-{0..4}.svg   96x32, four clipped 24x32 frames
+ *   default compatibility files kept for the UI
  *
  * Missing owner variants fall back to the default compatibility texture so the
  * scene stays playable during an asset regeneration; the plate mark, badge and
@@ -55,7 +55,7 @@ export const COLORS = [0x92a18b, 0x327fc1, 0xc85f48, 0x8b70ba, 0xc49336];
 export const HEX = ['#92A18B', '#327FC1', '#C85F48', '#8B70BA', '#C49336'];
 
 const OWNERS = [0, 1, 2, 3, 4] as const;
-const RACES = ['agile', 'fast', 'strong'] as const;
+const RACES = ['agile', 'fast', 'strong', 'brood'] as const;
 const BIOMES = ['meadow', 'roots', 'marsh', 'amber'] as const;
 
 // Daylight interface palette: warm paper plates, deep leaf ink, clear route blue.
@@ -68,6 +68,8 @@ const ROUTE = 0x2f86d6;
 const MINT = 0x9fd7c3;
 const BALLISTIC = 0xe8b96a;
 const SPARK = 0xfff3cf;
+const GOAL = 0xd9a52c;
+const GOAL_DEEP = 0x9a6f14;
 
 // Road palette: trodden warm earth with a pale rim, readable on both the light
 // field and the darker garden bed without competing with faction colours.
@@ -79,7 +81,7 @@ const ROAD_DOT = 0xb9a87c;
 
 // Fixed layout, kept close to the previous 125/116 / +53 / -66 rhythm so the
 // existing 13-level label clearances and the <792px bottom check still hold.
-const BUILDING_SIZE: Record<BuildingKind, number> = { nest: 132, cannon: 122 };
+const BUILDING_SIZE: Record<BuildingKind, number> = { nest: 132, cannon: 122, hatchery: 132, wind: 118 };
 const BUILDING_Y = -9;
 const NUMBER_Y = 53;
 const BADGE_Y = -66;
@@ -94,15 +96,37 @@ const NUMBER_MIN_FONT = 11;
 const NUMBER_MAX_W = 64;
 const UNIT_BATCH = 36;
 const UNIT_CAP = 1000;
-const UNIT_SCALE: Record<RaceId, number> = { agile: 0.58, fast: 0.58, strong: 0.66 };
+const UNIT_SCALE: Record<RaceId, number> = { agile: 0.58, fast: 0.58, strong: 0.66, brood: 0.62 };
+const EFFECT_LIFE: Partial<Record<GameEvent['type'], number>> = { impact: .55, shot: .55, clash: .55, capture: 1.4, brood: 1.05, skill: 1.8, end: .8 };
 
-const colonyLabel = (c: Pick<Colony, 'owner' | 'kind'>) =>
-  `${c.owner === 1 ? '己方' : c.owner === 0 ? '中立' : '敌方'} · ${c.kind === 'nest' ? '生产巢' : '炮塔'}`;
+const KIND_NAMES: Record<BuildingKind, string> = { nest: '生产巢', cannon: '炮塔', hatchery: '孵育巢', wind: '疾风巢' };
+
+/**
+ * Badge copy keeps the owner mark, the building role and the natural-production
+ * cap on one line. Above the cap (only reachable through reinforcement) the badge
+ * says so instead of pretending that production continued.
+ */
+const colonyLabel = (c: Pick<Colony, 'owner' | 'kind' | 'units'>, goal = false) => {
+  const prefix = `${c.owner === 1 ? '己方' : c.owner === 0 ? '中立' : '敌方'} · ${KIND_NAMES[c.kind] ?? '建筑'}`;
+  const units = Math.floor(Number.isFinite(c.units) ? c.units : 0);
+  const cap = BATTLE_RULES.productionCap;
+  const suffix = isProductive(c.kind)
+    ? units > cap
+      ? ` · ${units}/${cap} 超编`
+      : units >= cap
+        ? ` · ${cap} 满产`
+        : ` · ${units}/${cap}`
+    : c.kind === 'wind'
+      ? ' · 下段加速'
+      : '';
+  return `${prefix}${suffix}${goal ? ' · 目标' : ''}`;
+};
 
 interface ColonyView {
   image: Phaser.GameObjects.Image;
   number: Phaser.GameObjects.Text;
   badge: Phaser.GameObjects.Text;
+  goal?: Phaser.GameObjects.Text;
   owner: number;
 }
 interface Effect {
@@ -133,10 +157,9 @@ export class BattleScene extends Phaser.Scene {
     const base = import.meta.env.BASE_URL;
     for (const biome of BIOMES) this.load.svg(`bg-${biome}`, `${base}art/background-${biome}.svg`);
     // Compatibility textures stay loaded for the DOM UI and as texture fallbacks.
-    for (const name of ['nest', 'cannon', 'emblem', 'bug-agile', 'bug-fast', 'bug-strong']) this.load.svg(name, `${base}art/${name}.svg`);
+    for (const name of ['nest', 'cannon', 'hatchery', 'wind', 'emblem', 'bug-agile', 'bug-fast', 'bug-strong', 'bug-brood']) this.load.svg(name, `${base}art/${name}.svg`);
     for (const owner of OWNERS) {
-      this.load.svg(`nest-${owner}`, `${base}art/nest-${owner}.svg`);
-      this.load.svg(`cannon-${owner}`, `${base}art/cannon-${owner}.svg`);
+      for (const kind of ['nest', 'cannon', 'hatchery', 'wind'] as const) this.load.svg(`${kind}-${owner}`, `${base}art/${kind}-${owner}.svg`);
     }
     for (const race of RACES) for (const owner of OWNERS) this.load.svg(`bug-${race}-${owner}`, `${base}art/bug-${race}-${owner}.svg`);
   }
@@ -192,17 +215,24 @@ export class BattleScene extends Phaser.Scene {
     this.bg.setTexture(`bg-${level.biome}`);
     this.roadLanes = roadSegments(this.sim.world.roads, this.sim.world.colonies);
     this.drawRoadBase();
+    const objective = level.objective?.type === 'capture' ? level.objective.target : '';
     for (const c of this.sim.world.colonies) {
       const size = BUILDING_SIZE[c.kind];
       const image = this.add.image(c.x, c.y + BUILDING_Y, this.buildingTexture(c.kind, c.owner)).setDisplaySize(size, size).setDepth(7);
       const number = this.add.text(c.x + NUMBER_DX, c.y + NUMBER_Y, '', {
         fontFamily: 'Georgia, "Times New Roman", serif', fontSize: `${NUMBER_FONT}px`, fontStyle: 'bold', color: INK,
       }).setResolution(2).setOrigin(.5).setDepth(13);
-      const badge = this.add.text(c.x, c.y + BADGE_Y, colonyLabel(c), {
+      const badge = this.add.text(c.x, c.y + BADGE_Y, colonyLabel(c, c.id === objective), {
         fontFamily: '"Microsoft YaHei", "PingFang SC", sans-serif', fontSize: '12px', color: INK,
         stroke: '#fbf8ee', strokeThickness: 3, letterSpacing: .5,
       }).setResolution(2).setOrigin(.5).setDepth(12);
-      const view: ColonyView = { image, number, badge, owner: c.owner };
+      const goal = c.id === objective
+        ? this.add.text(c.x, c.y + BADGE_Y - 27, '◆ 目标巢', {
+          fontFamily: '"Microsoft YaHei", "PingFang SC", sans-serif', fontSize: '13px', fontStyle: 'bold', color: '#8a6410',
+          stroke: '#fffdf4', strokeThickness: 4, letterSpacing: 1,
+        }).setResolution(2).setOrigin(.5).setDepth(12)
+        : undefined;
+      const view: ColonyView = { image, number, badge, goal, owner: c.owner };
       this.views.set(c.id, view);
       this.fitNumber(view, formatUnits(c.units));
     }
@@ -210,7 +240,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private clearBoard() {
-    for (const v of this.views.values()) { v.image.destroy(); v.number.destroy(); v.badge.destroy(); }
+    for (const v of this.views.values()) { v.image.destroy(); v.number.destroy(); v.badge.destroy(); v.goal?.destroy(); }
     this.views.clear();
     for (const list of this.bugs.values()) list.forEach(s => s.destroy());
     this.bugs.clear();
@@ -279,7 +309,7 @@ export class BattleScene extends Phaser.Scene {
       if (d.source) {
         if (!hit || hit.id === d.source) return;
         const sources = this.selected.has(d.source) ? this.selected : new Set([d.source]);
-        if (!directSources(this.sim.world.roads, sources, hit.id).length) {
+        if (!reachableSources(this.sim.world, sources, hit.id, 1).length) {
           this.onAction('no-road');
           this.onTick();
           return;
@@ -301,8 +331,8 @@ export class BattleScene extends Phaser.Scene {
           // Collapse a multi-selection to the clicked nest without sending.
           this.selected = new Set([hit.id]);
           this.onAction('select');
-        } else if (this.selected.size && directSources(this.sim.world.roads, this.selected, hit.id).length) {
-          // Connected friendly target: reinforcement order.
+        } else if (this.selected.size && reachableSources(this.sim.world, this.selected, hit.id, 1).length) {
+          // Reachable friendly target (direct or through owned relay): reinforcement order.
           this.send(hit.id);
         } else {
           // Non-adjacent (or no current selection): a click must always be able
@@ -318,14 +348,15 @@ export class BattleScene extends Phaser.Scene {
   }
 
   /**
-   * Dispatch only from selected nests that actually touch the target. Simulation
-   * repeats the same check; this pre-filter exists to report partial orders and
-   * to avoid pretending that an illegal order was accepted.
+   * Dispatch only from selected sources with a real path to the target. Simulation
+   * repeats the same findDispatchPath search; this pre-filter exists to report
+   * partial orders and to avoid pretending that an illegal order was accepted.
    */
   private send(target: string) {
     const sim = this.sim!;
     const all = [...this.selected];
-    const sources = directSources(sim.world.roads, all, target);
+    const reachable = reachableSources(sim.world, all, target, 1);
+    const sources = reachable.map((route) => route.source);
     if (!sources.length) {
       this.onAction('no-road');
       this.onTick();
@@ -351,8 +382,8 @@ export class BattleScene extends Phaser.Scene {
     if (!this.paused) {
       this.sim.step(dt);
       for (const e of this.sim.drainEvents()) {
-        if (e.type !== 'dispatch') this.fx.push({ event: e, age: 0, life: e.type === 'skill' ? 1.8 : e.type === 'capture' ? 1.4 : .55 });
-        if (e.type === 'capture' || e.type === 'impact' || e.type === 'shot') this.onAction(e.type);
+        if (e.type !== 'dispatch') this.fx.push({ event: e, age: 0, life: EFFECT_LIFE[e.type] ?? .6 });
+        if (e.type === 'capture' || e.type === 'impact' || e.type === 'shot' || e.type === 'clash') this.onAction(e.type);
       }
     }
     for (const id of this.selected) if (this.sim.world.colonies.find(c => c.id === id)?.owner !== 1) this.selected.delete(id);
@@ -409,6 +440,10 @@ export class BattleScene extends Phaser.Scene {
       g.fillStyle(color, c.owner === 0 ? .045 : .09); g.fillEllipse(c.x, c.y + 20, 152, 94);
       g.lineStyle(5, HALO, selected ? .55 : .18); g.strokeEllipse(c.x, c.y + 20, 148, 90);
       g.lineStyle(selected ? 2.3 : 1.3, color, selected ? .95 : .38); g.strokeEllipse(c.x, c.y + 20, 148, 90);
+      // Capture objective: a golden double ring plus the floating "目标巢" caption
+      // make the win condition readable without relying on colour alone.
+      const goal = this.sim!.world.objective?.type === 'capture' && this.sim!.world.objective!.target === c.id;
+      if (goal) this.drawGoalRing(c);
       if (selected) {
         g.lineStyle(5, HALO, .35); g.strokeEllipse(c.x, c.y + 20, 162, 102);
         g.lineStyle(2.6, SELECT, 1); g.strokeEllipse(c.x, c.y + 20, 162, 102);
@@ -423,7 +458,6 @@ export class BattleScene extends Phaser.Scene {
       // owner shape, label and texture all switch together.
       if (v.owner !== c.owner) {
         v.owner = c.owner;
-        v.badge.setText(colonyLabel(c));
         const size = BUILDING_SIZE[c.kind];
         // Capture is a real texture swap, not a tint: same material, new faction colours.
         // Stop any in-flight capture fade so rapid re-captures cannot fight over alpha.
@@ -435,6 +469,10 @@ export class BattleScene extends Phaser.Scene {
           this.tweens.add({ targets: v.image, alpha: 1, duration: 520, ease: 'Sine.easeOut' });
         }
       }
+      // Cap progress is part of the label: it changes as production advances, so the
+      // badge is synced every frame (cheap text comparison, no node churn).
+      const label = colonyLabel(c, goal);
+      if (v.badge.text !== label) v.badge.setText(label);
       this.drawNumberPlate(c, selected);
       this.drawBadgePlate(c, color);
       this.fitNumber(v, formatUnits(c.units));
@@ -527,7 +565,16 @@ export class BattleScene extends Phaser.Scene {
         this.dashedLine(this.ground, source.x, source.y, target.x, target.y, this.ownerColor(f.owner), .42, 1.7, 16, 12);
       }
       const traveled = Math.hypot(f.x - source.x, f.y - source.y);
-      const scale = UNIT_SCALE[f.race];
+      // Only the CURRENT segment is drawn. When a relay moves the fleet to the next
+      // edge, from/to change and this trail resets to 0 at the intermediate colony.
+      if (f.haste) {
+        const boost = 15 + (f.id % 3) * 4;
+        this.ground.lineStyle(3, HALO, .42);
+        this.ground.lineBetween(f.x - Math.cos(angle) * 16, f.y - Math.sin(angle) * 16, f.x - Math.cos(angle) * (16 + boost), f.y - Math.sin(angle) * (16 + boost));
+        this.ground.lineStyle(1.5, 0xdfeee2, .8);
+        this.ground.lineBetween(f.x - Math.cos(angle) * 22, f.y - Math.sin(angle) * 22, f.x - Math.cos(angle) * (22 + boost), f.y - Math.sin(angle) * (22 + boost));
+      }
+      const scale = UNIT_SCALE[f.race] ?? UNIT_SCALE.agile;
       sprites.forEach((s, i) => {
         const row = Math.floor(i / 4);
         const side = (i % 4 - 1.5) * 8 + (f.id % 7 - 3) * 4;
@@ -599,6 +646,37 @@ export class BattleScene extends Phaser.Scene {
           const x = e.x + Math.cos(angle) * r, y = e.y + 14 + Math.sin(angle) * r * .4 - p * (30 + i % 4 * 10);
           g.fillStyle(i % 3 ? 0xffffff : SPARK, a * .85); g.fillEllipse(x, y, 2, 4);
         }
+      } else if (e.type === 'clash') {
+        // Road encounter: a short white flash with two opposing spark fans, so a
+        // collision reads instantly even when several fleets share the lane.
+        const reach = 9 + p * 26;
+        g.fillStyle(0xffffff, a * .75); g.fillCircle(e.x, e.y, 3 + p * 6);
+        g.lineStyle(5, HALO, a * .55); g.strokeCircle(e.x, e.y, 7 + p * 17);
+        g.lineStyle(2.4, 0xe46a4e, a * .9); g.strokeCircle(e.x, e.y, 7 + p * 17);
+        g.lineStyle(2.2, 0xffffff, a * .92);
+        for (let i = 0; i < 3; i++) {
+          const spread = (i - 1) * 6.5;
+          g.lineBetween(e.x - reach, e.y + spread, e.x - reach * .42, e.y + spread * .3);
+          g.lineBetween(e.x + reach, e.y - spread, e.x + reach * .42, e.y - spread * .3);
+        }
+        for (let i = 0; i < (this.reducedMotion ? 4 : 10); i++) {
+          const theta = i * 2.399 + p;
+          const radius = 5 + p * (16 + (i % 3) * 9);
+          g.fillStyle(i % 2 ? 0xffffff : SPARK, a * .9);
+          g.fillCircle(e.x + Math.cos(theta) * radius, e.y + Math.sin(theta) * radius * .72, 1.5 * a + .6);
+        }
+      } else if (e.type === 'brood') {
+        // Brood expansion reward: golden ring plus amount-coded egg motes rising from the nest.
+        const amount = Math.max(1, Math.min(12, Math.round(e.amount ?? BATTLE_RULES.broodCaptureBonus)));
+        g.lineStyle(5, HALO, a * .55); g.strokeCircle(e.x, e.y, 12 + p * 30);
+        g.lineStyle(2.4, GOAL, a * .95); g.strokeCircle(e.x, e.y, 12 + p * 30);
+        for (let i = 0; i < amount; i++) {
+          const theta = (i / amount) * Math.PI * 2 + p * .6;
+          const radius = 8 + p * 30;
+          const x = e.x + Math.cos(theta) * radius, y = e.y + Math.sin(theta) * radius * .55 - p * 16;
+          g.fillStyle(i % 2 ? GOAL : 0xfff3cf, a * .95); g.fillEllipse(x, y, 3.2, 4.4);
+          g.lineStyle(1, HALO, a * .8); g.strokeEllipse(x, y, 3.2, 4.4);
+        }
       } else {
         g.lineStyle(4, HALO, a * .4); g.strokeEllipse(e.x, e.y + 14, 40 + p * 45, 22 + p * 26);
         g.lineStyle(1.8, color, a * .65); g.strokeEllipse(e.x, e.y + 14, 40 + p * 45, 22 + p * 26);
@@ -612,12 +690,11 @@ export class BattleScene extends Phaser.Scene {
   }
 
   // ---------------------------------------------------------------------------
-  // Roads: a static warm-earth bed for the whole level plus a per-frame blue
-  // overlay for the direct neighbours of the current sources. Both layers sit
-  // under buildings and number plates, so lanes never paint over the art. The
-  // geometry is straight because fleets travel in a straight line along the same
-  // logical edge; highlighting only ever reuses a real road segment and never
-  // invents a line between non-adjacent colonies.
+  // Roads: a static warm-earth bed for the whole level plus, per frame, a blue
+  // overlay for every reachable target and a strong overlay for the actual
+  // multi-edge route to the hovered colony. Both layers sit under buildings and
+  // number plates, so lanes never paint over the art. The route always comes from
+  // core findDispatchPath; no synthetic line is ever drawn.
   // ---------------------------------------------------------------------------
   private drawRoadBase() {
     const g = this.roadBase;
@@ -637,13 +714,30 @@ export class BattleScene extends Phaser.Scene {
     if (!this.sim || this.skillArmed) return;
     const sources = this.previewSources();
     if (!sources.size) return;
-    const preview = roadPreview(this.sim.world.roads, this.roadLanes, sources);
+    const hover = this.hit(this.input.activePointer.x, this.input.activePointer.y);
+    const preview = routePreview(this.sim.world, this.roadLanes, sources, 1, hover?.id ?? null);
     const phase = this.paused || this.reducedMotion ? 0 : this.clock * 16;
-    for (const s of preview.segments) this.drawRoadHighlight(this.roadHi, s, .55, phase);
+    // Paint the real multi-edge route to a reachable hovered colony. Every
+    // segment is an actual road lane on that route (intermediates included).
+    for (const s of preview.hoverSegments) this.drawRoadHighlight(this.roadHi, s, .95, phase);
     for (const id of preview.targets) {
       if (sources.has(id)) continue;
       const c = this.sim.world.colonies.find((colony) => colony.id === id);
-      if (c) this.drawTargetRing(c, false);
+      if (c) this.drawTargetRing(c, hover?.id === id);
+    }
+  }
+
+  /** Golden objective ring: wide pale halo, solid gold band, dashed pulse and diamonds. */
+  private drawGoalRing(c: Colony) {
+    const g = this.ground, cy = c.y + 16;
+    const pulse = this.reducedMotion || this.paused ? 0 : (Math.sin(this.clock * 2.2) + 1) * 5;
+    g.lineStyle(9, HALO, .8); g.strokeEllipse(c.x, cy, 188 + pulse, 122 + pulse * .6);
+    g.lineStyle(5.5, GOAL, .95); g.strokeEllipse(c.x, cy, 188 + pulse, 122 + pulse * .6);
+    g.lineStyle(2, 0xfff5cf, .9); g.strokeEllipse(c.x, cy, 176 + pulse, 112 + pulse * .6);
+    this.dashedCircle(this.ground, c.x, cy + 2, 104, GOAL_DEEP, .55, 1.6, 12, 9, this.reducedMotion ? 0 : this.clock * .6);
+    for (const [dx, dy] of [[-94, 0], [94, 0], [0, -61], [0, 61]] as const) {
+      g.fillStyle(GOAL, .95); g.fillCircle(c.x + dx, cy + dy, 4.2);
+      g.lineStyle(1.4, HALO, .95); g.strokeCircle(c.x + dx, cy + dy, 4.2);
     }
   }
 
@@ -687,19 +781,15 @@ export class BattleScene extends Phaser.Scene {
     const hover = this.hit(p.x, p.y);
     const sources = this.previewSources();
     const preview = sources.size
-      ? roadPreview(this.sim!.world.roads, this.roadLanes, sources, hover?.id ?? null)
+      ? routePreview(this.sim!.world, this.roadLanes, sources, 1, hover?.id ?? null)
       : null;
     const legal = !!hover && !!preview?.targets.has(hover.id);
     const isSource = !!hover && sources.has(hover.id);
     const dragging = !!this.drag?.active && !!this.drag.source;
-    // A non-adjacent enemy is blocked on click and drag; a non-adjacent friendly
+    // A non-reachable enemy is blocked on click and drag; a non-reachable friendly
     // nest stays a valid reselect on click, but is blocked during an explicit drag.
     const blocked = !!hover && !!preview && !isSource && !legal && (dragging || hover.owner !== 1);
     this.game.canvas.style.cursor = !hover ? 'default' : blocked ? 'not-allowed' : 'pointer';
-    if (preview) {
-      const phase = this.reducedMotion ? 0 : this.clock * 16;
-      for (const s of preview.hoverSegments) this.drawRoadHighlight(this.roadHi, s, 1, phase);
-    }
     if (hover && !this.selected.has(hover.id)) {
       if (legal) this.drawTargetRing(hover, true);
       else if (blocked) {

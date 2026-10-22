@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:browser": "node scripts/browser-test.mjs",
+    "test:lightweight": "node scripts/lightweight-browser-test.mjs",
     "test:roads": "node scripts/roads-codex-browser-test.mjs",
     "test:offline": "node scripts/offline-test.mjs",
     "test:online": "node scripts/online-test.mjs",

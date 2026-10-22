@@ -9,13 +9,13 @@ const colony=(id:string,owner:number,units=30,x=0,kind:'nest'|'cannon'='nest'):C
 const level=(colonies:ColonyConfig[],roads:Road[]):LevelConfig=>({id:1,name:'test',subtitle:'',biome:'meadow',par:100,tip:'',factions:[{id:1,race:'agile'},{id:2,race:'agile'},{id:3,race:'strong'}],colonies,roads});
 const sim=(colonies:ColonyConfig[],roads:Road[])=>new Simulation(level(colonies,roads),'agile','easy');
 describe('pure deterministic simulation',()=>{
- it('produces per second, never produces at cannon, no garrison cap',()=>{
+ it('stops natural production at cap without truncating over-cap garrisons',()=>{
   const s=sim([{...colony('a',1,100000),production:2},{...colony('b',2,0,900,'cannon'),production:999}],[]);s.step(1);
-  expect(s.world.colonies[0].units).toBeCloseTo(100002);expect(s.world.colonies[1].units).toBe(0);
+  expect(s.world.colonies[0].units).toBeCloseTo(100000);expect(s.world.colonies[1].units).toBe(0);
  });
  it('has balanced, fast weak, and slow strong races',()=>{expect(RACES.fast.speed).toBeGreaterThan(RACES.agile.speed);expect(RACES.fast.attack).toBeLessThan(1);expect(RACES.strong.speed).toBeLessThan(100);expect(RACES.strong.defense).toBeGreaterThan(1);});
  it('publishes the battle constants the simulation actually uses',()=>{
-  expect(BATTLE_RULES).toEqual({nestProduction:1,cannonRange:200,cannonDamage:2,cannonCooldown:0.9,energyRate:2,skillCost:100,skillRadius:135,skillDamage:18});
+  expect(BATTLE_RULES).toEqual({nestProduction:1,productionCap:100,hatcheryProduction:1.5,windSpeedMultiplier:1.35,broodCaptureBonus:8,cannonRange:200,cannonDamage:2,cannonCooldown:0.9,energyRate:2,skillCost:100,skillRadius:135,skillDamage:18});
   const s=sim([colony('a',1,10)],[]);s.world.energy[1]=BATTLE_RULES.skillCost-1;expect(s.castSkill(1,0,300)).toBe(false);s.world.energy[1]=BATTLE_RULES.skillCost;expect(s.castSkill(1,0,300)).toBe(true);
  });
  it('dispatches integer batches with deduplicated sources and friendly reinforcement',()=>{
@@ -215,14 +215,15 @@ describe('fixed road network',()=>{
   const backward=sim([colony('a',0,5),colony('b',1,20,50)],[['b','a']]);
   expect(backward.dispatch(['b'],'a',1)).toBe(20);
  });
- it('rejects a self-pair or a non-neighbour without charging or recording anything',()=>{
+ it('rejects self dispatch but permits a friendly intermediate relay',()=>{
   const roads:Road[]=[['a','a'],['a','b'],['b','c']];
   const s=sim([colony('a',1,20),colony('b',1,20,50),colony('c',0,0,100)],roads);
-  expect(s.dispatch(['a'],'c',1)).toBe(0); // A-B-C is a path, never a relay
   expect(s.dispatch(['a'],'a',1)).toBe(0);
   expect(s.world.colonies[0].units).toBe(20);
-  expect(s.world.fleets).toHaveLength(0);expect(s.world.events).toHaveLength(0);expect(s.world.stats.sent).toBe(0);
-  expect(s.dispatch(['a'],'b',1)).toBe(20);
+  expect(s.world.fleets).toHaveLength(0);expect(s.world.events).toHaveLength(0);
+  expect(s.dispatch(['a'],'c',1)).toBe(20);
+  expect(s.world.fleets[0]).toMatchObject({from:'a',to:'b',route:['c'],destination:'c'});
+  expect(s.world.stats.sent).toBe(20);
  });
  it('checks every selected source independently and sends only legal ones',()=>{
   const roads:Road[]=[['a','t'],['c','t']];

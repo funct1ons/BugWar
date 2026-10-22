@@ -1,4 +1,10 @@
-# 炮塔驻军火力（已推送部署）
+# 当前版本：轻量玩法扩展
+
+18 关、4 虫族／4 建筑、自然生产上限、多跳命令与道路遭遇的当前验收记录见 [轻量扩展验收](lightweight-release.md)。以下各节均为**历史版本**，其中的 13 关、三族、无限生产、仅相邻指令及旧构建哈希不是现行规则或本次发布证据。
+
+---
+
+# 历史：炮塔驻军火力（已推送部署）
 
 功能提交 `07b4dfe3cdeba732f270b1851d1c2b1ce5c14d40` 已推送 main；[Pages 工作流 39788749102](https://github.com/funct1ons/BugWar/actions/runs/39788749102) 测试、构建与部署成功。正式站 `https://funct1ons.github.io/BugWar/` 的 `npm.cmd run test:online` 验收通过：四档炮塔成长表、真实鼠标自然首占、非法道路提示、图鉴暂停/Esc恢复；0错误、0失败请求、0外域请求。线上与本地 `index--KG0zoJw.js` SHA256 均为 `ea0fcb028f82ec534d339964fe24b282eec8fbca7491d3c765f1acec6435f624`。[上线报告](verification/cannon-online-report.json)。本次没有重打离线 ZIP，旧离线包不包含炮塔成长。
 

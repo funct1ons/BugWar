@@ -12,6 +12,7 @@ const strategies = [
   {name:'agile-pulse',race:'agile' as RaceId,period:.75,skill:true},
   {name:'strong-pulse',race:'strong' as RaceId,period:.75,skill:true},
   {name:'fast-pulse',race:'fast' as RaceId,period:.75,skill:true},
+  {name:'brood-pulse',race:'brood' as RaceId,period:.75,skill:true},
 ];
 // No changes to enemy logic/resources. Owner 1 uses the exported visible-state planner.
 function run(level:typeof LEVELS[number],difficulty:Difficulty,strategy:typeof strategies[number],openingDelay=0) {
@@ -50,16 +51,18 @@ function run(level:typeof LEVELS[number],difficulty:Difficulty,strategy:typeof s
 }
 
 describe('campaign geometry and ownership',()=>{
-  it('has thirteen distinct layouts, four biomes and legal factions',()=>{
-    expect(LEVELS.map(l=>l.id)).toEqual(Array.from({length:13},(_,i)=>i+1));
+  it('has eighteen distinct layouts, four biomes, four races and legal factions',()=>{
+    expect(LEVELS.map(l=>l.id)).toEqual(Array.from({length:18},(_,i)=>i+1));
     expect(new Set(LEVELS.map(l=>l.biome)).size).toBe(4);
-    expect(new Set(LEVELS.map(l=>JSON.stringify(l.colonies.map(c=>[c.x,c.y])))).size).toBe(13);
+    expect(new Set(LEVELS.map(l=>JSON.stringify(l.colonies.map(c=>[c.x,c.y])))).size).toBe(18);
     for(const l of LEVELS){
       expect(new Set(l.colonies.map(c=>c.id)).size).toBe(l.colonies.length);
       const ids=l.factions.map(f=>f.id);
       expect(new Set(ids).size).toBe(ids.length);expect(ids).toContain(1);
       expect(ids.every(id=>Number.isInteger(id)&&id>=1&&id<=4)).toBe(true);
-      expect(l.factions.every(f=>['agile','fast','strong'].includes(f.race))).toBe(true);
+      expect(l.factions.every(f=>['agile','fast','strong','brood'].includes(f.race))).toBe(true);
+      expect(l.colonies.every(c=>['nest','cannon','hatchery','wind'].includes(c.kind))).toBe(true);
+      if(l.objective){const target=l.colonies.find(c=>c.id===l.objective!.target);expect(target?.owner).toBeGreaterThan(1);}
       for(const c of l.colonies){
         expect(c.owner===0||ids.includes(c.owner)).toBe(true);
         expect(c.units>=0&&Number.isFinite(c.units)).toBe(true);
@@ -73,11 +76,16 @@ describe('campaign geometry and ownership',()=>{
 });
 
 describe('bounded campaign robot experiments',()=>{
-  for(const level of LEVELS)for(const difficulty of difficulties)it(`level ${level.id} ${difficulty}: five strategies <=900s`,()=>{
+  for(const level of LEVELS)for(const difficulty of difficulties)it(`level ${level.id} ${difficulty}: six strategies <=900s`,()=>{
     const results=strategies.map(strategy=>run(level,difficulty,strategy));
     for(const result of results){expect(result.time).toBeLessThanOrEqual(900.01);expect(result.dispatches[1]??0).toBeGreaterThan(0);}
     console.log('CAMPAIGN_RESULT '+JSON.stringify(results));
-    if(difficulty==='normal'||difficulty==='easy')expect(results.some(r=>(r.strategy==='agile-planner'||r.strategy==='agile-pulse')&&r.status==='won'),`Agile must win level ${level.id} ${difficulty}`).toBe(true);
+    if(difficulty==='normal'||difficulty==='easy'){
+      expect(results.some(r=>(r.strategy==='agile-planner'||r.strategy==='agile-pulse')&&r.status==='won'),`Agile must win level ${level.id} ${difficulty}`).toBe(true);
+      // Every playable race needs a natural robot win on the forgiving difficulties; hard mode
+      // intentionally keeps losing runs so the matrix still exercises failure states.
+      for(const race of ['agile','fast','strong','brood'])expect(results.some(r=>r.strategy.startsWith(race)&&r.status==='won'),`${race} must win level ${level.id} ${difficulty}`).toBe(true);
+    }
   },120000);
 });
 
@@ -114,8 +122,10 @@ const stats={captures:25,sent:1000,kills:250,skills:1};
 describe('campaign persistence',()=>{
   it('recovers broken JSON, wrong versions and malformed results',()=>{
     for(const text of ['{','null',JSON.stringify({version:2})])expect(new SaveSystem(memory(text)).data).toEqual(freshSave());
-    const raw=freshSave();raw.results.agile={'1':{stars:6,time:1,lost:0},'14':{stars:5,time:1,lost:0},'2':{stars:4,time:-1,lost:0}};
-    expect(new SaveSystem(memory(JSON.stringify(raw))).data.results.agile).toEqual({});
+    const raw=freshSave();raw.results.agile={'1':{stars:6,time:1,lost:0},'19':{stars:5,time:1,lost:0},'2':{stars:4,time:-1,lost:0},'18':{stars:5,time:120,lost:1}};
+    expect(new SaveSystem(memory(JSON.stringify(raw))).data.results.agile).toEqual({'18':{stars:5,time:120,lost:1}});
+    raw.results.brood={'0':{stars:5,time:1,lost:0},'17':{stars:0,time:1,lost:0},'18':{stars:4,time:99,lost:2}};
+    expect(new SaveSystem(memory(JSON.stringify(raw))).data.results.brood).toEqual({'18':{stars:4,time:99,lost:2}});
     const denied={getItem:()=>{throw Error('denied');},setItem:()=>{throw Error('quota');},removeItem:()=>{}};
     const save=new SaveSystem(denied);expect(save.available).toBe(false);expect(()=>save.persist()).not.toThrow();
   });
@@ -133,21 +143,65 @@ describe('campaign persistence',()=>{
     expect(new SaveSystem(storage).data.results.agile['1']).toEqual({stars:4,time:70,lost:2});
     save.record('agile',1,{stars:5,time:100,lost:0},stats);
     expect(save.stars('agile')).toBe(5);expect(save.stars('fast')).toBe(0);
+    save.record('brood',18,{stars:5,time:100,lost:0},stats);
+    expect(new SaveSystem(storage).data.results.brood['18']).toEqual({stars:5,time:100,lost:0});
   });
-  it('unlocks 13 stages and races, earns all achievements once and reloads',()=>{
+  it('unlocks 18 stages and all four races from contiguous Agile clears',()=>{
     const storage=memory();let save=new SaveSystem(storage);
-    expect(save.unlocked('agile')).toBe(1);expect(save.raceUnlocked('fast')).toBe(false);expect(save.raceUnlocked('strong')).toBe(false);
-    for(let id=1;id<=13;id++){
+    expect(save.unlocked('agile')).toBe(1);
+    expect([save.raceUnlocked('agile'),save.raceUnlocked('fast'),save.raceUnlocked('strong'),save.raceUnlocked('brood')]).toEqual([true,false,false,false]);
+    for(let id=1;id<=18;id++){
       save.record('agile',id,{stars:5,time:50,lost:0},stats);
-      save=new SaveSystem(storage);expect(save.unlocked('agile')).toBe(Math.min(13,id+1));
-      expect(save.raceUnlocked('fast')).toBe(id===13);expect(save.raceUnlocked('strong')).toBe(id===13);
+      save=new SaveSystem(storage);expect(save.unlocked('agile')).toBe(Math.min(18,id+1));
+      expect(save.raceUnlocked('fast')).toBe(id>=2);expect(save.raceUnlocked('strong')).toBe(id>=4);expect(save.raceUnlocked('brood')).toBe(id>=7);
     }
+    expect(save.stars('agile')).toBe(90);
+    expect(save.data.results.agile['18']).toEqual({stars:5,time:50,lost:0});
+  });
+  it('requires a contiguous first N rather than a raw result count',()=>{
+    const raw=freshSave();
+    for(const id of [1,3,4,5,6,7])raw.results.agile[id]={stars:5,time:50,lost:0};
+    const save=new SaveSystem(memory(JSON.stringify(raw)));
+    expect(Object.keys(save.data.results.agile)).toHaveLength(6);
+    expect(save.unlocked('agile')).toBe(2);
+    expect(save.raceUnlocked('fast')).toBe(false);
+    expect(save.raceUnlocked('strong')).toBe(false);
+    expect(save.raceUnlocked('brood')).toBe(false);
+  });
+  it('keeps the original thirteen-level achievements and allraces without brood',()=>{
+    const storage=memory();const save=new SaveSystem(storage);
+    for(const race of ['agile','fast','strong'] as RaceId[])for(let id=1;id<=13;id++)save.record(race,id,{stars:5,time:50,lost:0},stats);
+    expect(save.unlocked('agile')).toBe(14);
     expect(save.stars('agile')).toBe(65);
-    for(const race of ['fast','strong'] as RaceId[])for(let id=1;id<=13;id++)save.record(race,id,{stars:5,time:50,lost:0},stats);
-    expect(save.record('agile',1,{stars:1,time:200,lost:2},stats)).toEqual([]);
-    save=new SaveSystem(storage);
+    expect(Object.keys(save.data.results.brood)).toHaveLength(0);
     expect(new Set(save.data.achievements)).toEqual(new Set(ACHIEVEMENTS.map(a=>a.id)));
-    expect(save.data.totals.wins).toBe(40);
-    expect(new Set(save.data.achievements).size).toBe(save.data.achievements.length);
+    expect(save.record('agile',1,{stars:1,time:200,lost:2},stats)).toEqual([]);
+    const reloaded=new SaveSystem(storage);
+    expect(new Set(reloaded.data.achievements)).toEqual(new Set(ACHIEVEMENTS.map(a=>a.id)));
+    expect(reloaded.data.achievements).toHaveLength(new Set(reloaded.data.achievements).size);
+    expect(reloaded.data.totals.wins).toBe(40);
+  });
+  it('never revokes an awarded legacy achievement when old results are missing',()=>{
+    const raw=freshSave();raw.achievements=['crown','perfection','allraces','veteran','first','not-a-badge'];raw.results.agile={'1':{stars:2,time:90,lost:0}};
+    const save=new SaveSystem(memory(JSON.stringify(raw)));
+    expect(new Set(save.data.achievements)).toEqual(new Set(['crown','perfection','allraces','veteran','first']));
+    save.record('agile',2,{stars:1,time:90,lost:0},stats);
+    expect(save.data.achievements).toEqual(expect.arrayContaining(['crown','perfection','allraces','veteran','first']));
+  });
+  it('does not let the added levels stand in for original perfection',()=>{
+    const storage=memory();const save=new SaveSystem(storage);
+    for(let id=1;id<=12;id++)save.record('agile',id,{stars:5,time:50,lost:0},stats);
+    for(let id=14;id<=18;id++)save.record('agile',id,{stars:5,time:50,lost:0},stats);
+    // 85 total stars, but only 60 of them belong to the original thirteen levels.
+    expect(save.stars('agile')).toBe(85);
+    expect(save.data.achievements).not.toContain('perfection');
+    expect(save.data.achievements).not.toContain('crown');
+    save.record('agile',13,{stars:4,time:50,lost:0},stats);
+    expect(save.stars('agile')).toBe(89);
+    expect(save.data.achievements).toContain('crown');
+    expect(save.data.achievements).not.toContain('perfection');
+    save.record('agile',13,{stars:5,time:50,lost:0},stats);
+    expect(save.stars('agile')).toBe(90);
+    expect(save.data.achievements).toContain('perfection');
   });
 });

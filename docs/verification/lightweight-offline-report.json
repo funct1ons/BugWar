@@ -1,0 +1,87 @@
+{
+  "server": "Windows PowerShell 5.1 native TCP HTTP",
+  "unpackedRelease": true,
+  "requests": 136,
+  "errors": [],
+  "failed": [],
+  "external": [],
+  "newFeatures": {
+    "codexCategories": 3,
+    "lockedRaceReadable": true,
+    "roadRulesReadable": true,
+    "illegalRoadRejectedWithoutDebit": true,
+    "battleCodexPausesAndRestores": true
+  },
+  "audio": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-meadow-base.ogg",
+      "music-meadow-motion.ogg",
+      "music-meadow-power.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 4,
+    "activeMusicSources": 3,
+    "currentTrack": "meadow",
+    "pendingTrack": null,
+    "currentTrackTime": 2.421333333333333,
+    "currentTrackDuration": 106.66666666666667,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": -0.01,
+    "throttledPlays": 9,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 0,
+    "paused": false,
+    "pauseGain": 0.44941261410713196,
+    "targetPauseGain": 1,
+    "pendingIntensity": 0,
+    "mixSettledAt": 8.004444444444445,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-meadow-base.ogg",
+        "gain": 0.44941261410713196,
+        "targetGain": 1,
+        "startedAt": 2.84
+      },
+      {
+        "name": "motion",
+        "file": "music-meadow-motion.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 2.84
+      },
+      {
+        "name": "power",
+        "file": "music-meadow-power.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 2.84
+      }
+    ],
+    "scheduledTransitionTime": 7.2844444444444445,
+    "nextBarTime": 7.2844444444444445,
+    "decodedBytes": 124026232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "realMouseCapture": true,
+  "passed": true
+}

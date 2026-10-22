@@ -34,13 +34,25 @@ try{
  const growthRows=await page.locator('#modal .codex-firepower-table tbody tr').allTextContents();
  assert.equal(growthRows.length,4,'approved 0/10/30/60 growth nodes are deployed');
  report.cannonGrowth={text:cannonText,rows:growthRows};
+ await page.locator('#modal [data-action=codex-entry][data-value="building-hatchery"]').click();
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/1\.5/);
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/100/);
+ await page.locator('#modal [data-action=codex-entry][data-value="building-wind"]').click();
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/1\.35|135|35%/);
+ await page.locator('#modal [data-action=codex-tab][data-value="races"]').click();
+ await page.locator('#modal [data-action=codex-entry][data-value="race-brood"]').click();
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/0\.90|0\.9/);
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/8/);
+ report.lightweight={levels:18,races:4,broodReadable:true,hatcheryAndWindReadable:true};
  await page.keyboard.press('Escape');
  await page.locator('[data-action=lore]').click();
- assert.equal(await page.locator('.lore-grid article').count(),4);report.storyActs=4;
+ assert.equal(await page.locator('.lore-grid article').count(),5);report.storyActs=4;report.epilogue=true;
  await page.locator('#modal [data-action=close]').last().click();
  await page.locator('[data-action=campaign]').first().click();
- assert.equal(await page.locator('.level-card').count(),13);
- assert.equal(await page.locator('.level-card:disabled').count(),12);
+ assert.equal(await page.locator('.level-card').count(),18);
+ assert.equal(await page.locator('.level-card:disabled').count(),17);
+ assert.equal(await page.locator('.race-card').count(),4);
+ assert.equal(await page.locator('.race-card:disabled').count(),3);
  // Give the gesture-unlocked menu cue time to finish downloading before leaving it.
  // Rapid navigation intentionally aborts obsolete music; that is not a missing asset.
  if(!audio.has('music-menu.ogg'))await page.waitForResponse(r=>/\/music-menu\.ogg$/.test(r.url())&&r.status()===200,{timeout:45000});
@@ -51,7 +63,7 @@ try{
  const click=(x,y)=>page.mouse.click(box.x+x*box.width/1600,box.y+y*box.height/900);
  // Production-only UI probe: no debug interface, simulation or save writes.
  await click(320,465);await click(1280,465);
- assert.match(await page.locator('#toast.show').innerText(),/相邻|道路|连接/);
+ assert.equal(await page.locator('#toast.show').innerText(),'无可用路径');
  await click(320,465);await click(730,330);
  await page.waitForFunction(()=>document.querySelector('.faction-1 small')?.textContent==='2 巢',undefined,{timeout:20000});
  report.capture={faction:await page.locator('.faction-1 small').textContent(),time:await page.locator('#timer').textContent(),fps:await page.locator('#perf').textContent(),method:'Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation.'};
@@ -62,7 +74,7 @@ try{
  const frozenTimer=await page.locator('#timer').textContent();
  await page.locator('#modal [data-action=codex-tab][data-value="command"]').click();
  await page.locator('#modal [data-action=codex-entry][data-value="command-roads"]').click();
- assert.match(await page.locator('#modal .codex-detail').innerText(),/相邻/);
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/己方|中转|路径/);
  await page.keyboard.press('p');await page.waitForTimeout(1200);
  assert.equal(await page.locator('#timer').textContent(),frozenTimer,'production codex freezes battle timer and blocks P');
  await page.screenshot({path:`${output}/online-codex.png`});

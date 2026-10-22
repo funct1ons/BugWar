@@ -2,7 +2,7 @@
 
 ## 成品原创资源
 
-- `public/art/*.svg`：本项目原创矢量曲线／程序绘制的自然虫族封面、四幕背景、五阵营巢穴与炮塔、三族四帧虫兵及徽章，不包含原版提取素材或第三方商业角色。正式封面由已确认的原创样张提升；生成器为 `scripts/generate-cover.cjs`，其余为 `public/art/generate_art.py`。没有复用素材检索中的作者作品，也没有调用图像生成接口。来源、尺寸与方法见 `docs/art-direction.md`。
+- `public/art/*.svg`：本项目原创矢量曲线／程序绘制的自然虫族封面、四幕背景、五阵营生产巢／炮塔／孵化巢／风巢、四族四帧虫兵及徽章，不包含原版提取素材或第三方商业角色。正式封面由已确认的原创样张提升；生成器为 `scripts/generate-cover.cjs`，旧资源为 `public/art/generate_art.py`；新增繁殖族、孵化巢与风巢为 `scripts/generate-gameplay-art.cjs`，均原创 SVG 曲线／程序绘制，不包含新的第三方素材。没有复用素材检索中的作者作品，也没有调用图像生成接口。来源、尺寸与方法见 `docs/art-direction.md`。
 - `public/audio/music-*.ogg`、`*.mp3`：本项目原创程序编曲，使用 **Versilian Studios / Sam Gossner 的 VSCO 2 Community Edition** 真实管弦采样离线渲染，不是现场交响乐团录音，也不再是旧版简易电子合成。原始采样为 **CC0-1.0**；官方说明：https://versilian-studios.com/vsco-community/ ，源库：https://github.com/sgossner/VSCO-2-CE 。仅分发完成混音，不把整个采样库放进游戏。逐项来源、原始许可、版本与SHA见 `public/audio/SCORE-LICENSES.txt`、`score-manifest.json` 及 `docs/score-production.md`。
 - `public/audio/sfx-*.wav`：八个既有原创程序合成操作音效，未改音色与字节，不含外部采样。历史生成器 `scripts/generate-audio.py` 保留复现来源，但已防止误覆盖新管弦配乐；当前音乐生成器为 `scripts/generate-score.py`。
 - 关卡地图、中文文本、UI、粒子与战斗效果：本项目原创。「雨后灯火」四幕剧情、巢灯与种核设定为本重制版新增，不声称来自原作。

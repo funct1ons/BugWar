@@ -1,9 +1,10 @@
-// Independent, no-dependency acceptance for the 36 formal SVG assets.
+// Independent, no-dependency acceptance for the 54 formal SVG assets.
 //
 // The browser contact sheet (scripts/art-preview.cjs) proves what Edge actually
 // decodes and clips.  This suite checks the source contract that the raster
-// sheet cannot: declared dimensions, self-contained markup, default aliases and
-// that owner variants carry a substantial, genuinely different body colour.
+// sheet cannot: declared dimensions, self-contained markup, default aliases,
+// four separately clipped gait frames and that owner variants carry a
+// substantial, genuinely different body colour.
 //
 // The project deliberately does not ship @types/node; Vitest resolves Node
 // built-ins at runtime, so the two imports below are suppressed for tsc.
@@ -21,8 +22,15 @@ const IS_FORMAL_DIR = !env.BUGWAR_ART_DIR;
 // The approved cover is promoted byte-for-byte; docs/design-previews is a
 // temporary design workspace and is not a runtime/test dependency.
 const APPROVED_COVER_SHA256 = '6abc652dedcea92021a66fa02f1fb1728ac30647a216eec9ec49f988d8e7942a';
-const RACES = ['agile', 'fast', 'strong'] as const;
+const RACES = ['agile', 'fast', 'strong', 'brood'] as const;
+const BUILDINGS = ['nest', 'cannon', 'hatchery', 'wind'] as const;
 const OWNERS = [0, 1, 2, 3, 4] as const;
+const FRAME_W = 24;
+const FRAME_H = 32;
+// 1 cover + 4 battlefields + 4 buildings x 5 owners + 4 building aliases +
+// 4 races x 5 owners + 4 race aliases + 1 emblem.
+const TOTAL_FILES = 1 + 4 + BUILDINGS.length * OWNERS.length + BUILDINGS.length
+  + RACES.length * OWNERS.length + RACES.length + 1;
 const OWNER_HEX = ['#92A18B', '#327FC1', '#C85F48', '#8B70BA', '#C49336'] as const;
 const OWNER_NAMES = ['neutral', 'blue', 'red', 'purple', 'gold'] as const;
 
@@ -35,21 +43,18 @@ const expectSize = (name: string, width: number, height: number) => {
 expectSize('cover.svg', 1600, 900);
 for (const biome of ['meadow', 'roots', 'marsh', 'amber']) expectSize(`background-${biome}.svg`, 1600, 900);
 for (const owner of OWNERS) {
-  expectSize(`nest-${owner}.svg`, 160, 160);
-  expectSize(`cannon-${owner}.svg`, 160, 160);
+  for (const building of BUILDINGS) expectSize(`${building}-${owner}.svg`, 160, 160);
 }
 for (const race of RACES) for (const owner of OWNERS) expectSize(`bug-${race}-${owner}.svg`, 96, 32);
-expectSize('nest.svg', 160, 160);
-expectSize('cannon.svg', 160, 160);
+for (const building of BUILDINGS) expectSize(`${building}.svg`, 160, 160);
 for (const race of RACES) expectSize(`bug-${race}.svg`, 96, 32);
 expectSize('emblem.svg', 256, 256);
 
 const REQUIRED = Object.keys(EXPECTED);
 const BUG_OWNER_FILES = RACES.flatMap(race => OWNERS.map(owner => `bug-${race}-${owner}.svg`));
-const BUILDING_OWNER_FILES = OWNERS.flatMap(owner => [`nest-${owner}.svg`, `cannon-${owner}.svg`]);
+const BUILDING_OWNER_FILES = BUILDINGS.flatMap(building => OWNERS.map(owner => `${building}-${owner}.svg`));
 const DEFAULT_PAIRS: Array<[string, string]> = [
-  ['nest.svg', 'nest-0.svg'],
-  ['cannon.svg', 'cannon-0.svg'],
+  ...BUILDINGS.map(building => [`${building}.svg`, `${building}-0.svg`] as [string, string]),
   ...RACES.map(race => [`bug-${race}.svg`, `bug-${race}-1.svg`] as [string, string]),
 ];
 
@@ -82,6 +87,78 @@ function canonical(svg: string): string {
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/>\s+</g, '><')
     .trim();
+}
+
+/** Attributes of any single start tag, e.g. one <ellipse> inside a gait cell. */
+function tagAttrs(tag: string): Record<string, string> {
+  const attrs: Record<string, string> = {};
+  for (const match of tag.matchAll(/([A-Za-z_:][\w:.-]*)\s*=\s*["']([^"']*)["']/g)) attrs[match[1]] = match[2];
+  return attrs;
+}
+
+const PATH_ARITY: Record<string, number> = { M: 2, L: 2, T: 2, C: 6, S: 4, Q: 4, H: 1, V: 1, Z: 0 };
+
+/**
+ * Every absolute coordinate of an uppercase SVG path.  The art contract draws
+ * from coordinates only, so relative commands are a contract violation rather
+ * than something to silently resolve here.
+ */
+function pathPoints(d: string): Array<{ x: number; y: number }> {
+  const tokens = d.match(/[A-Za-z]|-?\d*\.?\d+(?:e[-+]?\d+)?/g) ?? [];
+  const points: Array<{ x: number; y: number }> = [];
+  let command = '';
+  let index = 0;
+  let x = 0;
+  let y = 0;
+  while (index < tokens.length) {
+    if (/[A-Za-z]/.test(tokens[index])) {
+      command = tokens[index++];
+      if (PATH_ARITY[command] === undefined) throw new Error(`relative or unsupported path command "${command}"`);
+    }
+    const arity = PATH_ARITY[command];
+    if (command === 'Z') continue;
+    if (command === 'H') { x = Number(tokens[index++]); points.push({ x, y }); continue; }
+    if (command === 'V') { y = Number(tokens[index++]); points.push({ x, y }); continue; }
+    const values: number[] = [];
+    for (let read = 0; read < arity; read++) values.push(Number(tokens[index++]));
+    for (let read = 0; read < values.length; read += 2) points.push({ x: values[read], y: values[read + 1] });
+    x = values[values.length - 2];
+    y = values[values.length - 1];
+  }
+  return points;
+}
+
+interface Extents { minX: number; maxX: number; minY: number; maxY: number }
+
+/** Drawn extents (path points plus ellipse/circle bounds) of one gait cell. */
+function cellExtents(cell: string): Extents {
+  const extents: Extents = { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity };
+  const add = (px: number, py: number) => {
+    extents.minX = Math.min(extents.minX, px);
+    extents.maxX = Math.max(extents.maxX, px);
+    extents.minY = Math.min(extents.minY, py);
+    extents.maxY = Math.max(extents.maxY, py);
+  };
+  for (const match of cell.matchAll(/<path\b[^>]*>/g)) {
+    const d = tagAttrs(match[0]).d;
+    if (d) for (const point of pathPoints(d)) add(point.x, point.y);
+  }
+  for (const match of cell.matchAll(/<ellipse\b[^>]*>|<circle\b[^>]*>/g)) {
+    const attrs = tagAttrs(match[0]);
+    const cx = numeric(attrs.cx) ?? 0;
+    const cy = numeric(attrs.cy) ?? 0;
+    if (match[0].startsWith('<circle')) {
+      const r = numeric(attrs.r) ?? 0;
+      add(cx - r, cy - r);
+      add(cx + r, cy + r);
+    } else {
+      const rx = numeric(attrs.rx) ?? 0;
+      const ry = numeric(attrs.ry) ?? 0;
+      add(cx - rx, cy - ry);
+      add(cx + rx, cy + ry);
+    }
+  }
+  return extents;
 }
 
 interface RGB { r: number; g: number; b: number }
@@ -202,9 +279,10 @@ function fnv(text: string): string {
 const PALETTE_LAB = OWNER_HEX.map(hex => rgbToLab(parseColor(hex)!));
 
 describe('formal art set', () => {
-  it('ships all 36 formal SVG files', () => {
-    expect(existing.length, `${ART_DIR} must contain at least 36 SVG files`).toBeGreaterThanOrEqual(36);
-    expect(missing, `missing formal SVG files (${missing.length}/36): ${missing.join(', ')}`).toEqual([]);
+  it(`ships all ${TOTAL_FILES} formal SVG files`, () => {
+    expect(REQUIRED.length, 'declared asset contract').toBe(TOTAL_FILES);
+    expect(existing.length, `${ART_DIR} must contain at least ${TOTAL_FILES} SVG files`).toBeGreaterThanOrEqual(TOTAL_FILES);
+    expect(missing, `missing formal SVG files (${missing.length}/${TOTAL_FILES}): ${missing.join(', ')}`).toEqual([]);
   });
 
   (IS_FORMAL_DIR ? it : it.skip)('cover.svg is the approved cover, byte-for-byte', () => {
@@ -238,6 +316,56 @@ deep('formal SVG dimensions and viewBox', () => {
       expect(attrs.viewBox?.replace(/,/g, ' ').replace(/\s+/g, ' ').trim()).toBe('0 0 96 32');
     },
   );
+});
+
+deep('race sheets are four separately clipped 24x32 gaits', () => {
+  const sheets = [...BUG_OWNER_FILES, ...RACES.map(race => `bug-${race}.svg`)];
+
+  it.each(sheets)('%s', name => {
+    const svg = read(name);
+    const frames = [...svg.matchAll(/<g transform="translate\((\d+) 0\)" data-frame="(\d+)" data-bounds="0 0 24 32">/g)];
+    expect(frames.length, `${name} frame groups`).toBe(4);
+    expect(frames.map(match => Number(match[1])), `${name} frame origins`)
+      .toEqual([0, FRAME_W, FRAME_W * 2, FRAME_W * 3]);
+    expect(frames.map(match => Number(match[2])), `${name} frame indices`).toEqual([0, 1, 2, 3]);
+
+    for (let frame = 0; frame < 4; frame++) {
+      expect(svg, `${name} cell${frame} clip path`).toContain(
+        `<clipPath id="cell${frame}" clipPathUnits="userSpaceOnUse">` +
+        `<rect x="0" y="0" width="${FRAME_W}" height="${FRAME_H}"/></clipPath>`,
+      );
+      expect(svg, `${name} cell${frame} applied`).toContain(`clip-path="url(#cell${frame})"`);
+    }
+
+    // A copy-pasted frame would leave two identical cell bodies once the cell
+    // id is normalised: every gait has to be its own pose.
+    const cells = svg.split(/<g transform="translate\(\d+ 0\)" data-frame="\d"/).slice(1);
+    expect(cells.length, `${name} cell bodies`).toBe(4);
+    const poses = cells.map(cell => cell.replace(/cell\d/g, 'cell'));
+    expect(new Set(poses).size, `${name} must contain four different gaits`).toBe(4);
+  });
+});
+
+deep('no gait geometry escapes its own 24x32 cell', () => {
+  // Stroke widths overhang the drawn coordinates by less than a pixel; the
+  // clip path is the hard cut.  This guard catches a pose that was authored
+  // outside its cell and would only survive by being clipped away.
+  const SLACK = 1.5;
+  const sheets = [...BUG_OWNER_FILES, ...RACES.map(race => `bug-${race}.svg`)];
+
+  it.each(sheets)('%s', name => {
+    const svg = read(name);
+    const cells = svg.split(/<g transform="translate\(\d+ 0\)" data-frame="\d"/).slice(1);
+    expect(cells.length, `${name} cell bodies`).toBe(4);
+    cells.forEach((cell, frame) => {
+      const extents = cellExtents(cell);
+      const detail = `${name} frame ${frame} x[${extents.minX}, ${extents.maxX}] y[${extents.minY}, ${extents.maxY}]`;
+      expect(extents.minX, detail).toBeGreaterThanOrEqual(-SLACK);
+      expect(extents.maxX, detail).toBeLessThanOrEqual(FRAME_W + SLACK);
+      expect(extents.minY, detail).toBeGreaterThanOrEqual(-SLACK);
+      expect(extents.maxY, detail).toBeLessThanOrEqual(FRAME_H + SLACK);
+    });
+  });
 });
 
 deep('formal SVG markup is self-contained', () => {
@@ -279,8 +407,7 @@ deep('default UI SVG files match the documented owner variant', () => {
 
 deep('owner variants carry a substantial, distinct body colour', () => {
   const families: Array<{ label: string; files: string[] }> = [
-    { label: 'nest', files: OWNERS.map(owner => `nest-${owner}.svg`) },
-    { label: 'cannon', files: OWNERS.map(owner => `cannon-${owner}.svg`) },
+    ...BUILDINGS.map(building => ({ label: building, files: OWNERS.map(owner => `${building}-${owner}.svg`) })),
     ...RACES.map(race => ({ label: `bug-${race}`, files: OWNERS.map(owner => `bug-${race}-${owner}.svg`) })),
   ];
 

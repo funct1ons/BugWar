@@ -1,5 +1,5 @@
-import { hasRoad } from '../core/roads';
-import type { Colony, Road } from '../core/types';
+import { findDispatchPath, hasRoad } from '../core/roads';
+import type { Colony, Road, World } from '../core/types';
 
 /**
  * Pure road geometry and preview helpers for BattleScene.
@@ -118,9 +118,9 @@ export function adjacentTargets(roads: readonly Road[], sources: Iterable<string
 }
 
 /**
- * Sources with a direct road to the target. This is exactly the list handed to
- * Simulation.dispatch; Simulation performs the same hasRoad check, so the UI
- * never holds a second legality rule.
+ * Sources with a direct road to the target. Kept for legacy geometry tests and
+ * the direct-edge helpers above; live orders use reachableSources() so the UI
+ * and Simulation ask the exact same routing question.
  */
 export function directSources(roads: readonly Road[], sources: Iterable<string>, target: string): string[] {
   if (!target) return [];
@@ -129,6 +129,109 @@ export function directSources(roads: readonly Road[], sources: Iterable<string>,
     if (source !== target && hasRoad(roads, source, target)) found.push(source);
   }
   return found;
+}
+
+/** The slice of a live world needed to answer a dispatch-routing question. */
+export type DispatchWorld = Pick<World, 'roads' | 'colonies'>;
+
+export interface ReachableSource {
+  readonly source: string;
+  /** Full node list from source to target, inclusive; `path[0]` is the source. */
+  readonly path: string[];
+}
+
+/**
+ * Core returns the dispatch route; tolerate a bare intermediate list by pinning
+ * both endpoints. A path shorter than one segment is not a route.
+ */
+function normalizePath(path: readonly string[] | null, from: string, to: string): string[] | null {
+  if (!path || !path.length) return null;
+  const nodes = [...path];
+  if (nodes[0] !== from) nodes.unshift(from);
+  if (nodes[nodes.length - 1] !== to) nodes.push(to);
+  if (nodes.length < 2) return null;
+  for (const node of nodes) if (typeof node !== 'string' || !node) return null;
+  return nodes;
+}
+
+/**
+ * Selected sources that can reach `target` along owned intermediates, with the
+ * exact path core/roads.findDispatchPath chose. Source order is preserved so the
+ * preview and the dispatch call stay deterministic and identical.
+ */
+export function reachableSources(
+  world: DispatchWorld,
+  sources: Iterable<string>,
+  target: string,
+  owner: number,
+): ReachableSource[] {
+  if (!target || !Number.isInteger(owner) || owner <= 0) return [];
+  const found: ReachableSource[] = [];
+  for (const source of asSet(sources)) {
+    if (!source || source === target) continue;
+    const path = normalizePath(findDispatchPath(world, source, target, owner), source, target);
+    if (path) found.push({ source, path });
+  }
+  return found;
+}
+
+/** Every colony (any owner) reachable from at least one source through owned intermediates. */
+export function reachableTargets(world: DispatchWorld, sources: Iterable<string>, owner: number): Set<string> {
+  const sourceSet = asSet(sources);
+  const targets = new Set<string>();
+  if (!sourceSet.size || owner <= 0) return targets;
+  for (const colony of world.colonies) {
+    if (!colony?.id || sourceSet.has(colony.id)) continue;
+    if (reachableSources(world, sourceSet, colony.id, owner).length) targets.add(colony.id);
+  }
+  return targets;
+}
+
+/** Map each consecutive pair of a real path to its rendered road segment. */
+export function pathSegments(path: readonly string[], segments: readonly RoadSegment[]): RoadSegment[] {
+  const byPair = new Map(segments.map((segment) => [pairKey(segment.from, segment.to), segment]));
+  const found: RoadSegment[] = [];
+  for (let i = 1; i < path.length; i++) {
+    const segment = byPair.get(pairKey(path[i - 1], path[i]));
+    if (segment && !found.includes(segment)) found.push(segment);
+  }
+  return found;
+}
+
+export interface RoutePreview {
+  /** Selected sources, as a set for cheap membership checks. */
+  readonly sources: Set<string>;
+  /** Per-source real routes to the hovered colony (union is drawn). */
+  readonly hoverRoutes: ReachableSource[];
+  /** All colonies reachable from any source, friendly or not. */
+  readonly targets: Set<string>;
+  /** First real route to the hovered colony, inclusive; empty when unreachable. */
+  readonly hoverPath: string[];
+  /** Real road segments of every hovered route, de-duplicated. */
+  readonly hoverSegments: RoadSegment[];
+}
+
+/**
+ * One preview snapshot for path-based orders: reachable target rings and the
+ * actual multi-edge route to the hovered colony. The route always comes from
+ * core/roads.findDispatchPath — never a synthetic straight line between colonies.
+ */
+export function routePreview(
+  world: DispatchWorld,
+  segments: readonly RoadSegment[],
+  sources: Iterable<string>,
+  owner: number,
+  hoverId?: string | null,
+): RoutePreview {
+  const sourceSet = asSet(sources);
+  const targets = reachableTargets(world, sourceSet, owner);
+  const hover = hoverId && !sourceSet.has(hoverId) ? hoverId : '';
+  const hoverRoutes = hover ? reachableSources(world, sourceSet, hover, owner) : [];
+  const hoverSegments: RoadSegment[] = [];
+  for (const route of hoverRoutes) {
+    for (const segment of pathSegments(route.path, segments)) if (!hoverSegments.includes(segment)) hoverSegments.push(segment);
+  }
+  return { sources: sourceSet, hoverRoutes, targets, hoverPath: hoverRoutes[0]?.path ?? [], hoverSegments };
 }
 
 /**

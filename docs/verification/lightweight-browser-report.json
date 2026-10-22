@@ -1,0 +1,268 @@
+{
+  "passed": true,
+  "errors": [],
+  "missing": [],
+  "external": [],
+  "fixtures": [
+    "Friendly relay: start level1, freeze natural production/AI; a=80,b=100 friendly, d empty enemy. Only input command a→d uses real clicks; simulation travels normally. Not a natural campaign win.",
+    "Cap: paused scene, controlled garrison 99.98 then135; explicit Simulation.step and dispatch, not elapsed natural play.",
+    "Road clash: equal20 opposing batches on real a–b edge, no production/AI; direct dispatch seeds both sides, then normal time/render.",
+    "Core objective: set only marked target owner to1; normal tick triggers goal victory while other enemies remain. Not natural campaign play."
+  ],
+  "layouts": [
+    {
+      "level": 1,
+      "kinds": [
+        "nest"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 716,
+      "hudTop": 792
+    },
+    {
+      "level": 2,
+      "kinds": [
+        "nest"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 716,
+      "hudTop": 792
+    },
+    {
+      "level": 3,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 756,
+      "hudTop": 792
+    },
+    {
+      "level": 4,
+      "kinds": [
+        "nest",
+        "cannon",
+        "hatchery"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 766,
+      "hudTop": 792
+    },
+    {
+      "level": 5,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    },
+    {
+      "level": 6,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": {
+        "type": "capture",
+        "target": "h"
+      },
+      "missingTextures": [],
+      "maxNumberBottom": 766,
+      "hudTop": 792
+    },
+    {
+      "level": 7,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 746,
+      "hudTop": 792
+    },
+    {
+      "level": 8,
+      "kinds": [
+        "nest",
+        "cannon",
+        "wind"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    },
+    {
+      "level": 9,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 756,
+      "hudTop": 792
+    },
+    {
+      "level": 10,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    },
+    {
+      "level": 11,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    },
+    {
+      "level": 12,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    },
+    {
+      "level": 13,
+      "kinds": [
+        "nest",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    },
+    {
+      "level": 14,
+      "kinds": [
+        "nest",
+        "hatchery",
+        "cannon"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 726,
+      "hudTop": 792
+    },
+    {
+      "level": 15,
+      "kinds": [
+        "nest",
+        "wind"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 746,
+      "hudTop": 792
+    },
+    {
+      "level": 16,
+      "kinds": [
+        "nest"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 746,
+      "hudTop": 792
+    },
+    {
+      "level": 17,
+      "kinds": [
+        "nest",
+        "hatchery"
+      ],
+      "objective": null,
+      "missingTextures": [],
+      "maxNumberBottom": 756,
+      "hudTop": 792
+    },
+    {
+      "level": 18,
+      "kinds": [
+        "nest",
+        "wind"
+      ],
+      "objective": {
+        "type": "capture",
+        "target": "i"
+      },
+      "missingTextures": [],
+      "maxNumberBottom": 776,
+      "hudTop": 792
+    }
+  ],
+  "expectedMusicAborts": [],
+  "freshCampaign": {
+    "levels": 18,
+    "races": 4,
+    "lockedRaces": 3
+  },
+  "blockedRoute": {
+    "text": "无可用路径",
+    "noDebit": true,
+    "expires": true
+  },
+  "relay": {
+    "relay": 100,
+    "count": 40,
+    "sent": 40,
+    "realMouseOrder": true,
+    "actualArrival": true
+  },
+  "cap": {
+    "clamped": 100,
+    "over": 135,
+    "sent": 67,
+    "resumed": 68.99999999999994
+  },
+  "clash": {
+    "kills": 20,
+    "casualties": 20,
+    "captures": 0,
+    "owners": [
+      1,
+      2
+    ]
+  },
+  "legacy": {
+    "version": 1,
+    "next": 14,
+    "brood": true,
+    "fast1": 4,
+    "music": 0.28,
+    "achievements": [
+      "crown",
+      "perfection"
+    ],
+    "emptyBrood": true
+  },
+  "captureCore": {
+    "level": 6,
+    "target": "h",
+    "immediateWin": true
+  }
+}

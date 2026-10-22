@@ -1,4 +1,5 @@
 import type { LevelConfig, World } from '../core/types';
+import { isProductive } from '../core/rules';
 import type { MusicIntensity, ScoreId } from './score';
 
 /** AudioSystem owns bar-boundary scheduling; this director only requests layers. */
@@ -36,7 +37,7 @@ export class MusicDirector {
   }
 
   startLevel(level: LevelConfig) {
-    this.mode = 'battle'; this.cue = level.id === 13 ? 'finale' : level.biome;
+    this.mode = 'battle'; this.cue = level.id === 13 || level.id === 18 ? 'finale' : level.biome;
     this.clock = null; this.pending = this.time = this.changed = 0;
     this.pressure = this.activity = 0; this.intensity = 0;
     this.previous = { kills: 0, casualties: 0, captures: 0, lost: 0 };
@@ -44,7 +45,7 @@ export class MusicDirector {
     const units = own.reduce((s, c) => s + finite(c.units), 0);
     const enemy = level.colonies.filter(c => c.owner > 1).reduce((s, c) => s + finite(c.units), 0);
     this.baselineRatio = (enemy + 20) / (units + 20);
-    this.initialNests = this.peakNests = Math.max(1, own.filter(c => c.kind === 'nest').length);
+    this.initialNests = this.peakNests = Math.max(1, own.filter(c => isProductive(c.kind)).length);
     this.signals = { balance: 0, incoming: 0, nestLoss: 0, density: 0 };
     this.setPaused(false); this.audio.setIntensity(0); this.audio.music(this.cue);
   }
@@ -74,15 +75,15 @@ export class MusicDirector {
     let own = 0, enemy = 0, incoming = 0, engaged = 0, nests = 0;
     const targets = new Map(world.colonies.map(c => [c.id, c]));
     for (const c of world.colonies) {
-      if (c.owner === 1) { own += finite(c.units); if (c.kind === 'nest') nests++; }
+      if (c.owner === 1) { own += finite(c.units); if (isProductive(c.kind)) nests++; }
       else if (c.owner > 1) enemy += finite(c.units);
     }
     for (const f of world.fleets) {
-      const count = finite(f.count), target = targets.get(f.to);
+      const count = finite(f.count), target = targets.get(f.destination ?? f.to);
       if (f.owner === 1) own += count;
       else if (f.owner > 1) enemy += count;
       if (f.owner > 1 && target?.owner === 1) incoming += count;
-      if (f.owner > 0 && target && target.owner > 0 && target.owner !== f.owner) engaged += count;
+      if (f.engaging || f.owner > 0 && target && target.owner > 0 && target.owner !== f.owner) engaged += count;
     }
     this.peakNests = Math.max(this.peakNests, nests);
     // Cumulative statistics survive scene event-buffer draining. Deltas therefore cannot

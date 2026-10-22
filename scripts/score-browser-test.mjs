@@ -81,12 +81,12 @@ try {
   }
   report.levels=[];
   // Actual app start paths; fixture only unlocks levels, not a claimed campaign playthrough.
-  for(let index=0;index<13;index++){
+  for(let index=0;index<18;index++){
     await page.evaluate(index=>{
-      const a=window.__BUGWAR__;for(let i=1;i<=13;i++)a.save.data.results.agile[i]={stars:3,time:100,lost:0};
+      const a=window.__BUGWAR__;for(let i=1;i<=18;i++)a.save.data.results.agile[i]={stars:3,time:100,lost:0};
       a.start(index);a.scene.paused=true;
     },index);
-    const cue=index===12?'finale':index<3?'meadow':index<6?'roots':index<9?'marsh':index===11?'roots':'amber';
+    const cue=['meadow','meadow','meadow','roots','roots','roots','marsh','marsh','marsh','amber','amber','roots','finale','meadow','marsh','roots','amber','finale'][index];
     await page.waitForFunction(cue=>{const d=window.__BUGWAR__.audio.diagnostics();return d.currentTrack===cue&&d.pendingLoads===0&&!d.crossfading;},cue,{timeout:30000});
     const row=await page.evaluate(()=>({level:window.__BUGWAR__.levelIndex+1,audio:window.__BUGWAR__.audio.diagnostics(),director:window.__BUGWAR__.music.diagnostics()}));
     assert.equal(row.director.cue,cue);assert.equal(row.audio.musicLoop,true);

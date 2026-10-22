@@ -49,8 +49,8 @@ const degrees = (level: LevelConfig) =>
   new Map(level.colonies.map(c => [c.id, neighboursOf(level.roads, c.id).length] as const));
 
 describe('fixed campaign roads', () => {
-  it('ships thirteen legal undirected road lists', () => {
-    expect(LEVELS).toHaveLength(13);
+  it('ships eighteen legal undirected road lists', () => {
+    expect(LEVELS).toHaveLength(18);
     for (const level of LEVELS) {
       const known = new Set(level.colonies.map(c => c.id));
       expect(Array.isArray(level.roads)).toBe(true);

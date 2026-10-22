@@ -3,11 +3,10 @@ import {chromium} from '@playwright/test';
 import {spawn} from 'node:child_process';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import ts from 'typescript';
-// Load independent gameplay constants, not copied UI strings or duplicated balance values.
-const loadConstants=async path=>import('data:text/javascript;base64,'+Buffer.from(ts.transpileModule(await fs.readFile(path,'utf8'),{compilerOptions:{module:ts.ModuleKind.ESNext}}).outputText).toString('base64'));
-const {RACES}=await loadConstants('src/core/types.ts');
-const {BATTLE_RULES}=await loadConstants('src/core/rules.ts');
+import {build} from 'esbuild';
+// Bundle dependencies too: shared rules may import runtime race constants.
+const constants=await build({stdin:{contents:"export {RACES} from './src/core/types.ts';export {BATTLE_RULES} from './src/core/rules.ts';",resolveDir:process.cwd(),loader:'ts'},bundle:true,write:false,format:'esm',platform:'node'});
+const {RACES,BATTLE_RULES}=await import('data:text/javascript;base64,'+Buffer.from(constants.outputFiles[0].text).toString('base64'));
 const port=Number(process.env.ROADS_PORT||4182),out='test-results';
 await fs.mkdir(out,{recursive:true});
 const server=spawn(process.execPath,['scripts/serve.mjs'],{env:{...process.env,PORT:String(port)},stdio:'pipe'});
@@ -34,7 +33,7 @@ async function checkCodex(page){
  assert.equal(await categoryButtons().count(),3,'race/building/command categories');
  const categories=await categoryButtons().evaluateAll(es=>es.map(e=>({id:e.dataset.value,title:e.textContent.trim()})));
  assert.match(categories.map(c=>c.title).join(' '),/虫族|族群/);assert.match(categories.map(c=>c.title).join(' '),/建筑/);assert.match(categories.map(c=>c.title).join(' '),/指挥/);
- const expectedEntries={races:['race-agile','race-fast','race-strong'],buildings:['building-nest','building-cannon'],command:['command-roads','command-storm','command-ownership','command-controls']};
+ const expectedEntries={races:['race-agile','race-fast','race-strong','race-brood'],buildings:['building-nest','building-hatchery','building-wind','building-cannon'],command:['command-roads','command-storm','command-ownership','command-controls']};
  const seen=new Set(),contents=[];
  for(const category of categories){
   await page.locator(`[data-action="codex-tab"][data-value="${category.id}"]`).click();
@@ -63,10 +62,10 @@ async function checkCodex(page){
  }
  for(const id of Object.keys(RACES))assert.ok(seen.has(`race-${id}`),`all races include ${id}`);
  const allText=contents.map(c=>c.text).join('\n');
- assert.match(allText,/相邻/);assert.match(allText,/无向|双向/);assert.match(allText,/不会自动|不自动|手动/);assert.match(allText,/25/);assert.match(allText,/50/);assert.match(allText,/75/);assert.match(allText,/100/);assert.match(allText,/取整|整数|向下/);assert.match(allText,/友|增援/);assert.match(allText,/胜|获胜/);
+ assert.match(allText,/相邻/);assert.match(allText,/无向|双向/);assert.match(allText,/自动中转|自动.*通过|中转|途经/);assert.match(allText,/遭遇|相遇|拦截/);assert.match(allText,/25/);assert.match(allText,/50/);assert.match(allText,/75/);assert.match(allText,/100/);assert.match(allText,/取整|整数|向下/);assert.match(allText,/友|增援/);assert.match(allText,/胜|获胜/);
  const storm=contents.find(c=>c.id==='command-storm');assert.ok(storm,'skill documented');await page.locator('[data-action="codex-entry"][data-value="command-storm"]').click();await checkNumber('施放消耗',BATTLE_RULES.skillCost);await checkNumber('作用半径',BATTLE_RULES.skillRadius);await checkNumber('每个目标',BATTLE_RULES.skillDamage);assert.match(storm.text,/不.*(?:占领|归属|所有权)/);
  // Keyboard is exercised through actual Tab/Enter, not DOM event dispatch.
- await categoryButtons().first().click();await categoryButtons().first().focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('.codex-shell').getAttribute('data-codex-tab'),'buildings');await page.keyboard.press('ArrowDown');assert.equal(await detail().getAttribute('data-codex-detail'),'building-cannon');await entryButtons().first().focus();await page.keyboard.press('Enter');assert.equal(await detail().getAttribute('data-codex-detail'),'building-nest');await page.keyboard.press('Tab');assert.ok(await page.locator('#modal :focus').count(),'keyboard can navigate dialog');
+ await categoryButtons().first().click();await categoryButtons().first().focus();await page.keyboard.press('ArrowRight');assert.equal(await page.locator('.codex-shell').getAttribute('data-codex-tab'),'buildings');await page.keyboard.press('ArrowDown');assert.equal(await detail().getAttribute('data-codex-detail'),'building-hatchery');await entryButtons().first().focus();await page.keyboard.press('Enter');assert.equal(await detail().getAttribute('data-codex-detail'),'building-nest');await page.keyboard.press('Tab');assert.ok(await page.locator('#modal :focus').count(),'keyboard can navigate dialog');
  for(const viewport of [{width:1280,height:720},{width:1366,height:768},{width:1600,height:900}]){
   await page.setViewportSize(viewport);
   const layout=await page.locator('#modal [role="dialog"]').evaluate(el=>{const r=el.getBoundingClientRect();return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,scrollWidth:document.documentElement.scrollWidth,windowWidth:innerWidth};});
@@ -132,7 +131,7 @@ try{
   const after=await snapshot();assert.deepEqual(after.stats,before.stats,`${mode}: illegal order changes no statistics`);assert.equal(after.fleets.filter(f=>f.owner===1).length,0);
   // Normal production may increase units; an illegal order must never deduct them.
   assert.ok(after.colonies.find(c=>c.id==='a').units>=before.colonies.find(c=>c.id==='a').units,`${mode}: illegal order deducted units`);
-  assert.equal(await page.locator('#toast.show').isVisible(),true,'illegal order produces new visible toast');const text=await page.locator('#toast.show').innerText();assert.match(text,/相邻|道路|连接|adjacent|road/i,'illegal road order has visible feedback');report.checks.push(`${mode}: illegal a-d rejected without resource/stat debit`);
+  assert.equal(await page.locator('#toast.show').isVisible(),true,'illegal order produces new visible toast');const text=await page.locator('#toast.show').innerText();assert.equal(text,'无可用路径','illegal road order has exact visible feedback');report.checks.push(`${mode}: illegal a-d rejected without resource/stat debit`);
  }
  await clear();await click(a);await click(b);
  await page.waitForFunction(()=>window.__BUGWAR__.scene.sim.world.fleets.some(f=>f.owner===1&&f.from==='a'&&f.to==='b'));
@@ -146,25 +145,28 @@ try{
  // Ownership/resource fixture for isolated friendly-selection semantics. No clear claim.
  await page.evaluate(()=>{const app=window.__BUGWAR__;app.start(0);const w=app.scene.sim.world;app.scene.sim.openingGrace=100000;for(const c of w.colonies){if(['a','b','d'].includes(c.id)){c.owner=1;c.units=200;}else c.owner=2;}});
  await clear();await click(a);await click(d);
- w=await snapshot();assert.deepEqual(w.selected,['d'],'nonadjacent friendly click reselects it');assert.equal(w.stats.sent,0);
+ w=await snapshot();assert.ok(w.fleets.some(f=>f.from==='a'&&f.to==='b'&&f.destination==='d'),'nonadjacent friendly click routes through owned b');assert.ok(w.stats.sent>0);
  await clear();await click(a);const reinforcementBefore=await snapshot();await click(b);w=await snapshot();
  assert.ok(w.fleets.some(f=>f.owner===1&&f.from==='a'&&f.to==='b'),'adjacent friendly click reinforces');assert.ok(w.stats.sent>reinforcementBefore.stats.sent);
  // Construct mixed legal/illegal source set from current road graph rather than
  // assuming another particular pair in the final authored topology.
- const mixed=await page.evaluate(()=>{const app=window.__BUGWAR__;app.start(0);app.scene.sim.openingGrace=100000;const w=app.scene.sim.world;
-  for(const target of w.colonies){const legal=w.colonies.find(c=>c.id!==target.id&&w.roads.some(([a,b])=>a===c.id&&b===target.id||b===c.id&&a===target.id));const illegal=w.colonies.find(c=>c.id!==target.id&&!w.roads.some(([a,b])=>a===c.id&&b===target.id||b===c.id&&a===target.id));if(!legal||!illegal)continue;
+ const mixed=await page.evaluate(()=>{const app=window.__BUGWAR__;app.save.data.results.agile[1]={stars:3,time:100,lost:0};app.save.data.results.agile[2]={stars:3,time:100,lost:0};app.start(2);app.scene.sim.openingGrace=100000;const w=app.scene.sim.world;
+  const adjacent=(a,b)=>w.roads.some(([x,y])=>x===a&&y===b||x===b&&y===a);
+  for(const target of w.colonies)for(const legal of w.colonies.filter(c=>c.id!==target.id&&adjacent(c.id,target.id)))for(const illegal of w.colonies.filter(c=>c.id!==target.id&&c.id!==legal.id&&!adjacent(c.id,target.id))){
    for(const c of w.colonies){c.owner=c.id===target.id?2:[legal.id,illegal.id].includes(c.id)?1:0;c.units=200;}
-   return {legal:{...legal},illegal:{...illegal},target:{...target}};
-  }throw Error('No mixed-source topology in stage 1');});
+   const visited=new Set([illegal.id]),queue=[illegal.id];let reachable=false;
+   for(let i=0;i<queue.length;i++)for(const c of w.colonies)if(!visited.has(c.id)&&adjacent(queue[i],c.id)){if(c.id===target.id)reachable=true;else if(c.owner===1){visited.add(c.id);queue.push(c.id);}}
+   if(!reachable)return {legal:{...legal},illegal:{...illegal},target:{...target}};
+  }throw Error('No mixed-source topology in stage 3');});
  await clear();await click(mixed.legal);await page.keyboard.down('Shift');await click(mixed.illegal);await page.keyboard.up('Shift');
  const mixedBefore=await snapshot();assert.equal(mixedBefore.selected.length,2);await click(mixed.target);w=await snapshot();
  assert.ok(w.fleets.some(f=>f.from===mixed.legal.id&&f.to===mixed.target.id));assert.ok(!w.fleets.some(f=>f.from===mixed.illegal.id));assert.ok(w.colonies.find(c=>c.id===mixed.illegal.id).units>=mixedBefore.colonies.find(c=>c.id===mixed.illegal.id).units);
- report.checks.push('fixture: friendly adjacent reinforcement, nonadjacent reselect, mixed legal-source filtering');
- assert.equal(await page.locator('#toast.show').isVisible(),true);assert.match(await page.locator('#toast.show').innerText(),/相邻|保留|部分/,'partial dispatch visibly explains skipped sources');
+ report.checks.push('fixture: friendly adjacent reinforcement, friendly multi-hop order, mixed reachable-source filtering');
+ assert.equal(await page.locator('#toast.show').isVisible(),true);assert.equal(await page.locator('#toast.show').innerText(),'无可用路径','partial dispatch notifies blocked sources');assert.ok(w.selected.includes(mixed.illegal.id),'blocked source remains selected');
  // AI fixture: fresh stage, no player orders. Accelerated simulation is not a natural completion.
  report.ai=await page.evaluate(()=>{
   const app=window.__BUGWAR__,rows=[];
-  for(let i=0;i<13;i++){
+  for(let i=0;i<18;i++){
    // Unlock fixture: only PREVIOUS stages completed; never forge the stage under test.
    app.save.data.results.agile={};
    for(let previous=1;previous<=i;previous++)app.save.data.results.agile[previous]={stars:3,time:100,lost:0};
@@ -184,7 +186,7 @@ try{
   }
   return rows;
  });
- assert.equal(report.ai.length,13);assert.ok(report.ai.every((r,i)=>r.level===i+1&&r.distinctEnemyFleets>0));
+ assert.equal(report.ai.length,18);assert.ok(report.ai.every((r,i)=>r.level===i+1&&r.distinctEnemyFleets>0));
  // Navigation/unlock fixture only: compare actual SVG paths to live world roads
  // and the scene's permanently drawn trimmed lane objects for each actual level.
  report.network=await page.evaluate(()=>{
@@ -194,9 +196,9 @@ try{
    const d=el.getAttribute('d')||'';if(!/^\s*M[\d. ,+-]+L[\d. ,+-]+\s*$/i.test(d))throw Error(`Non-straight thumbnail lane: ${d}`);
    return d.match(/[-+]?(?:\d*\.)?\d+/g).map(Number);
   }));
-  if(thumbs.length!==13)throw Error(`Expected 13 thumbnails, got ${thumbs.length}`);
+  if(thumbs.length!==18)throw Error(`Expected 18 thumbnails, got ${thumbs.length}`);
   const key=(a,b)=>[a,b].sort().join(':');const rows=[];
-  for(let i=0;i<13;i++){
+  for(let i=0;i<18;i++){
    app.start(i);const scene=app.scene,w=scene.sim.world;
    if(scene.level.id!==i+1)throw Error('Network fixture failed actual level identity');
    const expected=w.roads.map(([a,b])=>key(a,b)).sort();

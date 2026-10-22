@@ -1,77 +1,66 @@
-# 实施计划与协作契约
+# 架构与协作契约
 
-## 原则
-以有来源的规则为基础。13关、Agile/Fast/Strong、Spawn/Cannon、无限驻军、1–5星、通关解锁种族、满能量A施法。禁止声称未知数值为原版精确值。不添加巢穴升级或科技树等未经确认机制。
+## 版本边界
 
-## 模块所有权
-此前美术与交响配乐迁移已完成并发布。本轮道路／图鉴按互斥文件分工：核心代理负责道路合法性、单跳AI及共享规则常量；关卡代理负责13张手工路网与拓扑／几何测试；场景代理负责常显道路、相邻高亮与输入反馈；UI代理负责图鉴、真实路网缩略图、指南与暂停恢复；独立QA代理负责浏览器和低频驾驶器；主代理复核、整合、验收和离线交付。音乐引擎、音乐导演、音频文件、美术与存档格式保留，不再冻结需修正的道路规则和AI。
+当前轻量扩展：18 关、4 虫族（agile / fast / strong / brood）、4 建筑（nest / cannon / hatchery / wind）、100 自然生产上限、己方中间据点多跳派兵、道路遭遇战、歼灭或夺取核心目标。旧 13 关 ID 和存档版本不变。没有单位职业混编、升级、科技树、训练资源或额外主动技能。数值为重建，不声称原版精确参数。
 
-## 画布/关卡
-逻辑画面1600×900，战役建筑中心 x=210..1400,y=230..710；顶部HUD y=20..138、底部HUD y=792..888。提示单行位于y140，最下兵力数字下沿777，不遮挡建筑。坐标均绝对逻辑像素。关卡13个，4类生境，布局各异。渲染Phaser，HTML覆盖层提供可访问的游戏UI。
+## 模块
 
-## src/core/types.ts (核心代理实现并导出)
-```ts
-export type RaceId = 'agile' | 'fast' | 'strong';
-export type BuildingKind = 'nest' | 'cannon';
-export type Difficulty = 'easy' | 'normal' | 'hard';
-export type Road = readonly [string,string];
-export interface ColonyConfig { id:string; x:number; y:number; owner:number; kind:BuildingKind; units:number; production?:number }
-export interface FactionConfig { id:number; race:RaceId }
-export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; factions:FactionConfig[]; colonies:ColonyConfig[]; roads:Road[]; tip:string; openingGrace?:Partial<Record<Difficulty,number>> }
-export interface Colony extends ColonyConfig { production:number }
-export interface Fleet { id:number; owner:number; race:RaceId; from:string; to:string; x:number; y:number; count:number; initialCount:number }
-export interface GameEvent { type:'dispatch'|'impact'|'capture'|'shot'|'skill'|'end'; x:number; y:number; owner:number; targetX?:number; targetY?:number; amount?:number }
-export interface World { elapsed:number; colonies:Colony[]; roads:Road[]; fleets:Fleet[]; factions:FactionConfig[]; energy:Record<number,number>; status:'playing'|'won'|'lost'; stats:{sent:number; kills:number; captures:number; lost:number; skills:number}; events:GameEvent[] }
-export const RACES: Record<RaceId,{name:string;speed:number;attack:number;defense:number;production:number}>;
-```
+|模块|职责|
+|---|---|
+|`src/core/types.ts`|共享类型、种族数值；不依赖表现层|
+|`src/core/rules.ts`|生产／加速／繁殖奖励／炮塔／技能常量及纯函数|
+|`src/core/roads.ts`|真实道路邻接与合法最短路径|
+|`src/core/Simulation.ts`|0.05 秒固定步、生产、行军、遭遇、抵达、统计、胜负|
+|`src/core/ai.ts`|可见状态规划；只能通过同一 dispatch 下令|
+|`src/data/levels.ts`|18 张手工地图、显式道路、准备期及可选核心目标|
+|`src/data/codex.ts`|从 RACES / BATTLE_RULES 生成真实数值及图鉴 HTML|
+|`src/game/roadRender.ts`|道路裁边与合法路线预览，复用核心寻路|
+|`src/game/BattleScene.ts`|Phaser 图层、输入、选区、精灵和事件效果|
+|`src/main.ts`|HTML 菜单／战役／HUD／图鉴／结算、存档与音频整合|
+|`src/storage/SaveSystem.ts`|版本 1 存档校验、18 关进度、早期解锁、旧成就兼容|
+|`src/audio/`|播放引擎及只读音乐导演，不写世界、不消费事件|
 
-## src/core/Simulation.ts (核心代理)
-```ts
-export class Simulation {
-  world: World;
-  readonly openingGrace: number; // seconds, 0 if not configured
-  constructor(level:LevelConfig, race:RaceId='agile', difficulty:Difficulty='normal');
-  step(dt:number):void; // seconds; fixed substeps, bounds finite values
-  dispatch(sources:string[], target:string, ratio?:number, owner?:number):number; // default conservative 0.5, sends integer >=1; return sent
-  castSkill(owner:number,x:number,y:number):boolean; // full100 charge area attack, conservative reconstruction
-  drainEvents():GameEvent[];
-}
-export function rateVictory(time:number,lost:number,par:number):number; //1..5
-```
-`src/core/roads.ts` 的 `hasRoad(roads,from,to)` 为无向直接邻接判断。LevelConfig与World必须携带显式roads，Simulation复制关卡道路；不将缺少道路解释成任意直达。dispatch对每个来源分别检查道路，只有直接相邻、己方且有整数兵力的来源可以出兵。军队抵达后合流／交战，不自动产生下一跳。
+## 数据契约
 
-World events only consumed with drainEvents; AI deterministic utility with incoming projections, reserve, coordinated attacks; cannot cheat resources. AI攻击、防守及后方补给均只从直接相邻来源派兵。地图拓扑可用于选择手动下令的下一跳，但不是给在途军队自动寻路。`src/core/rules.ts` 的 `BATTLE_RULES` 是模拟与图鉴共用的生产／炮塔／技能常量，种族继续读取RACES。炮塔火力按实时驻军查 `CANNON_FIREPOWER_NODES` 并调用纯函数 `cannonFirepower`（模拟、AI路径估计、图鉴与选中面板同一来源）；射击准备以0–1充能记录，增减驻军不重置冷却。 Cannon nonproducing, range fire at enemy marching fleets. Fleet counts logical separate from bounded sprite representation. Movement no mid-path retarget (unsupported). Battle weighted attrition on arrival; race attributes meaningful. Victory after all hostile colonies+fleets eliminated; neutral need not captured. Defeat player colonies+fleets eliminated. Player1. Factions2–4 AI.
+- `Road = readonly [string,string]`，固定无向道路。缺失或空道路不意味着完全图。
+- `LevelConfig` / `World` 都携带显式 `roads`；`objective?: {type:'capture'; target:string}` 缺省表示歼灭。
+- `Colony.production` 只有生产类建筑可生效；自然增长至 `BATTLE_RULES.productionCap=100`，到站增援可越过上限。
+- `Fleet.from / to` **始终是当前真实路段**；坐标在该路段上。`destination` 是命令最终目标，`route` 是当前 `to` 之后的待行节点。例如 a→b→c：from=a、to=b、route=[c]、destination=c。
+- 中转时修改当前段和待行路线，保留批次编号和实际兵力；不合并中间巢的驻军，不再增加 sent。风巢仅给离开的下一路段加速，`haste` 不跨段叠加。
+- `engaging` / `combatPause` 为短暂道路交战表现／移动控制；炮击与技能仍能命中真实在途批次。
+- 事件新增 `clash` / `brood`，与 dispatch / impact / capture / shot / skill / end 一起由 `drainEvents()` 消费。音频导演只读取累计统计与当前世界，不抢走事件。
 
-## 美术资源契约
-全部SVG自含viewBox，无外部资源／字体／脚本依赖，正式共36张。
-- `cover.svg`：1600×900，已确认自然虫族插画，由DOM菜单显示；Phaser菜单背景使用明亮草甸，不叠旧徽章或暗虫。
-- 四张 `background-{meadow,roots,marsh,amber}.svg`：1600×900，明亮自然地表，边缘框景，中央可读。
-- `nest-{0..4}.svg`／`cannon-{0..4}.svg`：160×160，按所有者独立绘制主要色面。默认 `nest.svg`／`cannon.svg` 对应中立0。
-- `bug-{agile,fast,strong}-{0..4}.svg`：96×32 spritesheet，四帧横排、每帧24×32、朝上。默认三张不带所有者后缀的虫兵对应蓝方1，UI只裁单帧。
-- `emblem.svg`：256×256种核甲虫与十三灯环。
-- 所有者色：0中立`#92A18B`、1蓝`#327FC1`、2红`#C85F48`、3紫`#8B70BA`、4金`#C49336`；文字与不同形状同时编码。捕获时切换纹理，不以全图tint代替材质。
+## 寻路与输入
 
-表现层负责浅底深字数字牌、常显真实道路、蓝选区／直接相邻路线高亮、行军步态及占领／技能／炮击效果。缩略图同样读取LevelConfig.roads，不能以数组顺序生成装饰路线。图鉴采用既有SVG与真实核心数值；战斗中打开暂停，切条目不重写暂停快照，关闭恢复原状态。资源再生不依赖临时设计目录，详见 `art-direction.md`。
+`findDispatchPath(world, from, to, owner): string[] | null` 返回包含源、终点的合法最短几何路径。源必须己方，所有中间节点必须己方，终点不限阵营；同长路径确定性择序。禁止自目标、假道路、穿越敌方或中立中间据点。
 
-## AudioSystem (音频代理)
-默认导出或具名导出 class AudioSystem，具名优先：
-```ts
-export interface AudioSettings { master:number; music:number; sfx:number; muted:boolean }
-export class AudioSystem {
- settings:AudioSettings;
- constructor(settings?:Partial<AudioSettings>);
- unlock():Promise<void>; //首次交互创建/恢复context
- music(track:ScoreId|'battle'):void; // battle为meadow兼容别名
- setIntensity(level:0|1|2):void;
- setPaused(paused:boolean):void;
- play(name:'hover'|'click'|'select'|'dispatch'|'march'|'impact'|'capture'|'skill'|'victory'|'defeat'):void;
- configure(settings:Partial<AudioSettings>):void;
- dispose():void;
-}
-```
-`score.ts` 是八个曲目ID、BPM、小节数及18份分轨的共享契约。音乐由合法真实管弦采样离线渲染；同源OGG失败回退同名MP3，八个WAV音效原样保留。音乐组内三层使用同一AudioContext启动时刻与相同长度；强度在下一小节平滑变化，换曲先淡出旧调性再淡入新曲，胜败快速接管。当前／渐退／加载音乐被临时固定，其余缓存立即释放；192MiB为软预算，转场瞬间的超额必须如实报告。资源路径均使用import.meta.env.BASE_URL，不访问运行时CDN或外部服务。
+`Simulation.dispatch(sources,target,ratio=.5,owner=1)` 来源去重、逐个校验，返回实际派出的总数。UI 不另造合法性规则。不可达提示「无可用路径」约两秒；部分可达时正常发送合法来源，受阻来源不扣兵并保留选择。预览显示实际多条道路，而不是跨图虚构一条直线。
 
-`MusicDirector` 仅读取 World 与 LevelConfig，不修改模拟、不消费事件队列。它按起始兵力比例归一化，结合多敌方来袭、生产巢损失与累计战斗统计差分，使用快升慢降、进入退出不同阈值及8秒最短保持，避免单次碰撞频繁切层。暂停冻结估计器，重试清空状态，胜败模式禁止战场更新覆盖结算曲。实际实现与验收见 `audio.md`。
+路线途中归属改变时重新检查。到达已失守的中间据点按普通到站战斗处理，并取消后续自动行程，即使当次夺回也不继续。后续中间节点被阻断时不偷偷穿越或自动改成敌后直达。
 
-## 交付阶段
-1. 研究证据→2.架构与并行模块→3.核心/AI+13关+成长→4.绘制与音乐→5.浏览器操作/视觉/音频/性能验收→6.离线静态包和Windows启动脚本。
+## 模拟与目标
+
+`step(dt)` 接收秒数，固定步长 0.05；忽略非法 dt，单次最多接受 30 秒，保留正常余数。帧分割不应改变结果、统计和事件。单位数量可有小数，实际派出数量为整数。部队及驻军均是真实数据，没有视觉精灵上限导致的逻辑截断。
+
+玩家为 1，敌方为 2–4。歼灭要求所有敌方建筑及在途虫群消失，中立不必全占；己方建筑和在途虫群都消失才判负。核心地图则玩家取得标记目标即获胜，不要求清理其余敌军。零驻军的已占建筑仍表示存活。结束后冻结模拟。
+
+## 画面与素材
+
+逻辑画面 1600×900，顶部 HUD 和 y=140 附近提示不覆盖据点标签，底部 HUD 从 y=792 开始。18 张地图的数字牌必须留在 HUD 之上；战役界面在 1280×720 也能滚动访问全部关卡。
+
+54 张自含 SVG：封面与四背景 1600×900；四类建筑默认／0–4 阵营版各 160×160；四虫族默认／0–4 阵营版为 96×32 四帧表，每帧 24×32；徽章 256×256。默认建筑为中立版本，默认虫兵为蓝方版本。所有者色 0灰绿 / 1蓝 / 2红 / 3紫 / 4金，材质切换配合形状和文字，不整图 tint。
+
+每批最多 36 个视觉虫兵、全场最多 1000 精灵，只限制渲染。新资源生成器 `scripts/generate-gameplay-art.cjs` 与旧美术生成器分离，避免覆盖已验收旧素材。
+
+## 音频与暂停
+
+`AudioSystem` 负责同源 OGG／MP3 回退、同钟分轨、下一小节切层、缓存释放及音效限流；资源路径遵循 `import.meta.env.BASE_URL`。配乐和操作音效文件不因本轮规则扩展而重制。
+
+`MusicDirector` 只读战场，将孵化巢视为生产领地，按在途军队最终目标识别来袭，并计道路交锋；第 13 与 18 关使用终章主题。暂停冻结估计器、重试重置状态、结算优先接管。图鉴打开保存一次原暂停状态，切分类和条目不覆盖它；关闭恢复此前运行或暂停状态。
+
+## 存档与交付
+
+仍为 `bugwar-verdant-v1` / `version:1`。接纳 1–18 关和四虫族结果，缺少 brood 的旧存档补空记录。敏捷前 2／4／7 关连续通关解锁其他族群；不能用散落记录数绕过。已获成就保留，旧三族 13 关目标不扩展成四族 18 关。
+
+CI：Node24，`npm ci` → `npm test -- --silent` → `npm run build` → Pages artifact → GitHub Pages。主分支推送自动发布，PR 不部署。独立浏览器验收记录真实鼠标路径、受控 fixture、离线包及正式站 JS 哈希，不能把合成结算称为真人自然通关。

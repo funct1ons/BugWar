@@ -2,7 +2,7 @@
 //
 // The existing scripts/browser-test.mjs already covers the long functional
 // journey.  This file deliberately stays focused on the art/UI integration:
-// the approved cover, owner textures, all 13 layouts, HUD occlusion, three
+// the approved cover, owner textures, all 18 layouts, HUD occlusion, three
 // viewports, modals, result screens and extreme unit-number plates.
 //
 // It serves the existing dist/ through scripts/serve.mjs on VISUAL_PORT (4181
@@ -107,14 +107,14 @@ function attachDiagnostics(page, label) {
   });
   page.on('requestfailed', request => {
     const failure = request.failure()?.errorText ?? 'failed';
-    // The 13-layout loop deliberately starts several cues before their downloads
+    // The 18-layout loop deliberately starts several cues before their downloads
     // can finish. AudioSystem must abort obsolete loads, not leak them. Do NOT
     // suppress HTTP errors, SFX/art failures, other network errors, or normal play.
     const music = /\/audio\/music-(meadow|roots|marsh|amber|finale)-(?:base|motion|power)\.(?:ogg|mp3)$/.exec(request.url());
     if (label === 'test' && failure === 'net::ERR_ABORTED' && music) {
       const phase = syntheticMusicAbortPhase ?? 'Other scripted fixture/menu/result switch';
       // Read the cue captured synchronously at AbortSignal dispatch, NOT later:
-      // the 13-layout fixture can return to the same cue before this callback.
+      // the 18-layout fixture can return to the same cue before this callback.
       // An aborted CURRENT cue is still a failure, even in a synthetic phase.
       MUSIC_CANCELLATION_CHECKS.push(page.evaluate(url => {
         const records = window.__VISUAL_AUDIO_ABORTS__ ?? [];
@@ -290,7 +290,7 @@ async function bugThumbnails(page) {
     const ui = document.getElementById('ui');
     if (!ui) return [];
     return [...ui.querySelectorAll('img')]
-      .filter(image => /bug-(agile|fast|strong)(?:-\d)?\.svg/i.test(image.getAttribute('src') ?? image.currentSrc))
+      .filter(image => /bug-(agile|fast|strong|brood)(?:-\d)?\.svg/i.test(image.getAttribute('src') ?? image.currentSrc))
       .map(image => {
         const rect = image.getBoundingClientRect();
         const style = getComputedStyle(image);
@@ -500,7 +500,7 @@ async function layoutRows(page) {
   return await page.evaluate(() => {
     const app = window.__BUGWAR__;
     const rows = [];
-    for (let index = 0; index < 13; index++) {
+    for (let index = 0; index < 18; index++) {
       app.start(index);
       const ui = document.getElementById('ui').getBoundingClientRect();
       const scale = ui.height / 900;
@@ -671,23 +671,23 @@ async function main() {
     check('menu has no full-sheet bug thumbnails', shownThumbs.every(thumbnail => thumbnail.box.height === 0 || thumbnail.box.width / thumbnail.box.height < 1.2), shownThumbs);
 
     // 2. Modals from the menu.  These are real UI interactions, not fixtures.
-    await openModal(page, 'lore', '1920-modal-lore', '.lore-grid article', 4);
+    await openModal(page, 'lore', '1920-modal-lore', '.lore-grid article', 5);
     await openModal(page, 'help', '1920-modal-help', '.guide-grid article', 4);
     await openModal(page, 'settings', '1920-modal-settings', '[data-setting=difficulty]', 1);
     await openModal(page, 'achievements', '1920-modal-achievements', '.achievement', 12);
     await openModal(page, 'credits', '1920-modal-credits', '.credits-columns article', 2);
 
-    // 3. Campaign: four acts, 13 levels, no layout clipping at the large size.
+    // 3. Campaign: four original acts plus epilogue, 18 levels, no clipping.
     await page.locator('[data-action=campaign]').first().click();
     await page.waitForSelector('.campaign-screen');
     const campaign = await campaignState(page);
     report.campaign = campaign;
-    must('campaign lists four acts', campaign.acts.length === 4 && campaign.acts.every(act => act.length > 0), campaign.acts);
-    must('campaign renders 13 level cards', campaign.levels === 13, campaign.levels);
+    must('campaign lists four acts plus epilogue', campaign.acts.length === 5 && campaign.acts.every(act => act.length > 0 && !act.includes('undefined')), campaign.acts);
+    must('campaign renders 18 level cards', campaign.levels === 18, campaign.levels);
     must('campaign layout stays inside #ui', campaign.layoutInsideUi, campaign);
     await shot(page, '1920-campaign');
     const campaignThumbs = await bugThumbnails(page);
-    must('campaign UI uses the default blue unit sheet', campaignThumbs.length > 0 && campaignThumbs.every(thumbnail => /bug-(agile|fast|strong)\.svg$/i.test(thumbnail.src ?? '')), campaignThumbs);
+    must('campaign UI uses the default blue unit sheet', campaignThumbs.length > 0 && campaignThumbs.every(thumbnail => /bug-(agile|fast|strong|brood)\.svg$/i.test(thumbnail.src ?? '')), campaignThumbs);
     must('campaign UI crops unit sheets to one 24x32 frame', campaignThumbs.every(thumbnail => {
       const box = thumbnail.crop ?? thumbnail.box;
       return box.height > 0 && box.width / box.height < 1.2;
@@ -700,16 +700,16 @@ async function main() {
     fixture('extreme number plate', 'Display-only units injection (up to 1e12) on one colony to verify the number shrinks inside its plate. Not a gameplay/balance check.', { values: [38, 12345, 1e9, 1e12] });
     fixture('victory/defeat result screens', 'Ownership is forced through the test hook; verifies result UI and labels only, not a natural completion.', { victory: 'all colonies owner=1', defeat: 'all colonies owner=2' });
 
-    // 4. All 13 live layouts: numbers above HUD, badges clear of hints/HUD, header clear.
+    // 4. All 18 live layouts: numbers above HUD, badges clear of hints/HUD, header clear.
     await page.evaluate(() => {
       const app = window.__BUGWAR__;
-      for (let level = 1; level <= 13; level++) app.save.data.results.agile[level] = { stars: 3, time: 60, lost: 0 };
+      for (let level = 1; level <= 18; level++) app.save.data.results.agile[level] = { stars: 3, time: 60, lost: 0 };
     });
     await page.evaluate(() => window.__BUGWAR__.start(0));
     await page.waitForSelector('.battle-screen');
     await page.waitForTimeout(250);
     await shot(page, '1920-battle');
-    syntheticMusicAbortPhase = '13 layouts and three chapter screenshot switches';
+    syntheticMusicAbortPhase = '18 layouts and three chapter screenshot switches';
     const layouts = await layoutRows(page);
     report.layouts = layouts;
     for (const row of layouts) {

@@ -5,10 +5,10 @@ import { MusicDirector } from './audio/MusicDirector';
 import { LEVELS, BIOMES } from './data/levels';
 import { ACHIEVEMENTS, SaveSystem } from './storage/SaveSystem';
 import { rateVictory } from './core/Simulation';
-import { BATTLE_RULES, CANNON_BASE_FIREPOWER, CANNON_GARRISON_CAP, cannonFirepower } from './core/rules';
+import { BATTLE_RULES, CANNON_BASE_FIREPOWER, CANNON_GARRISON_CAP, cannonFirepower, isProductive } from './core/rules';
 import { formatUnits } from './ui/format';
 import type { Colony, RaceId } from './core/types';
-import { CODEX_ENTRIES, escapeIntent, normalizeCodexState, pauseKeyIntent, renderCodex, renderMinimapRoads, type CodexTabId, type SelectedColonyInfo } from './data/codex';
+import { BUILDING_KIND_LABELS, raceUnlockLabel, CODEX_ENTRIES, escapeIntent, normalizeCodexState, pauseKeyIntent, renderCodex, renderMinimapRoads, type CodexTabId, type SelectedColonyInfo } from './data/codex';
 import { ACTS, BRIEFINGS, LORE_NOTICE, actForLevel } from './data/lore';
 import './style.css';
 
@@ -20,8 +20,10 @@ const FACTION_COLORS = ['#92A18B', '#327FC1', '#C85F48', '#8B70BA', '#C49336'];
 const stars = (n: number) => `<span class="stars">${'★'.repeat(n)}<span class="dim">${'★'.repeat(5 - n)}</span></span>`;
 const clock = (n: number) => `${Math.floor(n / 60).toString().padStart(2, '0')}:${Math.floor(n % 60).toString().padStart(2, '0')}`;
 const pad = (n: number) => String(n).padStart(2, '0');
-const raceName = { agile: '敏捷族', fast: '疾行族', strong: '重甲族' };
-const raceText = { agile: '均衡的先锋 · 灵活扩张', fast: '更快的行军 · 轻甲突袭', strong: '强韧的甲壳 · 缓慢而有力' };
+const RACE_IDS: RaceId[] = ['agile', 'fast', 'strong', 'brood'];
+const raceName: Record<RaceId,string> = { agile: '敏捷族', fast: '疾行族', strong: '重甲族', brood: '繁育族' };
+const raceText: Record<RaceId,string> = { agile: '均衡的先锋 · 灵活扩张', fast: '速度 +45% · 攻防 -20%', strong: '速度 -28% · 攻击 +35% · 防御 +30%', brood: '攻防 -10% · 首夺中立产兵巢 +8 兵' };
+const CAMPAIGN_STARS = LEVELS.length * 5;
 
 /** 空塔到封顶的整条曲线都取自共享火力表，面板数字不会与模拟脱节。 */
 const CANNON_CAP_FIREPOWER = cannonFirepower(CANNON_GARRISON_CAP);
@@ -221,9 +223,9 @@ class Application {
     const totalStars = this.save.stars('agile');
     this.ui.innerHTML = `<section class="menu-screen">
       <img class="menu-cover" src="${base}art/cover.svg" width="1600" height="900" alt="雨后方寸花园里，持叶刃的蓝方前锋与持斧的红方守卫交锋">
-      ${this.header('日光花园 · 十三巢远征')}
+      ${this.header(`日光花园 · ${LEVELS.length} 巢远征`)}
       <div class="hero-copy">
-        <span class="menu-badge"><i></i>雨后初晴 · 十三巢远征</span>
+        <span class="menu-badge"><i></i>雨后初晴 · ${LEVELS.length} 巢远征</span>
         <h1>翡翠王冠</h1>
         <p class="hero-subtitle">方寸花园，亦有英雄。</p>
         <p class="hero-description">率领虫群夺回巢域，<br>让每一条归途重新亮起。</p>
@@ -233,13 +235,13 @@ class Application {
           <button class="button secondary" data-action="help">操作指南</button>
         </div>
         <div class="menu-progress">
-          <div class="menu-progress-top"><span class="tiny">归途正在延伸</span><span class="menu-stars">${totalStars} / 65 ★</span></div>
-          <div class="menu-progress-count"><b>${pad(done)}</b><span>/ 13<small>处巢域已完成</small></span></div>
-          <div class="progress-track"><span style="width:${done / 13 * 100}%"></span></div>
+          <div class="menu-progress-top"><span class="tiny">归途正在延伸</span><span class="menu-stars">${totalStars} / ${CAMPAIGN_STARS} ★</span></div>
+          <div class="menu-progress-count"><b>${pad(done)}</b><span>/ ${LEVELS.length}<small>处巢域已完成</small></span></div>
+          <div class="progress-track"><span style="width:${done / LEVELS.length * 100}%"></span></div>
         </div>
       </div>
       <footer class="menu-footer">
-        <span class="menu-facts">13 处巢域 · 3 支虫族 · 单人策略远征</span>
+        <span class="menu-facts">${LEVELS.length} 处巢域 · 4 支虫族 · 单人策略远征</span>
         <button data-action="achievements">♜ 成就 <b>${this.save.data.achievements.length}/12</b></button>
         <button data-action="credits">制作与溯源 ↗</button>
         <span class="version">日光花园 / ${this.save.available ? '本机存档' : '仅本次会话'}</span>
@@ -255,43 +257,47 @@ class Application {
     this.music.menu();
     const unlocked = this.save.unlocked(this.race);
     this.ui.innerHTML = `<section class="campaign-screen">
-      ${this.header('十三巢远征图 · 四幕纪事')}
+      ${this.header('十八巢远征图 · 归途纪事')}
       <div class="campaign-heading">
-        <div><span class="eyebrow">行旅地图 · 四幕纪事</span><h2>循着巢灯，走回森林<span>选择你的下一场战斗</span></h2></div>
-        <div class="campaign-total"><b>${pad(this.save.stars(this.race))}</b><span>/ 65 ★<small>战役星光</small></span></div>
+        <div><span class="eyebrow">行旅地图 · 四幕与归途续篇</span><h2>循着巢灯，走回森林<span>选择你的下一场战斗</span></h2></div>
+        <div class="campaign-total"><b>${pad(this.save.stars(this.race))}</b><span>/ ${CAMPAIGN_STARS} ★<small>战役星光</small></span></div>
       </div>
       <div class="campaign-layout">
         <aside class="race-panel"><span class="tiny">行旅族群</span><h3>选择虫族</h3>
-          ${(['agile', 'fast', 'strong'] as RaceId[]).map((r) => `<button class="race-card ${this.race === r ? 'active' : ''} ${!this.save.raceUnlocked(r) ? 'locked' : ''}" data-action="race" data-value="${r}" ${!this.save.raceUnlocked(r) ? 'disabled' : ''}>
+          ${RACE_IDS.map((r) => `<button class="race-card ${this.race === r ? 'active' : ''} ${!this.save.raceUnlocked(r) ? 'locked' : ''}" data-action="race" data-value="${r}" ${!this.save.raceUnlocked(r) ? 'disabled' : ''}>
             <span class="bug-frame"><img src="${base}art/bug-${r}.svg" alt=""></span>
-            <span><b>${raceName[r]}</b><small>${this.save.raceUnlocked(r) ? raceText[r] : '通关敏捷族战役后解锁'}</small></span>
+            <span><b>${raceName[r]}</b><small>${this.save.raceUnlocked(r) ? raceText[r] : raceUnlockLabel(r)}</small></span>
             <i>${this.save.raceUnlocked(r) ? (this.race === r ? '✓' : '') : '◇'}</i>
           </button>`).join('')}
           <div class="field-note"><span>❧</span><p>王冠不是冠冕，而是归途灯环。<br>先占生产巢，再稳步向前。</p></div>
           <button class="text-button" data-action="menu">← 返回营地</button>
         </aside>
         <div class="expedition-pages">
-          <div class="act-index">${ACTS.map((a, i) => `<span><b>第${['一', '二', '三', '四'][i]}幕 · ${a.name}</b><small>${a.theme}</small></span>`).join('')}</div>
+          <div class="act-index">${ACTS.map((a, i) => `<span><b>${i < 4 ? `第${['一', '二', '三', '四'][i]}幕` : '续篇'} · ${a.name}</b><small>${a.theme}</small></span>`).join('')}</div>
           <div class="level-grid">${LEVELS.map((l, i) => {
             const result = this.save.data.results[this.race][l.id];
             const locked = l.id > unlocked;
             return `<button class="level-card biome-${l.biome} ${locked ? 'locked' : ''} ${l.id === unlocked ? 'current' : ''}" data-action="level" data-value="${i}" ${locked ? 'disabled' : ''}>
               <div class="level-art" style="background-image:url('${base}art/background-${l.biome}.svg')"><span class="level-no">${pad(l.id)}</span>${this.minimap(i)}<span class="level-state">${locked ? '◇' : result ? '✓' : '↗'}</span></div>
-              <div class="level-info"><span class="tiny">${actForLevel(l.id).name} · ${BIOMES[l.biome]}</span><h4>${l.name}</h4>${result ? stars(result.stars) : `<span class="level-caption">${locked ? '完成上一关解锁' : l.id === unlocked ? '新的远征 →' : '等待挑战'}</span>`}</div>
+              <div class="level-info"><span class="tiny">${ACTS[actForLevel(l.id)]?.name ?? '远征'} · ${BIOMES[l.biome]}</span><h4>${l.name}</h4>${result ? stars(result.stars) : `<span class="level-caption">${locked ? '完成上一关解锁' : l.id === unlocked ? '新的远征 →' : '等待挑战'}</span>`}</div>
             </button>`;
           }).join('')}</div>
         </div>
       </div>
-      <div class="campaign-bottom">13 张原创重建战场 · 关卡布局非原版逐点复刻<span>难度：${{ easy: '悠闲', normal: '标准', hard: '战术' }[this.save.data.settings.difficulty]} <button data-action="settings">调整 ↗</button></span></div>
+      <div class="campaign-bottom">${LEVELS.length} 张原创重建战场 · 关卡布局非原版逐点复刻<span>难度：${{ easy: '悠闲', normal: '标准', hard: '战术' }[this.save.data.settings.difficulty]} <button data-action="settings">调整 ↗</button></span></div>
     </section>`;
   }
 
   /** DOM 迷你地图：阵营填充色 + 白描边；生产巢为圆点、炮塔为方块，形状与颜色双重区分。 */
   private minimap(index: number) {
     const l = LEVELS[index];
-    const nodes = l.colonies.map((c) => c.kind === 'cannon'
-      ? `<rect x="${c.x - 30}" y="${c.y - 130}" width="60" height="60" rx="9" fill="${FACTION_COLORS[c.owner]}" stroke="#fffdf7" stroke-width="8"/>`
-      : `<circle cx="${c.x}" cy="${c.y - 100}" r="24" fill="${FACTION_COLORS[c.owner]}" stroke="#fffdf7" stroke-width="8"/>`).join('');
+    const nodes = l.colonies.map(c => {
+      const fill=FACTION_COLORS[c.owner], y=c.y-100, stroke='stroke="#fffdf7" stroke-width="8"';
+      if(c.kind==='cannon') return `<rect x="${c.x-30}" y="${y-30}" width="60" height="60" rx="9" fill="${fill}" ${stroke}/>`;
+      if(c.kind==='hatchery') return `<rect x="${c.x-21}" y="${y-21}" width="42" height="42" rx="6" transform="rotate(45 ${c.x} ${y})" fill="${fill}" ${stroke}/>`;
+      if(c.kind==='wind') return `<polygon points="${c.x},${y-27} ${c.x+27},${y+19} ${c.x-27},${y+19}" fill="${fill}" ${stroke}/>`;
+      return `<circle cx="${c.x}" cy="${y}" r="24" fill="${fill}" ${stroke}/>`;
+    }).join('');
     // Read the level's real Road[] so the thumbnail and battlefield always agree.
     const roads = renderMinimapRoads(l.colonies, l.roads, -100);
     return `<svg class="minimap" viewBox="0 0 1600 700" aria-hidden="true">${roads}${nodes}</svg>`;
@@ -322,16 +328,16 @@ class Application {
         <button class="icon-button" data-action="codex" aria-label="打开虫族图鉴" title="虫族图鉴 (C)">图</button>
         <button class="icon-button" data-action="settings" aria-label="声音和设置">⚙</button>
       </header>
-      <div class="battle-objective"><span class="objective-dot"></span>消灭所有敌方势力<span class="slash">/</span><span id="objective-status"></span></div>
+      <div class="battle-objective"><span class="objective-dot"></span>${l.objective?.type === 'capture' ? `夺取标记核心 ${l.objective.target}` : '消灭所有敌方势力'}<span class="slash">/</span><span id="objective-status"></span></div>
       <div id="opening-grace" class="opening-grace" hidden></div>
       <div id="battle-tip" class="battle-tip" title="${l.tip}">${l.tip}</div>
       <footer class="battle-bottom">
         <div class="selection-info"><span class="bug-frame"><img src="${base}art/bug-${this.race}.svg" alt=""></span>
-          <div><span class="tiny">${raceName[this.race]} · 蓝方</span><strong id="selection-count">选择你的虫巢</strong><small>点击选择 · 拖框多选 · 空格全选</small></div>
+          <div><span class="tiny">${raceName[this.race]} · 蓝方</span><strong id="selection-count">选择你的虫巢</strong><small id="selection-hint">点击选择 · 拖框多选 · 空格全选</small></div>
         </div>
         <div class="dispatch-panel"><span class="tiny">本次派兵上限 <b id="send-count"></b></span>
           <div class="ratio-buttons">${[.25, .5, .75, 1].map((n) => `<button class="${this.scene.ratio === n ? 'active' : ''}" data-action="ratio" data-value="${n}">${n * 100}%</button>`).join('')}</div>
-          <small>仅与目标直接相邻的已选建筑出兵 · Shift 追加选择</small>
+          <small>沿己方道路自动中转 · 自然生产上限 ${BATTLE_RULES.productionCap}</small>
         </div>
         <button class="skill-button" data-action="skill" id="skill-button"><div class="skill-icon">❋<kbd>A</kbd></div>
           <div class="skill-copy"><span id="skill-label">孢子风暴</span><small id="energy-label">能量正在汇聚</small><div class="energy-track"><span id="energy-fill"></span></div></div>
@@ -361,9 +367,13 @@ class Application {
     if (graceEl) { graceEl.hidden = grace <= 0; graceEl.textContent = `观察准备期 ${grace}秒，双方正常生产`; }
     const own = w.colonies.filter((c) => c.owner === 1);
     text('objective-status', `${own.length} 座蓝方建筑 · ${w.colonies.filter((c) => c.owner > 1).length} 座敌方建筑`);
+    const selectedProductive = own.filter(c => this.scene.selected.has(c.id) && isProductive(c.kind));
+    text('selection-hint', selectedProductive.length === 1
+      ? `${BUILDING_KIND_LABELS[selectedProductive[0].kind]} ${formatUnits(selectedProductive[0].units)}/${BATTLE_RULES.productionCap} · ${selectedProductive[0].units >= BATTLE_RULES.productionCap ? '自然停产' : '自然生产中'}`
+      : selectedProductive.length ? `自然生产上限 ${BATTLE_RULES.productionCap} · 增援可超出` : '点击选择 · 拖框多选 · 空格全选');
     text('selection-count', this.scene.selected.size ? `已选 ${this.scene.selected.size} 座建筑` : '选择你的虫巢');
     text('send-count', `${Math.floor(own.filter((c) => this.scene.selected.has(c.id)).reduce((s, c) => s + Math.floor(c.units * this.scene.ratio), 0))} 兵`);
-    document.getElementById('send-count')?.setAttribute('title', '按全部已选己方建筑计算的上限；实际只有与目标直接相邻的来源会出兵。');
+    document.getElementById('send-count')?.setAttribute('title', '按全部已选己方建筑计算的上限；实际只有存在合法己方中转路径的来源会出兵。');
     const ownCannons = own.filter((c) => c.kind === 'cannon');
     this.updateCannonSelection(ownCannons.filter((c) => this.scene.selected.has(c.id)), ownCannons);
     const energy = Math.floor(w.energy[1]);
@@ -413,17 +423,17 @@ class Application {
     this.ui.innerHTML = `<section class="result-screen"><div class="result-card ${win ? 'won' : 'lost'}">
       <div class="eyebrow">${win ? '守望记录 / 巢灯重燃' : '行旅暂歇 / 归途仍在'}</div>
       <div class="result-sigil">${win ? `<img src="${base}art/emblem.svg" alt="种核与守望灯环">` : '❧'}</div>
-      <h1>${win ? (l.id === 13 ? '十三盏灯，终于相逢' : '又一盏巢灯亮起') : '先歇一程，再点亮巢灯'}</h1>
+      <h1>${win ? (l.id === LEVELS.length ? '十八盏巢灯，照回整座花园' : l.id === 13 ? '十三盏灯，终于相逢' : '又一盏巢灯亮起') : '先歇一程，再点亮巢灯'}</h1>
       <p>${l.name} · ${win ? '守望巢重新迎来了归途中的行旅' : '先占近处生产巢，别急冲敌方；用 50% 派兵，留下驻军再增援'}</p>
       ${win ? stars(rating) : '<div class="defeat-line"></div>'}
       <div class="result-stats"><div><small>战斗时间</small><strong>${clock(w.elapsed)}</strong></div><div><small>占领建筑</small><strong>${w.stats.captures}</strong></div><div><small>失守建筑</small><strong>${w.stats.lost}</strong></div><div><small>派遣兵力</small><strong>${w.stats.sent}</strong></div></div>
       ${earned.length ? `<div class="earned">♜ 解锁成就：${earned.map((id) => ACHIEVEMENTS.find((a) => a.id === id)?.name).join(' · ')}</div>` : ''}
-      ${win && l.id === 13 ? `<div class="crown-message">种核回到树心，翡翠王冠成为照亮归途的灯环。${this.race === 'agile' ? '疾行族与重甲族现已解锁。' : '这条归途已记入林地纪事。'}</div>` : ''}
+      ${win && l.id === 13 ? `<div class="crown-message">种核回到树心，翡翠王冠成为照亮归途的灯环。新的菌路仍在延伸，继续点亮余下五处巢域。</div>` : ''}
       <div class="result-buttons">
-        ${win && l.id < 13 ? `<button class="button primary" data-action="next">继续远征 →</button>` : `<button class="button primary" data-action="retry">${win ? '再次挑战' : '重返战场'} ↗</button>`}
+        ${win && l.id < LEVELS.length ? `<button class="button primary" data-action="next">继续远征 →</button>` : `<button class="button primary" data-action="retry">${win ? '再次挑战' : '重返战场'} ↗</button>`}
         <button class="button secondary" data-action="campaign">战役地图</button>
         ${!win ? '<button class="button secondary" data-action="retry-easy">改为悠闲再试</button>' : ''}
-        ${win && l.id < 13 ? '<button class="text-button" data-action="retry">重试本关</button>' : ''}
+        ${win && l.id < LEVELS.length ? '<button class="text-button" data-action="retry">重试本关</button>' : ''}
       </div>
       <small class="result-note">${win ? '评级依据：速度与建筑失守次数 · 最佳成绩已自动保存' : '本次未通关 · 已有的最佳成绩保持不变'}${this.save.available ? '' : '（浏览器存储不可用，仅本次会话有效）'}</small>
     </div></section>`;
@@ -432,15 +442,15 @@ class Application {
   private feedback(n: string) {
     if (n === 'not-ready') this.toast('能量未满。等待能量达到 100% 后施法。');
     else if (n === 'invalid') this.toast('请先选择有兵力的己方虫巢');
-    else if (n === 'no-road') this.toast('无直接道路，需逐巢派兵');
+    else if (n === 'no-road') this.toast('无可用路径', 2000);
     else if (n === 'partial-dispatch') {
-      this.toast('仅与目标直接相邻的所选建筑出兵，其余保留驻军');
+      this.toast('无可用路径', 2000);
       this.audio.play('dispatch');
       this.audio.play('march');
     } else if (['select', 'dispatch', 'capture', 'impact'].includes(n)) {
       this.audio.play(n as 'select');
       if (n === 'dispatch') this.audio.play('march');
-    } else if (n === 'shot') this.audio.play('impact');
+    } else if (n === 'shot' || n === 'clash') this.audio.play('impact');
     else if (n === 'cast') this.audio.play('skill');
   }
 
@@ -515,6 +525,7 @@ class Application {
         agile: this.save.raceUnlocked('agile'),
         fast: this.save.raceUnlocked('fast'),
         strong: this.save.raceUnlocked('strong'),
+        brood: this.save.raceUnlocked('brood'),
       },
       currentRace: this.race,
       inBattle: this.screen === 'battle' && !!this.scene.sim,
@@ -614,7 +625,7 @@ class Application {
   private help() {
     this.openModal('help');
     const stormSeconds = Math.ceil(BATTLE_RULES.skillCost / BATTLE_RULES.energyRate);
-    this.overlay(`<span class="eyebrow">日光花园 · 操作手册</span><h2>从最近的一座巢开始</h2><p class="first-route">新手第一步：点己方蓝巢 → 选 50% → 只点与它直接有道路相连的近处中立生产巢 → 抵达后再从新巢派下一段。一次命令只走一段，需要手动逐巢推进，不会自动中转。</p><div class="guide-grid"><article><b>01 / 扩张</b><h3>生产巢是根基</h3><p>生产巢默认每秒 1 兵；具体关卡可用 production 覆盖，并再乘种族生产倍率。中立巢不生产，占领后立即为新主人产兵。当前版本没有额外人口建筑或科技。炮塔不生产，需要增援，会自动射击射程内的敌方行军队列。</p></article><article><b>02 / 指挥</b><h3>只向直接相邻建筑派兵</h3><p>每条命令只检查与目标有固定道路直接相连的己方来源。拖框、Shift 或空格可多选，但不相邻的已选建筑不会出兵，也不会扣兵。抵达友方只增加驻军；要继续前进，必须手动逐巢再次下令。</p></article><article><b>03 / 时机</b><h3>派兵数是上限</h3><p>底部选择 25–100% 派兵比例，按每座来源向下取整。显示数字按全部已选建筑计算，是上限；实际只有相邻来源能抵达同一目标。军队沿道路直线行进，不能改道，也没有自动中转或连线经济。</p></article><article><b>04 / 风暴</b><h3>区域削兵，不直接占巢</h3><p>能量每秒 +${BATTLE_RULES.energyRate}%，${stormSeconds}秒充满；施放消耗 ${BATTLE_RULES.skillCost}%。半径 ${BATTLE_RULES.skillRadius} 内，每座敌方建筑与每支敌方在途部队分别最多损失 ${BATTLE_RULES.skillDamage} 兵，友军与中立安全；风暴不改变归属。</p></article></div><div class="guide-footer"><span><kbd>P</kbd> 暂停 <kbd>M</kbd> 静音 <kbd>C</kbd> 图鉴 <kbd>Esc</kbd> 取消 / 暂停</span><span>敌方建筑与在途部队全灭即胜 · 中立方不计入胜负</span></div><p class="hint">数值直接来自 RACES 与 BATTLE_RULES，与模拟共用。选中生产巢后打开图鉴，可查看该建筑的实际产速。13关布局与具体地图为原创重建。</p><button class="button primary" data-action="close">明白了，出发 →</button>`, true);
+    this.overlay(`<span class="eyebrow">日光花园 · 操作手册</span><h2>从最近的一座巢开始</h2><p class="first-route">新手第一步：点己方蓝巢 → 选 50% → 点击高亮的可达目标。军队沿固定道路自动经过己方中转巢，不能穿越中立或敌方中间巢。没有合法路径时提示“无可用路径”，不扣兵。</p><div class="guide-grid"><article><b>01 / 扩张</b><h3>生产巢是根基</h3><p>生产巢每秒 ${BATTLE_RULES.nestProduction} 兵，孵化巢每秒 ${BATTLE_RULES.hatcheryProduction} 兵；具体关卡可以覆盖。中立不生产。自然生产上限 ${BATTLE_RULES.productionCap}，满后停产、低于后恢复；增援允许超过上限，不截断。炮塔与风巢不产兵；风巢让出发的下一道路段速度 ×${BATTLE_RULES.windSpeedMultiplier}，不叠加。</p></article><article><b>02 / 指挥</b><h3>沿己方道路自动中转</h3><p>选择真实道路上的最短合法路径，中间建筑必须己方，最终目标归属不限。中转不合并驻军、不带走当地兵力。中间巢若失守，到达后正常交战并停止原后续路线。多选逐座验证：合法的发兵，无路径的保留选择。</p></article><article><b>03 / 时机</b><h3>派兵数是上限</h3><p>底部选择 25–100% 派兵比例，按每座来源向下取整。显示数字按全部已选建筑计算，是上限；实际只有存在合法路径的来源出兵。敌对虫群在同一道路相遇会自动遭遇战，双方同时损兵，存活者短暂停留后继续原路。没有自由飞行、职业混编或连线经济。</p></article><article><b>04 / 风暴</b><h3>区域削兵，不直接占巢</h3><p>能量每秒 +${BATTLE_RULES.energyRate}%，${stormSeconds}秒充满；施放消耗 ${BATTLE_RULES.skillCost}%。半径 ${BATTLE_RULES.skillRadius} 内，每座敌方建筑与每支敌方在途部队分别最多损失 ${BATTLE_RULES.skillDamage} 兵，友军与中立安全；风暴不改变归属。</p></article></div><div class="guide-footer"><span><kbd>P</kbd> 暂停 <kbd>M</kbd> 静音 <kbd>C</kbd> 图鉴 <kbd>Esc</kbd> 取消 / 暂停</span><span>歼灭关清除全部敌方 · 核心关占领标记目标即胜</span></div><p class="hint">数值直接来自 RACES 与 BATTLE_RULES，与模拟共用。选中生产巢后打开图鉴，可查看该建筑的实际产速。18关布局与具体地图为原创重建。疾行／重甲／繁育族在前2／4／7关后解锁。</p><button class="button primary" data-action="close">明白了，出发 →</button>`, true);
   }
 
   private achievements() {
@@ -624,12 +635,12 @@ class Application {
 
   private lore() {
     this.openModal('lore');
-    this.overlay(`<span class="eyebrow">日光花园 / 雨后纪事</span><h2>王冠不是一顶皇冠</h2><p>${LORE_NOTICE}</p><div class="lore-grid">${ACTS.map((a, i) => `<article><span class="tiny">第${['一', '二', '三', '四'][i]}幕 · ${a.theme}</span><h3>${a.name}</h3><p>${a.text}</p></article>`).join('')}</div><p class="hint">“重连”是巢灯与归途的故事意象；战场上的固定道路是真实行军限制——只能从直接相邻建筑逐巢派兵，不是自动连线经济。获胜仍须击败全部敌方建筑及在途部队；无需全占中立巢。</p><button class="button primary" data-action="close">合上纪事，继续行旅</button>`, true);
+    this.overlay(`<span class="eyebrow">日光花园 / 雨后纪事</span><h2>王冠不是一顶皇冠</h2><p>${LORE_NOTICE}</p><div class="lore-grid">${ACTS.map((a, i) => `<article><span class="tiny">${i < 4 ? `第${['一', '二', '三', '四'][i]}幕` : '归途续篇'} · ${a.theme}</span><h3>${a.name}</h3><p>${a.text}</p></article>`).join('')}</div><p class="hint">“重连”是巢灯与归途的故事意象；战场固定道路是真实行军限制。可经己方建筑自动中转，但不是自由飞行或连线经济。核心关占领标记目标即胜，其他关须消灭全部敌方建筑与在途军队；无需全占中立巢。</p><button class="button primary" data-action="close">合上纪事，继续行旅</button>`, true);
   }
 
   private credits() {
     this.openModal('credits');
-    this.overlay(`<span class="eyebrow">研究参考与原创边界</span><h2>以热爱，重建一个小世界</h2><p>《虫界战争 · 翡翠王冠》是以 Rudy Sudarto / Artlogic 的 Bug War 2 为研究参考的独立、非官方重制。未使用原版SWF或受保护的画面与声音素材。</p><div class="credits-columns"><article><h3>玩法研究</h3><p>Kongregate / Newgrounds 作者说明<br>MaxGames 操作手册<br>Anne in Red（2010）同期评测</p></article><article><h3>原创制作</h3><p>场景、虫巢、虫兵：自制SVG<br>真实管弦采样 · 原创编曲 · 自适应分层配乐<br>Phaser 3 · TypeScript · Web Audio</p></article></div><p class="hint">13张关卡地图、战斗数值、AI、魔法具体效果、评分阈值为原创重建。原版细节仍有未确认部分，完整证据与差异见项目 docs/original-game-analysis.md。非官方关联、无原作者背书。</p><button class="button primary" data-action="close">返回</button>`, true);
+    this.overlay(`<span class="eyebrow">研究参考与原创边界</span><h2>以热爱，重建一个小世界</h2><p>《虫界战争 · 翡翠王冠》是以 Rudy Sudarto / Artlogic 的 Bug War 2 为研究参考的独立、非官方重制。未使用原版SWF或受保护的画面与声音素材。</p><div class="credits-columns"><article><h3>玩法研究</h3><p>Kongregate / Newgrounds 作者说明<br>MaxGames 操作手册<br>Anne in Red（2010）同期评测</p></article><article><h3>原创制作</h3><p>场景、虫巢、虫兵：自制SVG<br>真实管弦采样 · 原创编曲 · 自适应分层配乐<br>Phaser 3 · TypeScript · Web Audio</p></article></div><p class="hint">18张关卡地图、战斗数值、AI、魔法具体效果、评分阈值为原创重建。原版细节仍有未确认部分，完整证据与差异见项目 docs/original-game-analysis.md。非官方关联、无原作者背书。</p><button class="button primary" data-action="close">返回</button>`, true);
   }
 
   private action(action: string, value?: string) {

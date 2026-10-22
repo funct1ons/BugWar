@@ -1,3 +1,5 @@
+import { RACES, type BuildingKind, type Fleet } from './types';
+
 /**
  * Battle constants shared by the simulation, the AI planner and the codex.
  * This is the single source of truth so displayed numbers cannot drift from gameplay.
@@ -68,6 +70,14 @@ export function cannonLossForExposure(units: number, exposure: number): number {
 
 export const BATTLE_RULES = {
   nestProduction: 1,
+  /** Natural growth stops here; a garrison above the cap is kept, never truncated. */
+  productionCap: 100,
+  /** Hatchery base rate: the production building that trades a slower role for more troops. */
+  hatcheryProduction: 1.5,
+  /** One-segment speed boost granted by leaving a friendly wind colony. Never stacks. */
+  windSpeedMultiplier: 1.35,
+  /** Extra troops a Brood fleet receives when it first takes a neutral production colony. */
+  broodCaptureBonus: 8,
   cannonRange: 200,
   /** Empty-tower base; a garrisoned cannon interpolates upwards, see CANNON_FIREPOWER_NODES. */
   cannonDamage: CANNON_BASE_FIREPOWER.damage,
@@ -76,4 +86,38 @@ export const BATTLE_RULES = {
   skillCost: 100,
   skillRadius: 135,
   skillDamage: 18,
+} as const;
+
+/** True for the two building kinds that generate troops on their own. */
+export function isProductive(kind: BuildingKind): boolean {
+  return kind === 'nest' || kind === 'hatchery';
+}
+
+/** Base production of a building kind before the map override and the owner's race. */
+export function defaultProduction(kind: BuildingKind): number {
+  if (kind === 'nest') return BATTLE_RULES.nestProduction;
+  if (kind === 'hatchery') return BATTLE_RULES.hatcheryProduction;
+  // Cannons and wind do not grow troops, so a map override cannot make them productive.
+  return 0;
+}
+
+/**
+ * Travel speed of one fleet for the current segment: race speed times the wind boost
+ * carried by `haste`. The multiplier always comes from the constant, so a stale or
+ * repeated value on the fleet can never stack.
+ */
+export function fleetSpeed(fleet: Fleet): number {
+  const race = RACES[fleet.race] ?? RACES.agile;
+  const boosted = Number.isFinite(fleet.haste) && (fleet.haste as number) > 0;
+  return race.speed * (boosted ? BATTLE_RULES.windSpeedMultiplier : 1);
+}
+
+/**
+ * Road clashes: hostile fleets sharing a road meet instead of slipping past each other.
+ * The radius is the contact tolerance of the swept collision test, the pause is how long
+ * the survivors hold position before resuming their itinerary.
+ */
+export const ROAD_CLASH = {
+  radius: 10,
+  pause: 0.25,
 } as const;

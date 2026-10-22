@@ -19,13 +19,24 @@ function fixture() {
 }
 
 describe('MusicDirector', () => {
-  it('maps all four acts and gives level 13 its own finale', () => {
+  it('maps all four acts and preserves both chapter finales', () => {
     const { director } = fixture();
     for (const biome of ['meadow', 'roots', 'marsh', 'amber'] as const) {
       director.startLevel({ ...LEVELS[0], biome }); expect(director.diagnostics().cue).toBe(biome);
     }
     director.startLevel({ ...LEVELS[0], id: 13 }); expect(director.diagnostics().cue).toBe('finale');
+    director.startLevel({ ...LEVELS[0], id: 18 }); expect(director.diagnostics().cue).toBe('finale');
     director.menu(); expect(director.diagnostics().cue).toBe('menu');
+  });
+  it('counts hatcheries as productive territory and follows final route destinations', () => {
+    const { director, world, advance } = fixture();
+    world.colonies[0].kind = 'hatchery';
+    world.fleets = [2, 3, 4].map(owner => ({ id:owner, owner, race:'agile', from:'b', to:'neutral', destination:'a', route:['a'], x:50, y:0, count:80, initialCount:80 }));
+    director.startLevel({ ...LEVELS[0], colonies:world.colonies });
+    advance(20);
+    expect(director.diagnostics().intensity).toBe(2);
+    expect(director.diagnostics().signals.nestLoss).toBe(0);
+    expect(director.diagnostics().signals.incoming).toBeGreaterThan(0);
   });
   it('does not treat one starting nest or initial imbalance as crisis', () => {
     const { director, advance, level, world } = fixture();
