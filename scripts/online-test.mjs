@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 const url=new URL(process.env.GAME_URL||'https://funct1ons.github.io/BugWar/');
 if(!url.pathname.endsWith('/'))url.pathname+='/';
 const output='test-results';await fs.mkdir(output,{recursive:true});
-const errors=[],failed=[],external=[],audio=new Set();
+const errors=[],failed=[],external=[],audio=new Set(),audioResponses=new Map();
 const browser=await chromium.launch({headless:true,executablePath:process.env.EDGE_PATH||'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'});
 const report={url:url.href,testedAt:new Date().toISOString(),browser:browser.version()};
 try{
@@ -15,7 +15,7 @@ try{
  page.on('pageerror',e=>errors.push(e.message));
  page.on('requestfailed',r=>failed.push(`${r.url()}: ${r.failure()?.errorText}`));
  page.on('request',r=>{if(!r.url().startsWith(url.origin+url.pathname)&&!r.url().startsWith('data:')&&!r.url().startsWith('blob:'))external.push(r.url());});
- page.on('response',r=>{if(r.status()>=400)failed.push(`${r.status()} ${r.url()}`);if(/\.(?:wav|ogg|mp3)$/.test(r.url())&&r.status()===200)audio.add(new URL(r.url()).pathname.split('/').pop());});
+ page.on('response',r=>{if(r.status()>=400)failed.push(`${r.status()} ${r.url()}`);if(/\.(?:wav|ogg|mp3)$/.test(r.url())&&r.status()===200){const name=new URL(r.url()).pathname.split('/').pop();audio.add(name);audioResponses.set(name,r);}});
  const response=await page.goto(url.href,{waitUntil:'networkidle',timeout:60000});
  assert.equal(response.status(),200);report.httpStatus=response.status();
  await page.waitForSelector('.menu-screen');await page.waitForSelector('canvas');
@@ -28,6 +28,10 @@ try{
  await page.locator('[data-action=campaign]').first().click();
  assert.equal(await page.locator('.level-card').count(),13);
  assert.equal(await page.locator('.level-card:disabled').count(),12);
+ // Give the gesture-unlocked menu cue time to finish downloading before leaving it.
+ // Rapid navigation intentionally aborts obsolete music; that is not a missing asset.
+ if(!audio.has('music-menu.ogg'))await page.waitForResponse(r=>/\/music-menu\.ogg$/.test(r.url())&&r.status()===200,{timeout:45000});
+ assert.equal(await audioResponses.get('music-menu.ogg').finished(),null,'menu response body completes before navigation');
  await page.locator('[data-action=level][data-value="0"]').click();
  await page.waitForSelector('.battle-bottom');
  const box=await page.locator('canvas').boundingBox();

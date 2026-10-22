@@ -1,6 +1,6 @@
 # 巢灯交响 · 全游戏配乐验收
 
-执行日期：2026-10-22（本机时间）。本轮在 `346909e` 的日光花园版本上替换全游戏配乐。**未推送、未部署 Pages；以下均为本地新版证据。** 技术验收通过，不代表人工听感或专业艺术验收。
+执行日期：2026-10-22（本机时间）。本轮在 `346909e` 的日光花园版本上替换全游戏配乐。**游戏提交 `d1a6ca0` 已推送，GitHub Pages 部署成功并通过正式站验收。** 下文分别标明本地与线上证据。技术验收通过，不代表人工听感或专业艺术验收。
 
 ## 1. 交付范围与协作
 
@@ -59,7 +59,11 @@ Windows／PowerShell 5.1、Node 24.14.1、Python 3.12.10、系统Edge 155.0.4283
 - `release/BugWar-VerdantCrown-Windows.zip` 重新打包。解压至含中文及空格的路径，从**包内**启动器运行同一浏览器验收，见 [offline-release-report.json](verification/offline-release-report.json)。加入最终文档证据再次压包后，游戏与启动器逐文件SHA必须与实测包一致；清单见 [release-payload-report.json](verification/release-payload-report.json)。
 - 双击 `Start-Game.cmd`，不要直接打开file://。运行无需Node、Python或联网；首次点击后有声。包中包含两种音乐格式与完整CC0许可，不含原始采样库、母带、开发工具或第三方研究截图。
 - [production-smoke-report.json](verification/production-smoke-report.json) 为**本地HTTP普通生产URL**：无测试接口，真实鼠标自然占领、四幕／锁关、暂停恢复及12个流程音频文件服务通过。页面实际加载的JS与本地构建同SHA，见 [build-verification.json](verification/build-verification.json)。不是正式站验收。
-- **本轮未push、未发布。** 公开Pages仍为此前 `67b3a91`。保留的 [online-report.json](verification/online-report.json) 仅为旧站历史证据，不证明当前配乐已上线。
+- **已按用户授权推送并发布。** `d1a6ca0` 的 [GitHub Actions](https://github.com/funct1ons/BugWar/actions/runs/39749779959) 测试、构建、Pages部署均成功，见 [pages-deployment-report.json](verification/pages-deployment-report.json)。正式网址为 <https://funct1ons.github.io/BugWar/>。
+- 新 [online-report.json](verification/online-report.json) 是正式HTTPS普通URL的真实Edge验收：页面无测试接口、四幕／13关初始锁定正确、鼠标派兵自然占领、暂停恢复、菜单及草甸三层与八SFX服务通过；页面实际加载 `index-Dfb9Bb_k.js`，SHA-256与本地验收构建完全一致。页面异常、失败请求、站外请求均0。旧站历史证据另存为 [online-prior-release-report.json](verification/online-prior-release-report.json)。
+- [public-score-assets-report.json](verification/public-score-assets-report.json) 从正式HTTPS逐份完整下载 **36份音乐和完整CC0许可**，SHA-256全部与已验收产物相同；不是只检查HTTP响应头或文件存在，也不冒称线上听音。
+- 上线验收首轮快速离开菜单触发了设计内的过时音乐取消；测试现明确等待菜单响应体下载完成再进入战场，不屏蔽失败请求。重新运行正式站验收通过，未修改游戏运行时代码。
+- 离线ZIP保留配乐交付时的 `d1a6ca0` 文档快照，不包含随后新增的这批线上发布记录；游戏资源与正式站相同。
 
 ## 复现
 

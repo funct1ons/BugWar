@@ -1,0 +1,142 @@
+{
+  "conclusion": "success",
+  "headSha": "d1a6ca026dcc5db95c76845c190223a77cbbdde3",
+  "jobs": [
+    {
+      "completedAt": "2026-10-22T08:43:17Z",
+      "conclusion": "success",
+      "databaseId": 119727136121,
+      "name": "Test and build",
+      "startedAt": "2026-10-22T08:42:44Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T08:42:46Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T08:42:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:42:49Z",
+          "conclusion": "success",
+          "name": "Check out source",
+          "number": 2,
+          "startedAt": "2026-10-22T08:42:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:42:52Z",
+          "conclusion": "success",
+          "name": "Set up Node.js",
+          "number": 3,
+          "startedAt": "2026-10-22T08:42:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:42:57Z",
+          "conclusion": "success",
+          "name": "Install locked dependencies",
+          "number": 4,
+          "startedAt": "2026-10-22T08:42:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:03Z",
+          "conclusion": "success",
+          "name": "Run deterministic regression tests",
+          "number": 5,
+          "startedAt": "2026-10-22T08:42:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:10Z",
+          "conclusion": "success",
+          "name": "Type-check and build the static game",
+          "number": 6,
+          "startedAt": "2026-10-22T08:43:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:13Z",
+          "conclusion": "success",
+          "name": "Upload Pages artifact",
+          "number": 7,
+          "startedAt": "2026-10-22T08:43:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:15Z",
+          "conclusion": "success",
+          "name": "Post Set up Node.js",
+          "number": 13,
+          "startedAt": "2026-10-22T08:43:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:15Z",
+          "conclusion": "success",
+          "name": "Post Check out source",
+          "number": 14,
+          "startedAt": "2026-10-22T08:43:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:15Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 15,
+          "startedAt": "2026-10-22T08:43:15Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/funct1ons/BugWar/actions/runs/39749779959/job/119727136121"
+    },
+    {
+      "completedAt": "2026-10-22T08:43:51Z",
+      "conclusion": "success",
+      "databaseId": 119727385549,
+      "name": "Publish playable site",
+      "startedAt": "2026-10-22T08:43:20Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-22T08:43:23Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-22T08:43:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:23Z",
+          "conclusion": "success",
+          "name": "Configure GitHub Pages",
+          "number": 2,
+          "startedAt": "2026-10-22T08:43:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:49Z",
+          "conclusion": "success",
+          "name": "Deploy tested artifact",
+          "number": 3,
+          "startedAt": "2026-10-22T08:43:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-22T08:43:49Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 4,
+          "startedAt": "2026-10-22T08:43:49Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/funct1ons/BugWar/actions/runs/39749779959/job/119727385549"
+    }
+  ],
+  "updatedAt": "2026-10-22T08:43:51Z",
+  "url": "https://github.com/funct1ons/BugWar/actions/runs/39749779959"
+}

@@ -1,0 +1,35 @@
+{
+  "url": "https://funct1ons.github.io/BugWar/",
+  "testedAt": "2026-10-22T00:52:00.736Z",
+  "browser": "155.0.4283.62",
+  "httpStatus": 200,
+  "storyActs": 4,
+  "capture": {
+    "faction": "2 巢",
+    "time": "00:04",
+    "fps": "151 FPS",
+    "method": "Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation."
+  },
+  "loadedJavaScript": "./assets/index-ByE338w_.js",
+  "javascript": {
+    "file": "index-ByE338w_.js",
+    "localSHA256": "37f4294613239d7c424529bee82fbbab390aa4cd120c02a0c5e7148885c0a173",
+    "remoteSHA256": "37f4294613239d7c424529bee82fbbab390aa4cd120c02a0c5e7148885c0a173"
+  },
+  "audioFiles": [
+    "music-battle.ogg",
+    "music-menu.ogg",
+    "sfx-capture.wav",
+    "sfx-click.wav",
+    "sfx-dispatch.wav",
+    "sfx-hover.wav",
+    "sfx-impact.wav",
+    "sfx-march.wav",
+    "sfx-select.wav",
+    "sfx-skill.wav"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "passed": true
+}
