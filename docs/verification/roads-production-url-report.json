@@ -1,0 +1,44 @@
+{
+  "url": "http://127.0.0.1:4180/",
+  "testedAt": "2026-10-22T10:43:52.698Z",
+  "browser": "155.0.4283.62",
+  "httpStatus": 200,
+  "storyActs": 4,
+  "capture": {
+    "faction": "2 巢",
+    "time": "00:04",
+    "fps": "138 FPS",
+    "method": "Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation."
+  },
+  "newFeatures": {
+    "menuCodexReadable": true,
+    "lockedRaceStillLocked": true,
+    "illegalRoadToast": true,
+    "battleCodexFreezesTimer": true,
+    "escapeRestoresRunning": true
+  },
+  "loadedJavaScript": "./assets/index-DUA8bNDa.js",
+  "javascript": {
+    "file": "index-DUA8bNDa.js",
+    "localSHA256": "40143bca4d98742c39412eaa6ffc711c9734e87a84d755218702225df8672540",
+    "remoteSHA256": "40143bca4d98742c39412eaa6ffc711c9734e87a84d755218702225df8672540"
+  },
+  "audioFiles": [
+    "music-meadow-base.ogg",
+    "music-meadow-motion.ogg",
+    "music-meadow-power.ogg",
+    "music-menu.ogg",
+    "sfx-capture.wav",
+    "sfx-click.wav",
+    "sfx-dispatch.wav",
+    "sfx-hover.wav",
+    "sfx-impact.wav",
+    "sfx-march.wav",
+    "sfx-select.wav",
+    "sfx-skill.wav"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "passed": true
+}

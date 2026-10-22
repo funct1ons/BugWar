@@ -12,7 +12,7 @@ const report={
  level:2,difficulty:'normal',race:'agile',openingWait:12,commandInterval:4,
  skippedCommandSlots:[3],skills:0,multiselect:false,worldWrites:0,
  fixture:'Only previous stage 1 completion is seeded in localStorage to unlock stage 2. No stage 2 progress, resources, time or terminal state is injected.',
- policy:'Read displayed (floored) current garrisons. Nearest neutral affordable with 50% + 5 reserve margin; otherwise nearest enemy affordable with 75% + 20 margin; otherwise reinforce the front with 75% of the largest rear nest. No fleet prediction, enemy interception or planner.',
+ policy:'Read displayed (floored) current garrisons. Nearest neutral affordable with 50% + 5 reserve margin; otherwise nearest enemy affordable with 75% + 20 margin; otherwise use current owned-subgraph hop distances to the visible frontier; largest rear sends 75% to an adjacent owned building (including cannons) one hop closer, with fixed descending node-ID tie-break among equal-hop neighbours; if no rear can supply, a frontier may merge into an adjacent frontier only in increasing fixed node-ID order, preventing garrison-driven A-B-A reversal. One manual order per slot, never automatic forwarding. No fleet prediction, enemy interception or planner.',
  commands:[],errors:[],failed:[]
 };
 try{
@@ -29,6 +29,7 @@ try{
  assert.equal(await page.locator('[data-action=level][data-value="1"]').isEnabled(),true,'previous-stage fixture unlocks only the intended next stage');
  await page.locator('[data-action=level][data-value="1"]').click();
  assert.equal(await page.evaluate(()=>window.__BUGWAR__.save.data.settings.difficulty),'normal');
+ assert.equal(await page.evaluate(()=>window.__BUGWAR__.scene.level.id),2,'pilot actually entered stage 2');
  report.startingColonies=await page.evaluate(()=>window.__BUGWAR__.scene.sim.world.colonies.map(({id,owner,units})=>({id,owner,units:Math.floor(units)})));
  report.graceSeconds=await page.evaluate(()=>window.__BUGWAR__.scene.sim.openingGrace);
  await page.screenshot({path:'test-results/onboarding-02-start.png'});
@@ -36,23 +37,32 @@ try{
  const click=(x,y,options)=>page.mouse.click(box.x+x*box.width/1600,box.y+y*box.height/900,options);
  const start=Date.now();let next=12,slots=0,final,snapshot=false;
  while(Date.now()-start<180000){
-  const w=await page.evaluate(()=>{const w=window.__BUGWAR__.scene.sim.world;return {status:w.status,elapsed:w.elapsed,stats:w.stats,colonies:w.colonies.map(c=>({...c,units:Math.floor(c.units)}))};});
+  const w=await page.evaluate(()=>{const w=window.__BUGWAR__.scene.sim.world;return {status:w.status,elapsed:w.elapsed,stats:w.stats,roads:w.roads,colonies:w.colonies.map(c=>({...c,units:Math.floor(c.units)}))};});
   if(w.status!=='playing'){final=w;break;}
   if(w.elapsed+.0001>=next){
    next+=4;slots++;
    if(slots!==3){
     const own=w.colonies.filter(c=>c.owner===1),targets=w.colonies.filter(c=>c.owner!==1);
-    const pairs=own.flatMap(a=>targets.map(b=>({a,b,d:Math.hypot(a.x-b.x,a.y-b.y)})));
+    const adjacent=(a,b)=>w.roads.some(([x,y])=>x===a.id&&y===b.id||y===a.id&&x===b.id);
+    const pairs=own.flatMap(a=>targets.filter(b=>adjacent(a,b)).map(b=>({a,b,d:Math.hypot(a.x-b.x,a.y-b.y)})));
     const neutral=pairs.filter(p=>p.b.owner===0&&p.a.units*.5>p.b.units+5).sort((a,b)=>a.d-b.d)[0];
     const enemy=pairs.filter(p=>p.b.owner>1&&p.a.units*.75>p.b.units+20).sort((a,b)=>a.d-b.d)[0];
     let order=neutral?{source:neutral.a,target:neutral.b,ratio:.5}:enemy?{source:enemy.a,target:enemy.b,ratio:.75}:null;
     if(!order&&targets.length){
-     const closest=c=>Math.min(...targets.map(t=>Math.hypot(c.x-t.x,c.y-t.y)));
-     const front=own.toSorted((a,b)=>closest(a)-closest(b))[0];
-     const rear=own.filter(c=>c!==front&&c.units>20).toSorted((a,b)=>b.units-a.units)[0];
-     if(front&&rear)order={source:rear,target:front,ratio:.75};
+     const hops=new Map(),queue=own.filter(c=>targets.some(t=>adjacent(c,t)));
+     for(const c of queue)hops.set(c.id,0);
+     for(let i=0;i<queue.length;i++)for(const c of own)if(!hops.has(c.id)&&adjacent(queue[i],c)){hops.set(c.id,hops.get(queue[i].id)+1);queue.push(c);}
+     const rear=own.filter(c=>c.units>20&&(hops.get(c.id)??0)>0&&own.some(n=>adjacent(c,n)&&hops.get(n.id)===hops.get(c.id)-1)).toSorted((a,b)=>b.units-a.units)[0];
+     const nextHop=rear&&own.filter(c=>adjacent(rear,c)&&hops.get(c.id)===hops.get(rear.id)-1).toSorted((a,b)=>b.id.localeCompare(a.id))[0];
+     if(rear&&nextHop)order={source:rear,target:nextHop,ratio:.75};
+     else {
+      const source=own.filter(c=>c.units>20&&hops.get(c.id)===0&&own.some(n=>hops.get(n.id)===0&&adjacent(c,n)&&c.id.localeCompare(n.id)<0)).toSorted((a,b)=>b.units-a.units)[0];
+      const target=source&&own.filter(n=>hops.get(n.id)===0&&adjacent(source,n)&&source.id.localeCompare(n.id)<0).toSorted((a,b)=>a.id.localeCompare(b.id))[0];
+      if(source&&target)order={source,target,ratio:.75};
+     }
     }
     if(order){
+     assert.ok(adjacent(order.source,order.target),'pilot never issues a nonadjacent order');
      await page.locator(`[data-action=ratio][data-value="${order.ratio}"]`).click();
      await click(50,450,{button:'right'}); // Explicitly clear the previous source selection.
      await click(order.source.x,order.source.y);await click(order.target.x,order.target.y);

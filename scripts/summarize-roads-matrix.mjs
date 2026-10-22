@@ -1,0 +1,26 @@
+// Preserve the bounded robot experiments as evidence; these are not human win rates.
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+const logPath=process.argv[2]||'test-results/roads-unit-log.txt';
+const target=process.argv[3]||'test-results/roads-matrix-report.json';
+const buffer=await fs.readFile(logPath);
+const log=buffer[0]===0xff&&buffer[1]===0xfe?buffer.toString('utf16le'):buffer.toString('utf8');
+const campaign=[...log.matchAll(/CAMPAIGN_RESULT (\[.*\])/g)].flatMap(m=>JSON.parse(m[1]));
+const onboarding=[...log.matchAll(/ONBOARDING (\{.*\})/g)].map(m=>JSON.parse(m[1]));
+const delayed=[...log.matchAll(/TUTORIAL_DELAY (\{.*\})/g)].map(m=>JSON.parse(m[1]));
+const unique=new Set(campaign.map(r=>`${r.level}/${r.difficulty}/${r.strategy}`));
+assert.equal(campaign.length,195,'Expected all 13 × 3 × 5 bounded campaign experiments');
+assert.equal(unique.size,195,'Duplicate campaign records cannot count as coverage');
+assert.equal(onboarding.length,18,'Expected all 3 × 3 × 2 low-frequency experiments');
+assert.equal(new Set(onboarding.map(r=>`${r.id}/${r.period}/${r.delay}/${r.hesitate}`)).size,18);
+const byDifficulty=Object.fromEntries(['easy','normal','hard'].map(d=>[d,{won:campaign.filter(r=>r.difficulty===d&&r.status==='won').length,lost:campaign.filter(r=>r.difficulty===d&&r.status==='lost').length,playing:campaign.filter(r=>r.difficulty===d&&r.status==='playing').length,total:campaign.filter(r=>r.difficulty===d).length}]));
+const uncovered=[];
+for(let level=1;level<=13;level++)for(const difficulty of ['easy','normal'])if(!campaign.some(r=>r.level===level&&r.difficulty===difficulty&&['agile-planner','agile-pulse'].includes(r.strategy)&&r.status==='won'))uncovered.push({level,difficulty});
+const paths=['src/core/ai.ts','src/core/Simulation.ts','src/core/types.ts','src/core/roads.ts','src/core/rules.ts','src/data/levels.ts','tests/campaign.test.ts','tests/onboarding.test.ts','scripts/summarize-roads-matrix.mjs'];
+const inputs=await Promise.all(paths.map(async path=>({path,sha256:createHash('sha256').update(await fs.readFile(path)).digest('hex')})));
+const report={generatedAt:new Date().toISOString(),baseline:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),runtime:process.version,method:'Bounded visible-state robot experiments; campaign uses the exported planner at 0.75s, unlike low-frequency onboarding. Neither is a measured human win rate.',logPath,logSha256:createHash('sha256').update(buffer).digest('hex'),inputs,campaignCount:campaign.length,byDifficulty,easyNormalAgileCoverageGaps:uncovered,onboardingCount:onboarding.length,onboardingWins:onboarding.filter(r=>r.status==='won').length,delayedTutorial:delayed,campaign,onboarding,passed:uncovered.length===0&&onboarding.every(r=>r.status==='won')&&delayed.length===1&&delayed[0].status==='won'};
+await fs.writeFile(target,JSON.stringify(report,null,2));
+console.log(JSON.stringify({campaignCount:report.campaignCount,byDifficulty,coverageGaps:uncovered,onboardingWins:report.onboardingWins,onboardingCount:report.onboardingCount,delayedTutorial:delayed,passed:report.passed},null,2));
+assert.equal(report.passed,true,'Road campaign or low-frequency acceptance failed; inspect the saved report');

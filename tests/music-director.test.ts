@@ -11,7 +11,7 @@ function fixture() {
     { id: 'a', x: 0, y: 0, owner: 1, kind: 'nest' as const, units: 100 },
     { id: 'b', x: 100, y: 0, owner: 2, kind: 'nest' as const, units: 100 },
   ] };
-  const world: World = { elapsed: 0, colonies: level.colonies.map(c => ({ ...c, production: 1 })), fleets: [], factions: level.factions, energy: {}, status: 'playing', stats: { sent: 0, kills: 0, captures: 0, lost: 0, skills: 0 }, events: [] };
+  const world: World = { elapsed: 0, colonies: level.colonies.map(c => ({ ...c, production: 1 })), fleets: [], factions: level.factions, roads: level.roads, energy: {}, status: 'playing', stats: { sent: 0, kills: 0, captures: 0, lost: 0, skills: 0 }, events: [] };
   director.startLevel(level); director.update(world);
   const advance = (seconds: number) => { for (let i = 0; i < seconds * 4; i++) { world.elapsed += .25; director.update(world); } };
   const attack = () => { world.fleets = [2, 3, 4].map(owner => ({ id: owner, owner, race: 'agile', from: 'b', to: 'a', x: 50, y: 0, count: 80, initialCount: 80 })); };

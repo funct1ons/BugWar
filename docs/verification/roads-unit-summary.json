@@ -1,0 +1,14 @@
+{
+  "files": 14,
+  "tests": 326,
+  "passed": 325,
+  "failed": 0,
+  "skipped": 1,
+  "success": true,
+  "skippedTests": [
+    {
+      "name": "scans conservative Agile opening garrisons",
+      "status": "skipped"
+    }
+  ]
+}

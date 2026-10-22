@@ -736,12 +736,13 @@ async function main() {
       const scene = app.scene;
       scene.paused = true;
       const world = scene.sim.world;
-      const target = world.colonies.find(colony => colony.owner === 0);
       world.colonies.forEach(colony => { if (colony.owner > 0) colony.units = 800; });
       const owners = [...new Set(world.colonies.map(colony => colony.owner).filter(owner => owner > 0))].sort();
       for (const owner of owners) {
         const source = world.colonies.find(colony => colony.owner === owner && colony.kind === 'nest') ?? world.colonies.find(colony => colony.owner === owner);
-        if (source && target) scene.sim.dispatch([source.id], target.id, 0.5, owner);
+        const adjacent = source && world.colonies.find(colony => colony.id !== source.id && world.roads.some(([a,b]) => a === source.id && b === colony.id || b === source.id && a === colony.id));
+        if (!source || !adjacent) throw Error(`Owner ${owner} has no legal stress fixture edge`);
+        scene.sim.dispatch([source.id], adjacent.id, 0.5, owner);
       }
       // Paused synthetic positioning: stage the already-dispatched fleets midway
       // along their routes so the screenshot can actually show every army away

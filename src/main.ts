@@ -5,8 +5,10 @@ import { MusicDirector } from './audio/MusicDirector';
 import { LEVELS, BIOMES } from './data/levels';
 import { ACHIEVEMENTS, SaveSystem } from './storage/SaveSystem';
 import { rateVictory } from './core/Simulation';
+import { BATTLE_RULES } from './core/rules';
 import { formatUnits } from './ui/format';
 import type { RaceId } from './core/types';
+import { CODEX_ENTRIES, escapeIntent, normalizeCodexState, pauseKeyIntent, renderCodex, renderMinimapRoads, type CodexTabId, type SelectedColonyInfo } from './data/codex';
 import { ACTS, BRIEFINGS, LORE_NOTICE, actForLevel } from './data/lore';
 import './style.css';
 
@@ -36,6 +38,9 @@ class Application {
   lastHUD = 0;
   toastTimer = 0;
   wasPaused = false;
+  codexTab: CodexTabId = 'races';
+  codexEntry = 'race-agile';
+  codexReturnToPause = false;
   ui = document.getElementById('ui')!;
 
   constructor() {
@@ -83,14 +88,43 @@ class Application {
     }, { once: true });
 
     document.addEventListener('keydown', (e) => {
-      if ((e.target as HTMLElement).matches('input,select')) return;
-      if (e.code === 'Escape' && this.screen === 'battle' && (!this.scene.skillArmed || !!this.modal)) {
+      const target = e.target as HTMLElement;
+      if (target.matches('input,select,textarea')) return;
+      const escape = e.code === 'Escape'
+        ? escapeIntent(this.screen, this.modal, this.scene.skillArmed, this.scene.selected.size > 0)
+        : 'none';
+      if (escape === 'close-modal') {
         e.preventDefault();
         e.stopPropagation();
-        if (this.modal) this.closeModal();
-        else if (this.scene.selected.size) this.scene.selected.clear();
-        else this.pause();
-      } else if (e.code === 'KeyP' && this.screen === 'battle') {
+        this.closeModal();
+        return;
+      }
+      if (this.modal === 'codex' && this.codexKeyboard(e)) return;
+      if (e.code === 'KeyC' && (this.modal === 'pause' || (!this.modal && ['battle', 'menu', 'campaign'].includes(this.screen)))) {
+        e.preventDefault();
+        this.openCodex();
+        return;
+      }
+      if (escape === 'scene-cancel-skill') {
+        // BattleScene handles Esc while aiming, so it can clear the gesture and
+        // selection; main must not pause or stop propagation here.
+        return;
+      }
+      if (escape === 'clear-selection') {
+        e.preventDefault();
+        e.stopPropagation();
+        this.scene.selected.clear();
+        return;
+      }
+      if (escape === 'pause') {
+        e.preventDefault();
+        e.stopPropagation();
+        this.pause();
+        return;
+      }
+      if (e.code === 'KeyP' && pauseKeyIntent(this.screen, this.modal, e.repeat) === 'toggle') {
+        // pause() closes an open pause menu, including the second P press. Auto-repeat
+        // is filtered above so holding P cannot flicker pause on and off.
         e.preventDefault();
         this.pause();
       } else if (e.code === 'KeyM') {
@@ -115,6 +149,7 @@ class Application {
     return `<header class="topbar">
       <button class="brand" data-action="menu"><img src="${base}art/emblem.svg" alt=""><span>翡翠王冠<small>虫界战争 · 日光花园</small></span></button>
       <nav class="top-nav">
+        <button class="top-link" data-action="codex">虫族图鉴</button>
         <button class="top-link" data-action="lore">雨后纪事</button>
         <span class="top-label">${label}</span>
       </nav>
@@ -206,7 +241,9 @@ class Application {
     const nodes = l.colonies.map((c) => c.kind === 'cannon'
       ? `<rect x="${c.x - 30}" y="${c.y - 130}" width="60" height="60" rx="9" fill="${FACTION_COLORS[c.owner]}" stroke="#fffdf7" stroke-width="8"/>`
       : `<circle cx="${c.x}" cy="${c.y - 100}" r="24" fill="${FACTION_COLORS[c.owner]}" stroke="#fffdf7" stroke-width="8"/>`).join('');
-    return `<svg class="minimap" viewBox="0 0 1600 700" aria-hidden="true">${l.colonies.slice(1).map((c, i) => `<path d="M${l.colonies[i].x},${l.colonies[i].y - 100} L${c.x},${c.y - 100}" stroke="#5b7f92" stroke-opacity=".30" stroke-width="6" stroke-linecap="round"/>`).join('')}${nodes}</svg>`;
+    // Read the level's real Road[] so the thumbnail and battlefield always agree.
+    const roads = renderMinimapRoads(l.colonies, l.roads, -100);
+    return `<svg class="minimap" viewBox="0 0 1600 700" aria-hidden="true">${roads}${nodes}</svg>`;
   }
 
   start(index: number) {
@@ -231,6 +268,7 @@ class Application {
         <div class="battle-title"><span class="tiny">${BIOMES[l.biome]} / ${l.subtitle}</span><h3>${l.name}</h3><p class="battle-briefing">${BRIEFINGS[this.levelIndex]}</p></div>
         <div id="faction-scores" class="faction-scores"></div>
         <div class="battle-clock"><small>远征时间</small><b id="timer">00:00</b></div>
+        <button class="icon-button" data-action="codex" aria-label="打开虫族图鉴" title="虫族图鉴 (C)">图</button>
         <button class="icon-button" data-action="settings" aria-label="声音和设置">⚙</button>
       </header>
       <div class="battle-objective"><span class="objective-dot"></span>消灭所有敌方势力<span class="slash">/</span><span id="objective-status"></span></div>
@@ -240,9 +278,9 @@ class Application {
         <div class="selection-info"><span class="bug-frame"><img src="${base}art/bug-${this.race}.svg" alt=""></span>
           <div><span class="tiny">${raceName[this.race]} · 蓝方</span><strong id="selection-count">选择你的虫巢</strong><small>点击选择 · 拖框多选 · 空格全选</small></div>
         </div>
-        <div class="dispatch-panel"><span class="tiny">派遣兵力 <b id="send-count"></b></span>
+        <div class="dispatch-panel"><span class="tiny">本次派兵上限 <b id="send-count"></b></span>
           <div class="ratio-buttons">${[.25, .5, .75, 1].map((n) => `<button class="${this.scene.ratio === n ? 'active' : ''}" data-action="ratio" data-value="${n}">${n * 100}%</button>`).join('')}</div>
-          <small>点击目标进攻或增援 · Shift 追加选择</small>
+          <small>仅与目标直接相邻的已选建筑出兵 · Shift 追加选择</small>
         </div>
         <button class="skill-button" data-action="skill" id="skill-button"><div class="skill-icon">❋<kbd>A</kbd></div>
           <div class="skill-copy"><span id="skill-label">孢子风暴</span><small id="energy-label">能量正在汇聚</small><div class="energy-track"><span id="energy-fill"></span></div></div>
@@ -272,6 +310,7 @@ class Application {
     text('objective-status', `${own.length} 座蓝方建筑 · ${w.colonies.filter((c) => c.owner > 1).length} 座敌方建筑`);
     text('selection-count', this.scene.selected.size ? `已选 ${this.scene.selected.size} 座建筑` : '选择你的虫巢');
     text('send-count', `${Math.floor(own.filter((c) => this.scene.selected.has(c.id)).reduce((s, c) => s + Math.floor(c.units * this.scene.ratio), 0))} 兵`);
+    document.getElementById('send-count')?.setAttribute('title', '按全部已选己方建筑计算的上限；实际只有与目标直接相邻的来源会出兵。');
     const energy = Math.floor(w.energy[1]);
     text('energy-value', `${energy}%`);
     text('energy-label', this.scene.skillArmed ? '点击战场施放 · 右键取消' : energy >= 100 ? '能量已满 · 按 A 选择区域' : '能量正在汇聚');
@@ -324,11 +363,20 @@ class Application {
   private feedback(n: string) {
     if (n === 'not-ready') this.toast('能量未满。等待能量达到 100% 后施法。');
     else if (n === 'invalid') this.toast('请先选择有兵力的己方虫巢');
-    else if (['select', 'dispatch', 'capture', 'impact'].includes(n)) {
+    else if (n === 'no-road') this.toast('无直接道路，需逐巢派兵');
+    else if (n === 'partial-dispatch') {
+      this.toast('仅与目标直接相邻的所选建筑出兵，其余保留驻军');
+      this.audio.play('dispatch');
+      this.audio.play('march');
+    } else if (['select', 'dispatch', 'capture', 'impact'].includes(n)) {
       this.audio.play(n as 'select');
       if (n === 'dispatch') this.audio.play('march');
     } else if (n === 'shot') this.audio.play('impact');
     else if (n === 'cast') this.audio.play('skill');
+  }
+
+  private pauseContent() {
+    return `<span class="eyebrow">雨声暂歇</span><h2>林间小憩</h2><p>虫群正在等候你的指令。</p><div class="modal-stack"><button class="button primary" data-action="close">继续战斗 →</button><button class="button secondary" data-action="codex">虫族图鉴 · 暂停查阅</button><button class="button secondary" data-action="retry">重新挑战</button><button class="button secondary" data-action="campaign">返回战役地图</button></div><span class="hint">P / Esc 返回战场 · C 查阅图鉴</span>`;
   }
 
   private pause() {
@@ -340,15 +388,15 @@ class Application {
     this.scene.paused = true;
     this.music.setPaused(true);
     this.modal = 'pause';
-    this.overlay(`<span class="eyebrow">雨声暂歇</span><h2>林间小憩</h2><p>虫群正在等候你的指令。</p><div class="modal-stack"><button class="button primary" data-action="close">继续战斗 →</button><button class="button secondary" data-action="retry">重新挑战</button><button class="button secondary" data-action="campaign">返回战役地图</button></div><span class="hint">P / Esc 返回战场</span>`);
+    this.overlay(this.pauseContent());
   }
 
-  private overlay(html: string, wide = false) {
+  private overlay(html: string, wide = false, extraClass = '') {
     document.getElementById('modal')?.remove();
     const el = document.createElement('div');
     el.id = 'modal';
     el.className = 'modal-backdrop';
-    el.innerHTML = `<div class="modal-card ${wide ? 'wide' : ''}" role="dialog" aria-modal="true"><button class="modal-close" data-action="close" aria-label="关闭">×</button>${html}</div>`;
+    el.innerHTML = `<div class="modal-card ${wide ? 'wide' : ''} ${extraClass}" role="dialog" aria-modal="true"><button class="modal-close" data-action="close" aria-label="关闭">×</button>${html}</div>`;
     this.ui.append(el);
     el.querySelector<HTMLElement>('button:not(.modal-close)')?.focus();
   }
@@ -361,10 +409,119 @@ class Application {
     this.modal = name;
   }
 
+  private openCodex() {
+    if (this.modal === 'codex') return;
+    const fromPause = this.modal === 'pause';
+    if (this.screen === 'battle') {
+      // Capture the pre-codex state only when no other modal already owns it.
+      // Re-running this on a category switch would overwrite wasPaused with true.
+      if (!this.modal) this.wasPaused = this.scene.paused;
+      this.scene.cancelGesture();
+      this.scene.paused = true;
+      this.music.setPaused(true);
+    }
+    this.codexReturnToPause = fromPause;
+    this.modal = 'codex';
+    this.codexTab = 'races';
+    this.codexEntry = 'race-agile';
+    this.overlay(this.codexBody(), true, 'codex-card');
+  }
+
+  private selectedColoniesForCodex(): SelectedColonyInfo[] {
+    if (this.screen !== 'battle' || !this.scene.sim) return [];
+    return [...this.scene.selected].flatMap((id) => {
+      const colony = this.scene.sim!.world.colonies.find((c) => c.id === id);
+      if (!colony) return [];
+      const race = this.scene.sim!.world.factions.find((f) => f.id === colony.owner)?.race;
+      return [{ id: colony.id, owner: colony.owner, kind: colony.kind, units: colony.units, production: colony.production, race }];
+    });
+  }
+
+  private codexBody() {
+    return renderCodex({
+      tab: this.codexTab,
+      entryId: this.codexEntry,
+      artBase: base,
+      raceUnlocked: {
+        agile: this.save.raceUnlocked('agile'),
+        fast: this.save.raceUnlocked('fast'),
+        strong: this.save.raceUnlocked('strong'),
+      },
+      currentRace: this.race,
+      inBattle: this.screen === 'battle' && !!this.scene.sim,
+      selectedColonies: this.selectedColoniesForCodex(),
+    });
+  }
+
+  /** Update only the open card: category switches must never re-open the modal. */
+  private refreshCodex(focus?: { type: 'tab' | 'entry'; value: string }) {
+    if (this.modal !== 'codex') return;
+    const card = document.querySelector<HTMLElement>('#modal .modal-card');
+    if (!card) return;
+    card.innerHTML = `<button class="modal-close" data-action="close" aria-label="关闭">×</button>${this.codexBody()}`;
+    if (!focus) return;
+    const selector = focus.type === 'tab'
+      ? `[data-action="codex-tab"][data-value="${focus.value}"]`
+      : `[data-action="codex-entry"][data-value="${focus.value}"]`;
+    card.querySelector<HTMLElement>(selector)?.focus();
+  }
+
+  private switchCodexTab(tab: string) {
+    if (this.modal !== 'codex') return;
+    const next = normalizeCodexState(tab, this.codexEntry);
+    this.codexTab = next.tab;
+    this.codexEntry = next.entryId;
+    this.refreshCodex({ type: 'tab', value: next.tab });
+  }
+
+  private switchCodexEntry(entryId: string) {
+    if (this.modal !== 'codex') return;
+    const next = normalizeCodexState(this.codexTab, entryId);
+    if (next.entryId !== entryId) return;
+    this.codexEntry = next.entryId;
+    this.refreshCodex({ type: 'entry', value: next.entryId });
+  }
+
+  private codexKeyboard(e: KeyboardEvent): boolean {
+    const target = e.target as HTMLElement;
+    const inTabs = !!target.closest('.codex-tabs');
+    const inList = !!target.closest('.codex-list');
+    if (!inTabs && !inList) return false;
+    if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+      e.preventDefault();
+      const index = Math.max(0, ['races', 'buildings', 'command'].indexOf(this.codexTab));
+      const delta = e.code === 'ArrowRight' ? 1 : -1;
+      const next = ['races', 'buildings', 'command'][(index + delta + 3) % 3];
+      this.switchCodexTab(next);
+      return true;
+    }
+    if (e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+      e.preventDefault();
+      const entries = CODEX_ENTRIES[this.codexTab];
+      const index = Math.max(0, entries.findIndex((entry) => entry.id === this.codexEntry));
+      const delta = e.code === 'ArrowDown' ? 1 : -1;
+      const next = entries[(index + delta + entries.length) % entries.length];
+      this.switchCodexEntry(next.id);
+      return true;
+    }
+    return false;
+  }
+
   private closeModal() {
+    const returnToPause = this.modal === 'codex' && this.codexReturnToPause;
+    this.codexReturnToPause = false;
     document.getElementById('modal')?.remove();
     this.modal = '';
-    if (this.screen === 'battle') this.scene.paused = this.wasPaused;
+    if (this.screen === 'battle') {
+      if (returnToPause) {
+        this.scene.paused = true;
+        this.modal = 'pause';
+        this.overlay(this.pauseContent());
+        this.music.setPaused(true);
+        return;
+      }
+      this.scene.paused = this.wasPaused;
+    }
     this.music.setPaused(this.screen === 'battle' && this.scene.paused);
   }
 
@@ -387,7 +544,8 @@ class Application {
 
   private help() {
     this.openModal('help');
-    this.overlay(`<span class="eyebrow">日光花园 · 操作手册</span><h2>从最近的一座巢开始</h2><p class="first-route">新手第一步：点己方蓝巢 → 选 50% → 点近处中立生产巢 → 等待生产，再增援。第 2 关先占近处生产巢，别急冲敌方。</p><div class="guide-grid"><article><b>01 / 扩张</b><h3>生产巢是你的根基</h3><p>占领带巢穴的建筑，它们持续生产虫兵，没有人口上限。炮塔不生产，需要增援，但会自动射击敌方行军。</p></article><article><b>02 / 指挥</b><h3>点击、拖拽、联合进攻</h3><p>点己方虫巢，再点目标派兵；或从己巢拖到目标。空地拖框多选，Shift追加，空格全选。点友方可增援。</p></article><article><b>03 / 时机</b><h3>留下后手，集中优势</h3><p>底部选择25–100%派兵比例。军队行进中不能改道。不同种族的速度与攻防不同，切勿只看数量。</p></article><article><b>04 / 风暴</b><h3>用一次施法扭转战局</h3><p>能量100%后按 A 或点技能，再点区域。范围135内敌方驻军与行军最多各损失18，友军安全。Esc/右键取消。</p></article></div><div class="guide-footer"><span><kbd>P</kbd> 暂停 <kbd>M</kbd> 静音 <kbd>Esc</kbd> 取消 / 暂停</span><span>全灭敌方建筑与在途军队获胜 · 速度和失守影响星级</span></div><p class="hint">13关与基础系统参考原作；具体地图、数值与孢子风暴效果为保守重建，并非已核实的原版参数。</p><button class="button primary" data-action="close">明白了，出发 →</button>`, true);
+    const stormSeconds = Math.ceil(BATTLE_RULES.skillCost / BATTLE_RULES.energyRate);
+    this.overlay(`<span class="eyebrow">日光花园 · 操作手册</span><h2>从最近的一座巢开始</h2><p class="first-route">新手第一步：点己方蓝巢 → 选 50% → 只点与它直接有道路相连的近处中立生产巢 → 抵达后再从新巢派下一段。一次命令只走一段，需要手动逐巢推进，不会自动中转。</p><div class="guide-grid"><article><b>01 / 扩张</b><h3>生产巢是根基</h3><p>生产巢默认每秒 1 兵；具体关卡可用 production 覆盖，并再乘种族生产倍率。中立巢不生产，占领后立即为新主人产兵。当前版本没有额外人口建筑或科技。炮塔不生产，需要增援，会自动射击射程内的敌方行军队列。</p></article><article><b>02 / 指挥</b><h3>只向直接相邻建筑派兵</h3><p>每条命令只检查与目标有固定道路直接相连的己方来源。拖框、Shift 或空格可多选，但不相邻的已选建筑不会出兵，也不会扣兵。抵达友方只增加驻军；要继续前进，必须手动逐巢再次下令。</p></article><article><b>03 / 时机</b><h3>派兵数是上限</h3><p>底部选择 25–100% 派兵比例，按每座来源向下取整。显示数字按全部已选建筑计算，是上限；实际只有相邻来源能抵达同一目标。军队沿道路直线行进，不能改道，也没有自动中转或连线经济。</p></article><article><b>04 / 风暴</b><h3>区域削兵，不直接占巢</h3><p>能量每秒 +${BATTLE_RULES.energyRate}%，${stormSeconds}秒充满；施放消耗 ${BATTLE_RULES.skillCost}%。半径 ${BATTLE_RULES.skillRadius} 内，每座敌方建筑与每支敌方在途部队分别最多损失 ${BATTLE_RULES.skillDamage} 兵，友军与中立安全；风暴不改变归属。</p></article></div><div class="guide-footer"><span><kbd>P</kbd> 暂停 <kbd>M</kbd> 静音 <kbd>C</kbd> 图鉴 <kbd>Esc</kbd> 取消 / 暂停</span><span>敌方建筑与在途部队全灭即胜 · 中立方不计入胜负</span></div><p class="hint">数值直接来自 RACES 与 BATTLE_RULES，与模拟共用。选中生产巢后打开图鉴，可查看该建筑的实际产速。13关布局与具体地图为原创重建。</p><button class="button primary" data-action="close">明白了，出发 →</button>`, true);
   }
 
   private achievements() {
@@ -397,7 +555,7 @@ class Application {
 
   private lore() {
     this.openModal('lore');
-    this.overlay(`<span class="eyebrow">日光花园 / 雨后纪事</span><h2>王冠不是一顶皇冠</h2><p>${LORE_NOTICE}</p><div class="lore-grid">${ACTS.map((a, i) => `<article><span class="tiny">第${['一', '二', '三', '四'][i]}幕 · ${a.theme}</span><h3>${a.name}</h3><p>${a.text}</p></article>`).join('')}</div><p class="hint">重连是故事意象，不是连线经济机制。获胜仍须击败全部敌方建筑及在途部队；无需全占中立巢。</p><button class="button primary" data-action="close">合上纪事，继续行旅</button>`, true);
+    this.overlay(`<span class="eyebrow">日光花园 / 雨后纪事</span><h2>王冠不是一顶皇冠</h2><p>${LORE_NOTICE}</p><div class="lore-grid">${ACTS.map((a, i) => `<article><span class="tiny">第${['一', '二', '三', '四'][i]}幕 · ${a.theme}</span><h3>${a.name}</h3><p>${a.text}</p></article>`).join('')}</div><p class="hint">“重连”是巢灯与归途的故事意象；战场上的固定道路是真实行军限制——只能从直接相邻建筑逐巢派兵，不是自动连线经济。获胜仍须击败全部敌方建筑及在途部队；无需全占中立巢。</p><button class="button primary" data-action="close">合上纪事，继续行旅</button>`, true);
   }
 
   private credits() {
@@ -408,6 +566,9 @@ class Application {
   private action(action: string, value?: string) {
     switch (action) {
       case 'lore': this.lore(); break;
+      case 'codex': this.openCodex(); break;
+      case 'codex-tab': if (value) this.switchCodexTab(value); break;
+      case 'codex-entry': if (value) this.switchCodexEntry(value); break;
       case 'retry-easy':
         this.save.data.settings.difficulty = 'easy';
         this.save.persist();

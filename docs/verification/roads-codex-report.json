@@ -1,0 +1,220 @@
+{
+  "passed": true,
+  "errors": [],
+  "failedRequests": [],
+  "checks": [
+    "click: illegal a-d rejected without resource/stat debit",
+    "drag: illegal a-d rejected without resource/stat debit",
+    "real UI a-b capture with AI-grace timing fixture, road travel, no automatic onward dispatch",
+    "fixture: friendly adjacent reinforcement, nonadjacent reselect, mixed legal-source filtering"
+  ],
+  "fixture": "Only explicitly labelled fixture sections mutate world state. Natural first-stage input is not represented as a campaign clear.",
+  "ai": [
+    {
+      "level": 1,
+      "distinctEnemyFleets": 26
+    },
+    {
+      "level": 2,
+      "distinctEnemyFleets": 45
+    },
+    {
+      "level": 3,
+      "distinctEnemyFleets": 52
+    },
+    {
+      "level": 4,
+      "distinctEnemyFleets": 81
+    },
+    {
+      "level": 5,
+      "distinctEnemyFleets": 62
+    },
+    {
+      "level": 6,
+      "distinctEnemyFleets": 59
+    },
+    {
+      "level": 7,
+      "distinctEnemyFleets": 56
+    },
+    {
+      "level": 8,
+      "distinctEnemyFleets": 42
+    },
+    {
+      "level": 9,
+      "distinctEnemyFleets": 67
+    },
+    {
+      "level": 10,
+      "distinctEnemyFleets": 76
+    },
+    {
+      "level": 11,
+      "distinctEnemyFleets": 78
+    },
+    {
+      "level": 12,
+      "distinctEnemyFleets": 23
+    },
+    {
+      "level": 13,
+      "distinctEnemyFleets": 45
+    }
+  ],
+  "network": [
+    {
+      "level": 1,
+      "edges": 4,
+      "thumbnailEdges": 4,
+      "visibleLanes": 4
+    },
+    {
+      "level": 2,
+      "edges": 7,
+      "thumbnailEdges": 7,
+      "visibleLanes": 7
+    },
+    {
+      "level": 3,
+      "edges": 6,
+      "thumbnailEdges": 6,
+      "visibleLanes": 6
+    },
+    {
+      "level": 4,
+      "edges": 9,
+      "thumbnailEdges": 9,
+      "visibleLanes": 9
+    },
+    {
+      "level": 5,
+      "edges": 8,
+      "thumbnailEdges": 8,
+      "visibleLanes": 8
+    },
+    {
+      "level": 6,
+      "edges": 10,
+      "thumbnailEdges": 10,
+      "visibleLanes": 10
+    },
+    {
+      "level": 7,
+      "edges": 8,
+      "thumbnailEdges": 8,
+      "visibleLanes": 8
+    },
+    {
+      "level": 8,
+      "edges": 10,
+      "thumbnailEdges": 10,
+      "visibleLanes": 10
+    },
+    {
+      "level": 9,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 10,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 11,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 12,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 13,
+      "edges": 14,
+      "thumbnailEdges": 14,
+      "visibleLanes": 14
+    }
+  ],
+  "codex": {
+    "entries": [
+      {
+        "category": "races",
+        "entry": "race-agile",
+        "chars": 472
+      },
+      {
+        "category": "races",
+        "entry": "race-fast",
+        "chars": 500
+      },
+      {
+        "category": "races",
+        "entry": "race-strong",
+        "chars": 489
+      },
+      {
+        "category": "buildings",
+        "entry": "building-nest",
+        "chars": 421
+      },
+      {
+        "category": "buildings",
+        "entry": "building-cannon",
+        "chars": 366
+      },
+      {
+        "category": "command",
+        "entry": "command-roads",
+        "chars": 540
+      },
+      {
+        "category": "command",
+        "entry": "command-storm",
+        "chars": 306
+      },
+      {
+        "category": "command",
+        "entry": "command-ownership",
+        "chars": 413
+      },
+      {
+        "category": "command",
+        "entry": "command-controls",
+        "chars": 398
+      }
+    ],
+    "categories": [
+      {
+        "id": "races",
+        "title": "01族群3 支虫族"
+      },
+      {
+        "id": "buildings",
+        "title": "02建筑2 种建筑"
+      },
+      {
+        "id": "command",
+        "title": "03指挥4 条规则"
+      }
+    ],
+    "viewports": [
+      1280,
+      1366,
+      1600
+    ],
+    "pauseKeyboard": {
+      "repeatIgnored": true,
+      "secondPressResumes": true,
+      "codexBlocksP": true
+    },
+    "priorPauseInput": "P → C → Escape / close"
+  }
+}

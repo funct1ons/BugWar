@@ -1,7 +1,12 @@
+param([switch]$SkipBuild)
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path $PSScriptRoot)
-npm.cmd run build
-if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+if (-not $SkipBuild) {
+  npm.cmd run build
+  if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+} elseif (-not (Test-Path 'dist\index.html')) {
+  throw 'SkipBuild requires an existing accepted dist build'
+}
 $target = Join-Path (Get-Location) 'release\BugWar-VerdantCrown'
 if (Test-Path $target) { Remove-Item $target -Recurse -Force }
 New-Item -ItemType Directory -Force $target | Out-Null

@@ -4,7 +4,7 @@
 以有来源的规则为基础。13关、Agile/Fast/Strong、Spawn/Cannon、无限驻军、1–5星、通关解锁种族、满能量A施法。禁止声称未知数值为原版精确值。不添加巢穴升级或科技树等未经确认机制。
 
 ## 模块所有权
-日光花园美术迁移已完成。本轮交响配乐按互斥文件分工：音乐制作代理负责采样获取、原创编配、离线渲染和制作溯源；引擎代理负责 `AudioSystem.ts` 与播放单测；战况代理负责 `MusicDirector.ts`、主程序音乐接入及导演单测；主代理负责共享曲目契约、代码复核、真实Edge／离线验收、许可与交付整合。核心规则、关卡、存档、美术、场景输入与八个音效冻结，不因改配乐改变玩法。
+此前美术与交响配乐迁移已完成并发布。本轮道路／图鉴按互斥文件分工：核心代理负责道路合法性、单跳AI及共享规则常量；关卡代理负责13张手工路网与拓扑／几何测试；场景代理负责常显道路、相邻高亮与输入反馈；UI代理负责图鉴、真实路网缩略图、指南与暂停恢复；独立QA代理负责浏览器和低频驾驶器；主代理复核、整合、验收和离线交付。音乐引擎、音乐导演、音频文件、美术与存档格式保留，不再冻结需修正的道路规则和AI。
 
 ## 画布/关卡
 逻辑画面1600×900，战役建筑中心 x=210..1400,y=230..710；顶部HUD y=20..138、底部HUD y=792..888。提示单行位于y140，最下兵力数字下沿777，不遮挡建筑。坐标均绝对逻辑像素。关卡13个，4类生境，布局各异。渲染Phaser，HTML覆盖层提供可访问的游戏UI。
@@ -14,13 +14,14 @@
 export type RaceId = 'agile' | 'fast' | 'strong';
 export type BuildingKind = 'nest' | 'cannon';
 export type Difficulty = 'easy' | 'normal' | 'hard';
+export type Road = readonly [string,string];
 export interface ColonyConfig { id:string; x:number; y:number; owner:number; kind:BuildingKind; units:number; production?:number }
 export interface FactionConfig { id:number; race:RaceId }
-export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; factions:FactionConfig[]; colonies:ColonyConfig[]; tip:string; openingGrace?:Partial<Record<Difficulty,number>> }
+export interface LevelConfig { id:number; name:string; subtitle:string; biome:'meadow'|'roots'|'marsh'|'amber'; par:number; factions:FactionConfig[]; colonies:ColonyConfig[]; roads:Road[]; tip:string; openingGrace?:Partial<Record<Difficulty,number>> }
 export interface Colony extends ColonyConfig { production:number }
 export interface Fleet { id:number; owner:number; race:RaceId; from:string; to:string; x:number; y:number; count:number; initialCount:number }
 export interface GameEvent { type:'dispatch'|'impact'|'capture'|'shot'|'skill'|'end'; x:number; y:number; owner:number; targetX?:number; targetY?:number; amount?:number }
-export interface World { elapsed:number; colonies:Colony[]; fleets:Fleet[]; factions:FactionConfig[]; energy:Record<number,number>; status:'playing'|'won'|'lost'; stats:{sent:number; kills:number; captures:number; lost:number; skills:number}; events:GameEvent[] }
+export interface World { elapsed:number; colonies:Colony[]; roads:Road[]; fleets:Fleet[]; factions:FactionConfig[]; energy:Record<number,number>; status:'playing'|'won'|'lost'; stats:{sent:number; kills:number; captures:number; lost:number; skills:number}; events:GameEvent[] }
 export const RACES: Record<RaceId,{name:string;speed:number;attack:number;defense:number;production:number}>;
 ```
 
@@ -37,7 +38,9 @@ export class Simulation {
 }
 export function rateVictory(time:number,lost:number,par:number):number; //1..5
 ```
-World events only consumed with drainEvents; AI deterministic utility with incoming projections, reserve, coordinated attacks; cannot cheat resources. Cannon nonproducing, range fire at enemy marching fleets. Fleet counts logical separate from bounded sprite representation. Movement no mid-path retarget (unsupported). Battle weighted attrition on arrival; race attributes meaningful. Victory after all hostile colonies+fleets eliminated; neutral need not captured. Defeat player colonies+fleets eliminated. Player1. Factions2–4 AI.
+`src/core/roads.ts` 的 `hasRoad(roads,from,to)` 为无向直接邻接判断。LevelConfig与World必须携带显式roads，Simulation复制关卡道路；不将缺少道路解释成任意直达。dispatch对每个来源分别检查道路，只有直接相邻、己方且有整数兵力的来源可以出兵。军队抵达后合流／交战，不自动产生下一跳。
+
+World events only consumed with drainEvents; AI deterministic utility with incoming projections, reserve, coordinated attacks; cannot cheat resources. AI攻击、防守及后方补给均只从直接相邻来源派兵。地图拓扑可用于选择手动下令的下一跳，但不是给在途军队自动寻路。`src/core/rules.ts` 的 `BATTLE_RULES` 是模拟与图鉴共用的生产／炮塔／技能常量，种族继续读取RACES。 Cannon nonproducing, range fire at enemy marching fleets. Fleet counts logical separate from bounded sprite representation. Movement no mid-path retarget (unsupported). Battle weighted attrition on arrival; race attributes meaningful. Victory after all hostile colonies+fleets eliminated; neutral need not captured. Defeat player colonies+fleets eliminated. Player1. Factions2–4 AI.
 
 ## 美术资源契约
 全部SVG自含viewBox，无外部资源／字体／脚本依赖，正式共36张。
@@ -48,7 +51,7 @@ World events only consumed with drainEvents; AI deterministic utility with incom
 - `emblem.svg`：256×256种核甲虫与十三灯环。
 - 所有者色：0中立`#92A18B`、1蓝`#327FC1`、2红`#C85F48`、3紫`#8B70BA`、4金`#C49336`；文字与不同形状同时编码。捕获时切换纹理，不以全图tint代替材质。
 
-表现层负责浅底深字数字牌、蓝选区／路线、行军步态及占领／技能／炮击效果。资源再生不依赖临时设计目录，详见 `art-direction.md`。
+表现层负责浅底深字数字牌、常显真实道路、蓝选区／直接相邻路线高亮、行军步态及占领／技能／炮击效果。缩略图同样读取LevelConfig.roads，不能以数组顺序生成装饰路线。图鉴采用既有SVG与真实核心数值；战斗中打开暂停，切条目不重写暂停快照，关闭恢复原状态。资源再生不依赖临时设计目录，详见 `art-direction.md`。
 
 ## AudioSystem (音频代理)
 默认导出或具名导出 class AudioSystem，具名优先：

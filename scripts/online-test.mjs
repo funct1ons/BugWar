@@ -22,6 +22,11 @@ try{
  assert.equal(await page.evaluate(()=>typeof window.__BUGWAR__),'undefined','production URL does not expose the test interface');
  assert.equal(await page.locator('img.menu-cover').evaluate(el=>el.complete&&el.naturalWidth===1600&&el.naturalHeight===900),true,'approved sunlit cover is decoded in the live menu');
  await page.screenshot({path:`${output}/online-menu.png`});
+ await page.locator('[data-action=codex]:visible').first().click();
+ assert.equal(await page.locator('#modal [data-action=codex-tab]').count(),3);
+ await page.locator('#modal [data-action=codex-entry][data-value="race-fast"]').click();
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/锁定|未解锁/);
+ await page.keyboard.press('Escape');
  await page.locator('[data-action=lore]').click();
  assert.equal(await page.locator('.lore-grid article').count(),4);report.storyActs=4;
  await page.locator('#modal [data-action=close]').last().click();
@@ -36,12 +41,26 @@ try{
  await page.waitForSelector('.battle-bottom');
  const box=await page.locator('canvas').boundingBox();
  const click=(x,y)=>page.mouse.click(box.x+x*box.width/1600,box.y+y*box.height/900);
+ // Production-only UI probe: no debug interface, simulation or save writes.
+ await click(320,465);await click(1280,465);
+ assert.match(await page.locator('#toast.show').innerText(),/相邻|道路|连接/);
  await click(320,465);await click(730,330);
  await page.waitForFunction(()=>document.querySelector('.faction-1 small')?.textContent==='2 巢',undefined,{timeout:20000});
  report.capture={faction:await page.locator('.faction-1 small').textContent(),time:await page.locator('#timer').textContent(),fps:await page.locator('#perf').textContent(),method:'Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation.'};
  await page.screenshot({path:`${output}/online-battle.png`});
  await page.locator('[data-action=pause]').click();await page.waitForSelector('#modal');
  await page.locator('#modal [data-action=close]').last().click();assert.equal(await page.locator('#modal').count(),0);
+ await page.locator('[data-action=codex]:visible').last().click();
+ const frozenTimer=await page.locator('#timer').textContent();
+ await page.locator('#modal [data-action=codex-tab][data-value="command"]').click();
+ await page.locator('#modal [data-action=codex-entry][data-value="command-roads"]').click();
+ assert.match(await page.locator('#modal .codex-detail').innerText(),/相邻/);
+ await page.keyboard.press('p');await page.waitForTimeout(1200);
+ assert.equal(await page.locator('#timer').textContent(),frozenTimer,'production codex freezes battle timer and blocks P');
+ await page.screenshot({path:`${output}/online-codex.png`});
+ await page.keyboard.press('Escape');await page.waitForSelector('#modal',{state:'detached'});
+ await page.waitForFunction(previous=>document.querySelector('#timer')?.textContent!==previous,frozenTimer,{timeout:3000});
+ report.newFeatures={menuCodexReadable:true,lockedRaceStillLocked:true,illegalRoadToast:true,battleCodexFreezesTimer:true,escapeRestoresRunning:true};
  const jsFile=(await fs.readdir('dist/assets')).find(name=>/^index-.*\.js$/.test(name));
  assert.ok(jsFile,'Build locally before checking the deployed version');
  report.loadedJavaScript=await page.locator('script[type="module"]').getAttribute('src');

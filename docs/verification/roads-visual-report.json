@@ -1,0 +1,6376 @@
+{
+  "startedAt": "2026-10-22T10:38:54.658Z",
+  "url": "http://127.0.0.1:4181/?test=1",
+  "normalUrl": "http://127.0.0.1:4181/",
+  "port": 4181,
+  "boundaries": {
+    "designSize": "1600x900",
+    "hudTop": 792,
+    "minCoverBrightness": 0.45,
+    "numberPlatePaddingPx": 2,
+    "minControlSizePx": 2,
+    "hitTestTolerancePx": 1,
+    "crossViewportTolerancePx": 2,
+    "note": "HUD top is the measured .battle-bottom top in 1600x900 design coordinates; 792 is the design baseline."
+  },
+  "fixtures": [
+    {
+      "name": "multi-faction + three unit races",
+      "synthetic": true,
+      "description": "Owners 1-4 receive boosted units and direct Simulation.dispatch orders while paused; verifies owner-specific textures and all three unit sheets are visible. Not a natural match.",
+      "values": {
+        "level": 9,
+        "owners": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "races": [
+          "agile",
+          "fast",
+          "strong"
+        ]
+      }
+    },
+    {
+      "name": "capture texture switch",
+      "synthetic": true,
+      "description": "A single colony is boosted and dispatched by the test into a neutral nest; the capture itself resolves normally, but the setup is synthetic. Not a natural clear.",
+      "values": {
+        "level": 1,
+        "source": "a",
+        "target": "b"
+      }
+    },
+    {
+      "name": "extreme number plate",
+      "synthetic": true,
+      "description": "Display-only units injection (up to 1e12) on one colony to verify the number shrinks inside its plate. Not a gameplay/balance check.",
+      "values": {
+        "values": [
+          38,
+          12345,
+          1000000000,
+          1000000000000
+        ]
+      }
+    },
+    {
+      "name": "victory/defeat result screens",
+      "synthetic": true,
+      "description": "Ownership is forced through the test hook; verifies result UI and labels only, not a natural completion.",
+      "values": {
+        "victory": "all colonies owner=1",
+        "defeat": "all colonies owner=2"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "normal URL does not expose the test hook",
+      "ok": true,
+      "detail": {
+        "url": "http://127.0.0.1:4181/",
+        "typeofHook": "undefined"
+      }
+    },
+    {
+      "name": "approved cover img.menu-cover exists",
+      "ok": true,
+      "detail": {
+        "cover": {
+          "src": "./art/cover.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+          "complete": true,
+          "naturalWidth": 1600,
+          "naturalHeight": 900,
+          "rect": {
+            "x": -0.00006103515625,
+            "y": 0,
+            "width": 1920,
+            "height": 1080
+          },
+          "display": "block",
+          "visibility": "visible",
+          "opacity": 1,
+          "insideUi": true,
+          "visible": true,
+          "brightness": 0.8268797498365984,
+          "variance": 0.03895330304130906,
+          "chroma": 0.11680419389978214
+        },
+        "oldHeroEmblem": []
+      }
+    },
+    {
+      "name": "approved cover has src art/cover.svg",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": -0.00006103515625,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "approved cover decodes at 1600x900",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": -0.00006103515625,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "approved cover is visible inside #ui",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": -0.00006103515625,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "cover.svg request is a successful SVG response",
+      "ok": true,
+      "detail": [
+        {
+          "status": 200,
+          "contentType": "image/svg+xml",
+          "url": "http://127.0.0.1:4181/art/cover.svg"
+        }
+      ]
+    },
+    {
+      "name": "approved cover renders as bright sunlit pixels, not a dark placeholder",
+      "ok": true,
+      "detail": {
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "menu no longer shows the old hero emblem",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "menu has no full-sheet bug thumbnails",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "modal lore is visible inside the viewport",
+      "ok": true,
+      "detail": {
+        "present": true,
+        "cardInsideViewport": true,
+        "cardInsideUi": true,
+        "closeHit": true,
+        "matches": 4,
+        "card": {
+          "x": 335.99993896484375,
+          "y": 179.4562530517578,
+          "width": 1248,
+          "height": 721.0687866210938
+        }
+      }
+    },
+    {
+      "name": "modal lore has 4 expected content blocks",
+      "ok": true,
+      "detail": {
+        "matches": 4
+      }
+    },
+    {
+      "name": "modal help is visible inside the viewport",
+      "ok": true,
+      "detail": {
+        "present": true,
+        "cardInsideViewport": true,
+        "cardInsideUi": true,
+        "closeHit": true,
+        "matches": 4,
+        "card": {
+          "x": 335.99993896484375,
+          "y": 113.45625305175781,
+          "width": 1248,
+          "height": 853.0687866210938
+        }
+      }
+    },
+    {
+      "name": "modal help has 4 expected content blocks",
+      "ok": true,
+      "detail": {
+        "matches": 4
+      }
+    },
+    {
+      "name": "modal settings is visible inside the viewport",
+      "ok": true,
+      "detail": {
+        "present": true,
+        "cardInsideViewport": true,
+        "cardInsideUi": true,
+        "closeHit": true,
+        "matches": 1,
+        "card": {
+          "x": 551.9999389648438,
+          "y": 157.25625610351562,
+          "width": 816.0000610351562,
+          "height": 765.46875
+        }
+      }
+    },
+    {
+      "name": "modal settings has 1 expected content blocks",
+      "ok": true,
+      "detail": {
+        "matches": 1
+      }
+    },
+    {
+      "name": "modal achievements is visible inside the viewport",
+      "ok": true,
+      "detail": {
+        "present": true,
+        "cardInsideViewport": true,
+        "cardInsideUi": true,
+        "closeHit": true,
+        "matches": 12,
+        "card": {
+          "x": 335.99993896484375,
+          "y": 177.8625030517578,
+          "width": 1248,
+          "height": 724.2750244140625
+        }
+      }
+    },
+    {
+      "name": "modal achievements has 12 expected content blocks",
+      "ok": true,
+      "detail": {
+        "matches": 12
+      }
+    },
+    {
+      "name": "modal credits is visible inside the viewport",
+      "ok": true,
+      "detail": {
+        "present": true,
+        "cardInsideViewport": true,
+        "cardInsideUi": true,
+        "closeHit": true,
+        "matches": 2,
+        "card": {
+          "x": 335.99993896484375,
+          "y": 243.13125610351562,
+          "width": 1248,
+          "height": 593.737548828125
+        }
+      }
+    },
+    {
+      "name": "modal credits has 2 expected content blocks",
+      "ok": true,
+      "detail": {
+        "matches": 2
+      }
+    },
+    {
+      "name": "campaign lists four acts",
+      "ok": true,
+      "detail": [
+        "第一幕 · 露灯醒来晨露草甸 · 找回第一条归途",
+        "第二幕 · 根须的记忆幽根林地 · 守住迁徙的路",
+        "第三幕 · 潮水中的星火萤火湿地 · 留住有限的灯火",
+        "第四幕 · 琥珀的回声琥珀荒庭 · 把种核送回树心"
+      ]
+    },
+    {
+      "name": "campaign renders 13 level cards",
+      "ok": true,
+      "detail": 13
+    },
+    {
+      "name": "campaign layout stays inside #ui",
+      "ok": true,
+      "detail": {
+        "acts": [
+          "第一幕 · 露灯醒来晨露草甸 · 找回第一条归途",
+          "第二幕 · 根须的记忆幽根林地 · 守住迁徙的路",
+          "第三幕 · 潮水中的星火萤火湿地 · 留住有限的灯火",
+          "第四幕 · 琥珀的回声琥珀荒庭 · 把种核送回树心"
+        ],
+        "levels": 13,
+        "disabledLevels": 12,
+        "layoutInsideUi": true
+      }
+    },
+    {
+      "name": "campaign UI uses the default blue unit sheet",
+      "ok": true,
+      "detail": [
+        {
+          "src": "./art/bug-agile.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-agile.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.79998779296875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.800018310546875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        },
+        {
+          "src": "./art/bug-fast.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-fast.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.800018310546875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.79998779296875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        },
+        {
+          "src": "./art/bug-strong.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-strong.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.79998779296875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.79998779296875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        }
+      ]
+    },
+    {
+      "name": "campaign UI crops unit sheets to one 24x32 frame",
+      "ok": true,
+      "detail": [
+        {
+          "src": "./art/bug-agile.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-agile.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.79998779296875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.800018310546875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        },
+        {
+          "src": "./art/bug-fast.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-fast.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.800018310546875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.79998779296875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        },
+        {
+          "src": "./art/bug-strong.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-strong.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.79998779296875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.79998779296875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        }
+      ]
+    },
+    {
+      "name": "campaign unit thumbnails decode as 96x32 sheets",
+      "ok": true,
+      "detail": [
+        {
+          "src": "./art/bug-agile.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-agile.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.79998779296875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.800018310546875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        },
+        {
+          "src": "./art/bug-fast.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-fast.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.800018310546875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.79998779296875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        },
+        {
+          "src": "./art/bug-strong.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/bug-strong.svg",
+          "naturalWidth": 96,
+          "naturalHeight": 32,
+          "box": {
+            "width": 158.4000244140625,
+            "height": 52.79998779296875
+          },
+          "objectFit": "fill",
+          "objectPosition": "50% 50%",
+          "crop": {
+            "width": 39.599998474121094,
+            "height": 52.79998779296875,
+            "overflow": "hidden",
+            "tag": "SPAN",
+            "className": "bug-frame"
+          }
+        }
+      ]
+    },
+    {
+      "name": "level 1 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 1,
+        "name": "露珠初醒",
+        "colonies": 4,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 1 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 1,
+        "name": "露珠初醒",
+        "colonies": 4,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 1 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 1,
+        "name": "露珠初醒",
+        "colonies": 4,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 1 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 1,
+        "name": "露珠初醒",
+        "colonies": 4,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 2 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 2,
+        "name": "苔径岔口",
+        "colonies": 6,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 2 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 2,
+        "name": "苔径岔口",
+        "colonies": 6,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 2 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 2,
+        "name": "苔径岔口",
+        "colonies": 6,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 2 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 2,
+        "name": "苔径岔口",
+        "colonies": 6,
+        "maxNumberBottom": 716,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 3 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 3,
+        "name": "荆棘哨所",
+        "colonies": 6,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 3 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 3,
+        "name": "荆棘哨所",
+        "colonies": 6,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 3 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 3,
+        "name": "荆棘哨所",
+        "colonies": 6,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 3 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 3,
+        "name": "荆棘哨所",
+        "colonies": 6,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 4 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 4,
+        "name": "根须之下",
+        "colonies": 8,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 4 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 4,
+        "name": "根须之下",
+        "colonies": 8,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 4 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 4,
+        "name": "根须之下",
+        "colonies": 8,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 4 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 4,
+        "name": "根须之下",
+        "colonies": 8,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 5 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 5,
+        "name": "三叶边境",
+        "colonies": 8,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 5 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 5,
+        "name": "三叶边境",
+        "colonies": 8,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 5 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 5,
+        "name": "三叶边境",
+        "colonies": 8,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 5 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 5,
+        "name": "三叶边境",
+        "colonies": 8,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 6 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 6,
+        "name": "菌环回廊",
+        "colonies": 9,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 6 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 6,
+        "name": "菌环回廊",
+        "colonies": 9,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 6 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 6,
+        "name": "菌环回廊",
+        "colonies": 9,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 6 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 6,
+        "name": "菌环回廊",
+        "colonies": 9,
+        "maxNumberBottom": 766,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 7 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 7,
+        "name": "萤火浅滩",
+        "colonies": 8,
+        "maxNumberBottom": 746,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 7 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 7,
+        "name": "萤火浅滩",
+        "colonies": 8,
+        "maxNumberBottom": 746,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 7 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 7,
+        "name": "萤火浅滩",
+        "colonies": 8,
+        "maxNumberBottom": 746,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 7 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 7,
+        "name": "萤火浅滩",
+        "colonies": 8,
+        "maxNumberBottom": 746,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 8 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 8,
+        "name": "潮汐孤岛",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 8 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 8,
+        "name": "潮汐孤岛",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 8 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 8,
+        "name": "潮汐孤岛",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 8 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 8,
+        "name": "潮汐孤岛",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 9 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 9,
+        "name": "四族议庭",
+        "colonies": 9,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 9 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 9,
+        "name": "四族议庭",
+        "colonies": 9,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 9 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 9,
+        "name": "四族议庭",
+        "colonies": 9,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 9 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 9,
+        "name": "四族议庭",
+        "colonies": 9,
+        "maxNumberBottom": 756,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 10 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 10,
+        "name": "琥珀长城",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 10 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 10,
+        "name": "琥珀长城",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 10 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 10,
+        "name": "琥珀长城",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 10 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 10,
+        "name": "琥珀长城",
+        "colonies": 9,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 11 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 11,
+        "name": "破晓远征",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 11 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 11,
+        "name": "破晓远征",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 11 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 11,
+        "name": "破晓远征",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 11 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 11,
+        "name": "破晓远征",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": true
+      }
+    },
+    {
+      "name": "level 12 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 12,
+        "name": "王冠之根",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 12 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 12,
+        "name": "王冠之根",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 12 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 12,
+        "name": "王冠之根",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 12 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 12,
+        "name": "王冠之根",
+        "colonies": 10,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 13 unit numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "level": 13,
+        "name": "微观世界之王",
+        "colonies": 12,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 13 badges do not overlap tips/HUD",
+      "ok": true,
+      "detail": {
+        "level": 13,
+        "name": "微观世界之王",
+        "colonies": 12,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 13 battle tip is clear of header, HUD and opening grace",
+      "ok": true,
+      "detail": {
+        "level": 13,
+        "name": "微观世界之王",
+        "colonies": 12,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "level 13 header title and faction scores do not overlap",
+      "ok": true,
+      "detail": {
+        "level": 13,
+        "name": "微观世界之王",
+        "colonies": 12,
+        "maxNumberBottom": 776,
+        "hudTop": 792,
+        "badgeClashes": [],
+        "numberIssues": [],
+        "outOfField": [],
+        "headerClear": true,
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "graceVisible": false
+      }
+    },
+    {
+      "name": "every colony view still exposes image/number/badge and owner",
+      "ok": true,
+      "detail": [
+        {
+          "id": "a",
+          "owner": 1,
+          "kind": "nest",
+          "expectedOwner": 1,
+          "texture": "nest-1",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "己方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "b",
+          "owner": 2,
+          "kind": "nest",
+          "expectedOwner": 2,
+          "texture": "nest-2",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "c",
+          "owner": 3,
+          "kind": "nest",
+          "expectedOwner": 3,
+          "texture": "nest-3",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "d",
+          "owner": 4,
+          "kind": "nest",
+          "expectedOwner": 4,
+          "texture": "nest-4",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "e",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "f",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "g",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "h",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "i",
+          "owner": 0,
+          "kind": "cannon",
+          "expectedOwner": 0,
+          "texture": "cannon-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "24",
+          "badge": "中立 · 炮塔",
+          "tint": 16777215,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "owner textures are used for every colony rather than one tinted sheet",
+      "ok": true,
+      "detail": [
+        {
+          "id": "a",
+          "owner": 1,
+          "kind": "nest",
+          "expectedOwner": 1,
+          "texture": "nest-1",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "己方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "b",
+          "owner": 2,
+          "kind": "nest",
+          "expectedOwner": 2,
+          "texture": "nest-2",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "c",
+          "owner": 3,
+          "kind": "nest",
+          "expectedOwner": 3,
+          "texture": "nest-3",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "d",
+          "owner": 4,
+          "kind": "nest",
+          "expectedOwner": 4,
+          "texture": "nest-4",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "e",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "f",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "g",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "h",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "i",
+          "owner": 0,
+          "kind": "cannon",
+          "expectedOwner": 0,
+          "texture": "cannon-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "24",
+          "badge": "中立 · 炮塔",
+          "tint": 16777215,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "colony textures are not globally tinted",
+      "ok": true,
+      "detail": [
+        {
+          "id": "a",
+          "owner": 1,
+          "kind": "nest",
+          "expectedOwner": 1,
+          "texture": "nest-1",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "己方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "b",
+          "owner": 2,
+          "kind": "nest",
+          "expectedOwner": 2,
+          "texture": "nest-2",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "c",
+          "owner": 3,
+          "kind": "nest",
+          "expectedOwner": 3,
+          "texture": "nest-3",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "d",
+          "owner": 4,
+          "kind": "nest",
+          "expectedOwner": 4,
+          "texture": "nest-4",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "400",
+          "badge": "敌方 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "e",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "f",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "g",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "h",
+          "owner": 0,
+          "kind": "nest",
+          "expectedOwner": 0,
+          "texture": "nest-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "10",
+          "badge": "中立 · 生产巢",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "id": "i",
+          "owner": 0,
+          "kind": "cannon",
+          "expectedOwner": 0,
+          "texture": "cannon-0",
+          "hasImage": true,
+          "hasNumber": true,
+          "hasBadge": true,
+          "number": "24",
+          "badge": "中立 · 炮塔",
+          "tint": 16777215,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "multi-faction fixture shows owners 1-4 on the battlefield",
+      "ok": true,
+      "detail": [
+        1,
+        2,
+        3,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "multi-faction fixture exposes all three unit races",
+      "ok": true,
+      "detail": {
+        "views": [
+          {
+            "id": "a",
+            "owner": 1,
+            "kind": "nest",
+            "expectedOwner": 1,
+            "texture": "nest-1",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "400",
+            "badge": "己方 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "b",
+            "owner": 2,
+            "kind": "nest",
+            "expectedOwner": 2,
+            "texture": "nest-2",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "400",
+            "badge": "敌方 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "c",
+            "owner": 3,
+            "kind": "nest",
+            "expectedOwner": 3,
+            "texture": "nest-3",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "400",
+            "badge": "敌方 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "d",
+            "owner": 4,
+            "kind": "nest",
+            "expectedOwner": 4,
+            "texture": "nest-4",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "400",
+            "badge": "敌方 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "e",
+            "owner": 0,
+            "kind": "nest",
+            "expectedOwner": 0,
+            "texture": "nest-0",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "10",
+            "badge": "中立 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "f",
+            "owner": 0,
+            "kind": "nest",
+            "expectedOwner": 0,
+            "texture": "nest-0",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "10",
+            "badge": "中立 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "g",
+            "owner": 0,
+            "kind": "nest",
+            "expectedOwner": 0,
+            "texture": "nest-0",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "10",
+            "badge": "中立 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "h",
+            "owner": 0,
+            "kind": "nest",
+            "expectedOwner": 0,
+            "texture": "nest-0",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "10",
+            "badge": "中立 · 生产巢",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "id": "i",
+            "owner": 0,
+            "kind": "cannon",
+            "expectedOwner": 0,
+            "texture": "cannon-0",
+            "hasImage": true,
+            "hasNumber": true,
+            "hasBadge": true,
+            "number": "24",
+            "badge": "中立 · 炮塔",
+            "tint": 16777215,
+            "visible": true
+          }
+        ],
+        "fleets": [
+          {
+            "id": 1,
+            "owner": 1,
+            "race": "agile",
+            "count": 400
+          },
+          {
+            "id": 2,
+            "owner": 2,
+            "race": "agile",
+            "count": 400
+          },
+          {
+            "id": 3,
+            "owner": 3,
+            "race": "fast",
+            "count": 400
+          },
+          {
+            "id": 4,
+            "owner": 4,
+            "race": "strong",
+            "count": 400
+          }
+        ],
+        "sprites": [
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 1,
+            "texture": "bug-agile-1",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 2,
+            "texture": "bug-agile-2",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 3,
+            "texture": "bug-fast-3",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          },
+          {
+            "fleetId": 4,
+            "texture": "bug-strong-4",
+            "tint": 16777215,
+            "visible": true
+          }
+        ],
+        "visualUnits": 144,
+        "races": [
+          "agile",
+          "agile",
+          "fast",
+          "strong"
+        ]
+      }
+    },
+    {
+      "name": "fleet sprites use owner-specific race textures",
+      "ok": true,
+      "detail": [
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "fleet sprites are not globally tinted",
+      "ok": true,
+      "detail": [
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        },
+        {
+          "fleetId": 1,
+          "texture": "bug-agile-1",
+          "tint": 16777215,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "name": "multi-faction screenshot has visible unit sprites",
+      "ok": true,
+      "detail": {
+        "sprites": 144,
+        "visualUnits": 144
+      }
+    },
+    {
+      "name": "capture switches the target to the owner-1 nest texture",
+      "ok": true,
+      "detail": {
+        "beforeCapture": {
+          "targetTexture": "nest-0",
+          "targetOwner": 0,
+          "sourceUnits": 300,
+          "targetUnits": 8
+        },
+        "afterCapture": {
+          "targetTexture": "nest-1",
+          "targetOwner": 1,
+          "badge": "己方 · 生产巢",
+          "numberBefore": "292"
+        }
+      }
+    },
+    {
+      "name": "capture updates the ownership badge",
+      "ok": true,
+      "detail": "己方 · 生产巢"
+    },
+    {
+      "name": "number plate text updates after capture",
+      "ok": true,
+      "detail": {
+        "number": "1234",
+        "units": 1234.2999999999997
+      }
+    },
+    {
+      "name": "number 38 fits its plate",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 38,
+        "number": {
+          "left": 313,
+          "top": 505,
+          "right": 345,
+          "bottom": 531,
+          "width": 32,
+          "height": 26,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "38",
+          "fontSize": "24px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 38,
+        "formatted": "38"
+      }
+    },
+    {
+      "name": "number 38 renders the formatted text",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 38,
+        "number": {
+          "left": 313,
+          "top": 505,
+          "right": 345,
+          "bottom": 531,
+          "width": 32,
+          "height": 26,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "38",
+          "fontSize": "24px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 38,
+        "formatted": "38"
+      }
+    },
+    {
+      "name": "number 12.3K fits its plate",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 12345,
+        "number": {
+          "left": 298.5,
+          "top": 506,
+          "right": 359.5,
+          "bottom": 530,
+          "width": 61,
+          "height": 24,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "12.3K",
+          "fontSize": "21px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 12345,
+        "formatted": "12.3K"
+      }
+    },
+    {
+      "name": "number 12.3K renders the formatted text",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 12345,
+        "number": {
+          "left": 298.5,
+          "top": 506,
+          "right": 359.5,
+          "bottom": 530,
+          "width": 61,
+          "height": 24,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "12.3K",
+          "fontSize": "21px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 12345,
+        "formatted": "12.3K"
+      }
+    },
+    {
+      "name": "number 1.0B fits its plate",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 1000000000,
+        "number": {
+          "left": 301.5,
+          "top": 505,
+          "right": 356.5,
+          "bottom": 531,
+          "width": 55,
+          "height": 26,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "1.0B",
+          "fontSize": "24px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 1000000000,
+        "formatted": "1.0B"
+      }
+    },
+    {
+      "name": "number 1.0B renders the formatted text",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 1000000000,
+        "number": {
+          "left": 301.5,
+          "top": 505,
+          "right": 356.5,
+          "bottom": 531,
+          "width": 55,
+          "height": 26,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "1.0B",
+          "fontSize": "24px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 1000000000,
+        "formatted": "1.0B"
+      }
+    },
+    {
+      "name": "number 1000.0B fits its plate",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 1000000000000,
+        "number": {
+          "left": 298,
+          "top": 510,
+          "right": 360,
+          "bottom": 526,
+          "width": 62,
+          "height": 16,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "1000.0B",
+          "fontSize": "14px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 1000000000000,
+        "formatted": "1000.0B"
+      }
+    },
+    {
+      "name": "number 1000.0B renders the formatted text",
+      "ok": true,
+      "detail": {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 1000000000000,
+        "number": {
+          "left": 298,
+          "top": 510,
+          "right": 360,
+          "bottom": 526,
+          "width": 62,
+          "height": 16,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "1000.0B",
+          "fontSize": "14px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 1000000000000,
+        "formatted": "1000.0B"
+      }
+    },
+    {
+      "name": "victory fixture shows the won result card",
+      "ok": true,
+      "detail": {
+        "className": "result-card won",
+        "title": "又一盏巢灯亮起",
+        "stats": [
+          "00:00",
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "name": "defeat fixture shows the lost result card",
+      "ok": true,
+      "detail": {
+        "className": "result-card lost",
+        "title": "先歇一程，再点亮巢灯",
+        "stats": [
+          "00:00",
+          "0",
+          "0",
+          "0"
+        ]
+      }
+    },
+    {
+      "name": "1920 menu cover remains visible and decoded",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": -0.00006103515625,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "1920 menu controls are not clipped or covered",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "1920 menu cover paints real pixels",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": -0.00006103515625,
+          "y": 0,
+          "width": 1920,
+          "height": 1080
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "1920 battle HUD sections do not overlap",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "overlaps": [],
+        "outsideUi": [],
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "canvasVisible": true,
+        "elements": [
+          {
+            "selector": ".battle-back",
+            "x": 67.19994354248047,
+            "y": 68.4000015258789,
+            "width": 52.80000305175781,
+            "height": 52.80000305175781
+          },
+          {
+            "selector": ".battle-title",
+            "x": 241.106201171875,
+            "y": 53.156253814697266,
+            "width": 1112.38134765625,
+            "height": 83.26875305175781
+          },
+          {
+            "selector": "#faction-scores",
+            "x": 1375.08740234375,
+            "y": 66,
+            "width": 192.112548828125,
+            "height": 57.600006103515625
+          },
+          {
+            "selector": ".battle-clock",
+            "x": 1588.800048828125,
+            "y": 67.80000305175781,
+            "width": 124.800048828125,
+            "height": 54
+          },
+          {
+            "selector": ".battle-top [data-action=settings]",
+            "x": 1804.800048828125,
+            "y": 70.80000305175781,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "selector": ".selection-info",
+            "x": 67.19994354248047,
+            "y": 975.0000610351562,
+            "width": 403.20001220703125,
+            "height": 65.99993896484375
+          },
+          {
+            "selector": ".dispatch-panel",
+            "x": 491.9999694824219,
+            "y": 964.800048828125,
+            "width": 396.0000305175781,
+            "height": 86.4000244140625
+          },
+          {
+            "selector": ".skill-button",
+            "x": 909.5999755859375,
+            "y": 962.4000244140625,
+            "width": 816.9937744140625,
+            "height": 91.2000732421875
+          },
+          {
+            "selector": ".bottom-help",
+            "x": 1816.800048828125,
+            "y": 990.0000610351562,
+            "width": 36,
+            "height": 35.99993896484375
+          }
+        ]
+      }
+    },
+    {
+      "name": "1920 battle controls stay inside #ui",
+      "ok": true,
+      "detail": {
+        "outsideUi": [],
+        "blocked": []
+      }
+    },
+    {
+      "name": "1920 battle tip and opening grace are clear of the HUD",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "overlaps": [],
+        "outsideUi": [],
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "canvasVisible": true,
+        "elements": [
+          {
+            "selector": ".battle-back",
+            "x": 67.19994354248047,
+            "y": 68.4000015258789,
+            "width": 52.80000305175781,
+            "height": 52.80000305175781
+          },
+          {
+            "selector": ".battle-title",
+            "x": 241.106201171875,
+            "y": 53.156253814697266,
+            "width": 1112.38134765625,
+            "height": 83.26875305175781
+          },
+          {
+            "selector": "#faction-scores",
+            "x": 1375.08740234375,
+            "y": 66,
+            "width": 192.112548828125,
+            "height": 57.600006103515625
+          },
+          {
+            "selector": ".battle-clock",
+            "x": 1588.800048828125,
+            "y": 67.80000305175781,
+            "width": 124.800048828125,
+            "height": 54
+          },
+          {
+            "selector": ".battle-top [data-action=settings]",
+            "x": 1804.800048828125,
+            "y": 70.80000305175781,
+            "width": 48,
+            "height": 48
+          },
+          {
+            "selector": ".selection-info",
+            "x": 67.19994354248047,
+            "y": 975.0000610351562,
+            "width": 403.20001220703125,
+            "height": 65.99993896484375
+          },
+          {
+            "selector": ".dispatch-panel",
+            "x": 491.9999694824219,
+            "y": 964.800048828125,
+            "width": 396.0000305175781,
+            "height": 86.4000244140625
+          },
+          {
+            "selector": ".skill-button",
+            "x": 909.5999755859375,
+            "y": 962.4000244140625,
+            "width": 816.9937744140625,
+            "height": 91.2000732421875
+          },
+          {
+            "selector": ".bottom-help",
+            "x": 1816.800048828125,
+            "y": 990.0000610351562,
+            "width": 36,
+            "height": 35.99993896484375
+          }
+        ]
+      }
+    },
+    {
+      "name": "1920 battle numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "max": 716,
+        "hudTop": 792.0000203450521
+      }
+    },
+    {
+      "name": "1920 settings modal fits the viewport without occlusion",
+      "ok": true,
+      "detail": {
+        "insideViewport": true,
+        "closeHit": true,
+        "card": {
+          "x": 551.9999389648438,
+          "y": 157.25625610351562,
+          "width": 816.0000610351562,
+          "height": 765.46875
+        }
+      }
+    },
+    {
+      "name": "1366 menu cover remains visible and decoded",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": 0.33331298828125,
+          "y": 0,
+          "width": 1365.33349609375,
+          "height": 768
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "1366 menu controls are not clipped or covered",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "1366 menu cover paints real pixels",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": 0.33331298828125,
+          "y": 0,
+          "width": 1365.33349609375,
+          "height": 768
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "1366 battle HUD sections do not overlap",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "overlaps": [],
+        "outsideUi": [],
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "canvasVisible": true,
+        "elements": [
+          {
+            "selector": ".battle-back",
+            "x": 48.11997985839844,
+            "y": 48.63999938964844,
+            "width": 37.546669006347656,
+            "height": 37.546669006347656
+          },
+          {
+            "selector": ".battle-title",
+            "x": 171.78665161132812,
+            "y": 37.79999923706055,
+            "width": 789.626708984375,
+            "height": 59.21333694458008
+          },
+          {
+            "selector": "#faction-scores",
+            "x": 976.7733154296875,
+            "y": 46.93333435058594,
+            "width": 138.0133056640625,
+            "height": 40.959999084472656
+          },
+          {
+            "selector": ".battle-clock",
+            "x": 1130.146728515625,
+            "y": 48.21333312988281,
+            "width": 88.74658203125,
+            "height": 38.400001525878906
+          },
+          {
+            "selector": ".battle-top [data-action=settings]",
+            "x": 1283.74658203125,
+            "y": 50.3466682434082,
+            "width": 34.133544921875,
+            "height": 34.13333511352539
+          },
+          {
+            "selector": ".selection-info",
+            "x": 48.11997985839844,
+            "y": 693.3333740234375,
+            "width": 286.72003173828125,
+            "height": 46.93328857421875
+          },
+          {
+            "selector": ".dispatch-panel",
+            "x": 350.1999816894531,
+            "y": 686.0800170898438,
+            "width": 281.6000061035156,
+            "height": 61.44000244140625
+          },
+          {
+            "selector": ".skill-button",
+            "x": 647.1599731445312,
+            "y": 684.3733520507812,
+            "width": 580.9733276367188,
+            "height": 64.85333251953125
+          },
+          {
+            "selector": ".bottom-help",
+            "x": 1292.280029296875,
+            "y": 704,
+            "width": 25.60009765625,
+            "height": 25.60003662109375
+          }
+        ]
+      }
+    },
+    {
+      "name": "1366 battle controls stay inside #ui",
+      "ok": true,
+      "detail": {
+        "outsideUi": [],
+        "blocked": []
+      }
+    },
+    {
+      "name": "1366 battle tip and opening grace are clear of the HUD",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "overlaps": [],
+        "outsideUi": [],
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "canvasVisible": true,
+        "elements": [
+          {
+            "selector": ".battle-back",
+            "x": 48.11997985839844,
+            "y": 48.63999938964844,
+            "width": 37.546669006347656,
+            "height": 37.546669006347656
+          },
+          {
+            "selector": ".battle-title",
+            "x": 171.78665161132812,
+            "y": 37.79999923706055,
+            "width": 789.626708984375,
+            "height": 59.21333694458008
+          },
+          {
+            "selector": "#faction-scores",
+            "x": 976.7733154296875,
+            "y": 46.93333435058594,
+            "width": 138.0133056640625,
+            "height": 40.959999084472656
+          },
+          {
+            "selector": ".battle-clock",
+            "x": 1130.146728515625,
+            "y": 48.21333312988281,
+            "width": 88.74658203125,
+            "height": 38.400001525878906
+          },
+          {
+            "selector": ".battle-top [data-action=settings]",
+            "x": 1283.74658203125,
+            "y": 50.3466682434082,
+            "width": 34.133544921875,
+            "height": 34.13333511352539
+          },
+          {
+            "selector": ".selection-info",
+            "x": 48.11997985839844,
+            "y": 693.3333740234375,
+            "width": 286.72003173828125,
+            "height": 46.93328857421875
+          },
+          {
+            "selector": ".dispatch-panel",
+            "x": 350.1999816894531,
+            "y": 686.0800170898438,
+            "width": 281.6000061035156,
+            "height": 61.44000244140625
+          },
+          {
+            "selector": ".skill-button",
+            "x": 647.1599731445312,
+            "y": 684.3733520507812,
+            "width": 580.9733276367188,
+            "height": 64.85333251953125
+          },
+          {
+            "selector": ".bottom-help",
+            "x": 1292.280029296875,
+            "y": 704,
+            "width": 25.60009765625,
+            "height": 25.60003662109375
+          }
+        ]
+      }
+    },
+    {
+      "name": "1366 battle numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "max": 716,
+        "hudTop": 792.0000314712524
+      }
+    },
+    {
+      "name": "1366 settings modal fits the viewport without occlusion",
+      "ok": true,
+      "detail": {
+        "insideViewport": true,
+        "closeHit": true,
+        "card": {
+          "x": 392.8666687011719,
+          "y": 111.82666778564453,
+          "width": 580.2667236328125,
+          "height": 544.3333740234375
+        }
+      }
+    },
+    {
+      "name": "1280 menu cover remains visible and decoded",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "1280 menu controls are not clipped or covered",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "1280 menu cover paints real pixels",
+      "ok": true,
+      "detail": {
+        "src": "./art/cover.svg",
+        "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+        "complete": true,
+        "naturalWidth": 1600,
+        "naturalHeight": 900,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 720
+        },
+        "display": "block",
+        "visibility": "visible",
+        "opacity": 1,
+        "insideUi": true,
+        "visible": true,
+        "brightness": 0.8268797498365984,
+        "variance": 0.03895330304130906,
+        "chroma": 0.11680419389978214
+      }
+    },
+    {
+      "name": "1280 battle HUD sections do not overlap",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "overlaps": [],
+        "outsideUi": [],
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "canvasVisible": true,
+        "elements": [
+          {
+            "selector": ".battle-back",
+            "x": 44.79999923706055,
+            "y": 45.60000228881836,
+            "width": 35.20000076293945,
+            "height": 35.20000076293945
+          },
+          {
+            "selector": ".battle-title",
+            "x": 160.7375030517578,
+            "y": 35.4375,
+            "width": 740.2750244140625,
+            "height": 55.51250457763672
+          },
+          {
+            "selector": "#faction-scores",
+            "x": 915.4125366210938,
+            "y": 44,
+            "width": 129.38751220703125,
+            "height": 38.400001525878906
+          },
+          {
+            "selector": ".battle-clock",
+            "x": 1059.2000732421875,
+            "y": 45.20000076293945,
+            "width": 83.199951171875,
+            "height": 36.000003814697266
+          },
+          {
+            "selector": ".battle-top [data-action=settings]",
+            "x": 1203.2000732421875,
+            "y": 47.20000076293945,
+            "width": 32,
+            "height": 32.000003814697266
+          },
+          {
+            "selector": ".selection-info",
+            "x": 44.79999923706055,
+            "y": 650,
+            "width": 268.8000183105469,
+            "height": 44
+          },
+          {
+            "selector": ".dispatch-panel",
+            "x": 328,
+            "y": 643.2000122070312,
+            "width": 264,
+            "height": 57.5999755859375
+          },
+          {
+            "selector": ".skill-button",
+            "x": 606.4000244140625,
+            "y": 641.6000366210938,
+            "width": 544.6624755859375,
+            "height": 60.79998779296875
+          },
+          {
+            "selector": ".bottom-help",
+            "x": 1211.2000732421875,
+            "y": 660,
+            "width": 24,
+            "height": 24
+          }
+        ]
+      }
+    },
+    {
+      "name": "1280 battle controls stay inside #ui",
+      "ok": true,
+      "detail": {
+        "outsideUi": [],
+        "blocked": []
+      }
+    },
+    {
+      "name": "1280 battle tip and opening grace are clear of the HUD",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "overlaps": [],
+        "outsideUi": [],
+        "tipClear": true,
+        "tipGraceOverlap": false,
+        "canvasVisible": true,
+        "elements": [
+          {
+            "selector": ".battle-back",
+            "x": 44.79999923706055,
+            "y": 45.60000228881836,
+            "width": 35.20000076293945,
+            "height": 35.20000076293945
+          },
+          {
+            "selector": ".battle-title",
+            "x": 160.7375030517578,
+            "y": 35.4375,
+            "width": 740.2750244140625,
+            "height": 55.51250457763672
+          },
+          {
+            "selector": "#faction-scores",
+            "x": 915.4125366210938,
+            "y": 44,
+            "width": 129.38751220703125,
+            "height": 38.400001525878906
+          },
+          {
+            "selector": ".battle-clock",
+            "x": 1059.2000732421875,
+            "y": 45.20000076293945,
+            "width": 83.199951171875,
+            "height": 36.000003814697266
+          },
+          {
+            "selector": ".battle-top [data-action=settings]",
+            "x": 1203.2000732421875,
+            "y": 47.20000076293945,
+            "width": 32,
+            "height": 32.000003814697266
+          },
+          {
+            "selector": ".selection-info",
+            "x": 44.79999923706055,
+            "y": 650,
+            "width": 268.8000183105469,
+            "height": 44
+          },
+          {
+            "selector": ".dispatch-panel",
+            "x": 328,
+            "y": 643.2000122070312,
+            "width": 264,
+            "height": 57.5999755859375
+          },
+          {
+            "selector": ".skill-button",
+            "x": 606.4000244140625,
+            "y": 641.6000366210938,
+            "width": 544.6624755859375,
+            "height": 60.79998779296875
+          },
+          {
+            "selector": ".bottom-help",
+            "x": 1211.2000732421875,
+            "y": 660,
+            "width": 24,
+            "height": 24
+          }
+        ]
+      }
+    },
+    {
+      "name": "1280 battle numbers stay above the HUD",
+      "ok": true,
+      "detail": {
+        "max": 716,
+        "hudTop": 792.0000457763672
+      }
+    },
+    {
+      "name": "1280 settings modal fits the viewport without occlusion",
+      "ok": true,
+      "detail": {
+        "insideViewport": true,
+        "closeHit": true,
+        "card": {
+          "x": 368,
+          "y": 104.8375015258789,
+          "width": 544,
+          "height": 510.3125305175781
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    "test-results/visual-1920-menu.png",
+    "test-results/visual-1920-modal-lore.png",
+    "test-results/visual-1920-modal-help.png",
+    "test-results/visual-1920-modal-settings.png",
+    "test-results/visual-1920-modal-achievements.png",
+    "test-results/visual-1920-modal-credits.png",
+    "test-results/visual-1920-campaign.png",
+    "test-results/visual-1920-battle.png",
+    "test-results/visual-level-05.png",
+    "test-results/visual-level-08.png",
+    "test-results/visual-level-13.png",
+    "test-results/visual-1920-multi-faction.png",
+    "test-results/visual-1920-capture-owner.png",
+    "test-results/visual-1920-extreme-number.png",
+    "test-results/visual-1920-victory-fixture.png",
+    "test-results/visual-1920-defeat-fixture.png",
+    "test-results/visual-1920-menu.png",
+    "test-results/visual-1920-battle.png",
+    "test-results/visual-1920-modal.png",
+    "test-results/visual-1366-menu.png",
+    "test-results/visual-1366-battle.png",
+    "test-results/visual-1366-modal.png",
+    "test-results/visual-1280-menu.png",
+    "test-results/visual-1280-battle.png",
+    "test-results/visual-1280-modal.png"
+  ],
+  "menu": {
+    "cover": {
+      "src": "./art/cover.svg",
+      "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+      "complete": true,
+      "naturalWidth": 1600,
+      "naturalHeight": 900,
+      "rect": {
+        "x": -0.00006103515625,
+        "y": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "display": "block",
+      "visibility": "visible",
+      "opacity": 1,
+      "insideUi": true,
+      "visible": true,
+      "brightness": 0.8268797498365984,
+      "variance": 0.03895330304130906,
+      "chroma": 0.11680419389978214
+    },
+    "oldHeroEmblem": [],
+    "coverResponses": [
+      {
+        "status": 200,
+        "contentType": "image/svg+xml",
+        "url": "http://127.0.0.1:4181/art/cover.svg"
+      }
+    ]
+  },
+  "campaign": {
+    "acts": [
+      "第一幕 · 露灯醒来晨露草甸 · 找回第一条归途",
+      "第二幕 · 根须的记忆幽根林地 · 守住迁徙的路",
+      "第三幕 · 潮水中的星火萤火湿地 · 留住有限的灯火",
+      "第四幕 · 琥珀的回声琥珀荒庭 · 把种核送回树心"
+    ],
+    "levels": 13,
+    "disabledLevels": 12,
+    "layoutInsideUi": true
+  },
+  "modals": [
+    {
+      "action": "lore",
+      "present": true,
+      "cardInsideViewport": true,
+      "cardInsideUi": true,
+      "closeHit": true,
+      "matches": 4,
+      "card": {
+        "x": 335.99993896484375,
+        "y": 179.4562530517578,
+        "width": 1248,
+        "height": 721.0687866210938
+      }
+    },
+    {
+      "action": "help",
+      "present": true,
+      "cardInsideViewport": true,
+      "cardInsideUi": true,
+      "closeHit": true,
+      "matches": 4,
+      "card": {
+        "x": 335.99993896484375,
+        "y": 113.45625305175781,
+        "width": 1248,
+        "height": 853.0687866210938
+      }
+    },
+    {
+      "action": "settings",
+      "present": true,
+      "cardInsideViewport": true,
+      "cardInsideUi": true,
+      "closeHit": true,
+      "matches": 1,
+      "card": {
+        "x": 551.9999389648438,
+        "y": 157.25625610351562,
+        "width": 816.0000610351562,
+        "height": 765.46875
+      }
+    },
+    {
+      "action": "achievements",
+      "present": true,
+      "cardInsideViewport": true,
+      "cardInsideUi": true,
+      "closeHit": true,
+      "matches": 12,
+      "card": {
+        "x": 335.99993896484375,
+        "y": 177.8625030517578,
+        "width": 1248,
+        "height": 724.2750244140625
+      }
+    },
+    {
+      "action": "credits",
+      "present": true,
+      "cardInsideViewport": true,
+      "cardInsideUi": true,
+      "closeHit": true,
+      "matches": 2,
+      "card": {
+        "x": 335.99993896484375,
+        "y": 243.13125610351562,
+        "width": 1248,
+        "height": 593.737548828125
+      }
+    }
+  ],
+  "layouts": [
+    {
+      "level": 1,
+      "name": "露珠初醒",
+      "colonies": 4,
+      "maxNumberBottom": 716,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 2,
+      "name": "苔径岔口",
+      "colonies": 6,
+      "maxNumberBottom": 716,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 3,
+      "name": "荆棘哨所",
+      "colonies": 6,
+      "maxNumberBottom": 756,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 4,
+      "name": "根须之下",
+      "colonies": 8,
+      "maxNumberBottom": 766,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 5,
+      "name": "三叶边境",
+      "colonies": 8,
+      "maxNumberBottom": 776,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 6,
+      "name": "菌环回廊",
+      "colonies": 9,
+      "maxNumberBottom": 766,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 7,
+      "name": "萤火浅滩",
+      "colonies": 8,
+      "maxNumberBottom": 746,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 8,
+      "name": "潮汐孤岛",
+      "colonies": 9,
+      "maxNumberBottom": 776,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 9,
+      "name": "四族议庭",
+      "colonies": 9,
+      "maxNumberBottom": 756,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 10,
+      "name": "琥珀长城",
+      "colonies": 9,
+      "maxNumberBottom": 776,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 11,
+      "name": "破晓远征",
+      "colonies": 10,
+      "maxNumberBottom": 776,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": true
+    },
+    {
+      "level": 12,
+      "name": "王冠之根",
+      "colonies": 10,
+      "maxNumberBottom": 776,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": false
+    },
+    {
+      "level": 13,
+      "name": "微观世界之王",
+      "colonies": 12,
+      "maxNumberBottom": 776,
+      "hudTop": 792,
+      "badgeClashes": [],
+      "numberIssues": [],
+      "outOfField": [],
+      "headerClear": true,
+      "tipClear": true,
+      "tipGraceOverlap": false,
+      "graceVisible": false
+    }
+  ],
+  "textures": {
+    "fixture": "multi-faction",
+    "owners": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "colonies": 9,
+    "races": [
+      "agile",
+      "agile",
+      "fast",
+      "strong"
+    ],
+    "positionSetup": "Synthetic paused fleets staged halfway along their dispatched routes; not real elapsed travel.",
+    "views": [
+      {
+        "id": "a",
+        "owner": 1,
+        "kind": "nest",
+        "expectedOwner": 1,
+        "texture": "nest-1",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "400",
+        "badge": "己方 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "b",
+        "owner": 2,
+        "kind": "nest",
+        "expectedOwner": 2,
+        "texture": "nest-2",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "400",
+        "badge": "敌方 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "c",
+        "owner": 3,
+        "kind": "nest",
+        "expectedOwner": 3,
+        "texture": "nest-3",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "400",
+        "badge": "敌方 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "d",
+        "owner": 4,
+        "kind": "nest",
+        "expectedOwner": 4,
+        "texture": "nest-4",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "400",
+        "badge": "敌方 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "e",
+        "owner": 0,
+        "kind": "nest",
+        "expectedOwner": 0,
+        "texture": "nest-0",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "10",
+        "badge": "中立 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "f",
+        "owner": 0,
+        "kind": "nest",
+        "expectedOwner": 0,
+        "texture": "nest-0",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "10",
+        "badge": "中立 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "g",
+        "owner": 0,
+        "kind": "nest",
+        "expectedOwner": 0,
+        "texture": "nest-0",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "10",
+        "badge": "中立 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "h",
+        "owner": 0,
+        "kind": "nest",
+        "expectedOwner": 0,
+        "texture": "nest-0",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "10",
+        "badge": "中立 · 生产巢",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "id": "i",
+        "owner": 0,
+        "kind": "cannon",
+        "expectedOwner": 0,
+        "texture": "cannon-0",
+        "hasImage": true,
+        "hasNumber": true,
+        "hasBadge": true,
+        "number": "24",
+        "badge": "中立 · 炮塔",
+        "tint": 16777215,
+        "visible": true
+      }
+    ],
+    "fleets": [
+      {
+        "id": 1,
+        "owner": 1,
+        "race": "agile",
+        "count": 400
+      },
+      {
+        "id": 2,
+        "owner": 2,
+        "race": "agile",
+        "count": 400
+      },
+      {
+        "id": 3,
+        "owner": 3,
+        "race": "fast",
+        "count": 400
+      },
+      {
+        "id": 4,
+        "owner": 4,
+        "race": "strong",
+        "count": 400
+      }
+    ],
+    "sprites": [
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 1,
+        "texture": "bug-agile-1",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 2,
+        "texture": "bug-agile-2",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 3,
+        "texture": "bug-fast-3",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      },
+      {
+        "fleetId": 4,
+        "texture": "bug-strong-4",
+        "tint": 16777215,
+        "visible": true
+      }
+    ],
+    "visualUnits": 144,
+    "capture": {
+      "beforeCapture": {
+        "targetTexture": "nest-0",
+        "targetOwner": 0,
+        "sourceUnits": 300,
+        "targetUnits": 8
+      },
+      "afterCapture": {
+        "targetTexture": "nest-1",
+        "targetOwner": 1,
+        "badge": "己方 · 生产巢",
+        "numberBefore": "292"
+      },
+      "numberAfter": {
+        "number": "1234",
+        "units": 1234.2999999999997
+      }
+    }
+  },
+  "extremeNumbers": {
+    "fixture": "display-only extreme units",
+    "values": [
+      {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 38,
+        "number": {
+          "left": 313,
+          "top": 505,
+          "right": 345,
+          "bottom": 531,
+          "width": 32,
+          "height": 26,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "38",
+          "fontSize": "24px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 38,
+        "formatted": "38"
+      },
+      {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 12345,
+        "number": {
+          "left": 298.5,
+          "top": 506,
+          "right": 359.5,
+          "bottom": 530,
+          "width": 61,
+          "height": 24,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "12.3K",
+          "fontSize": "21px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 12345,
+        "formatted": "12.3K"
+      },
+      {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 1000000000,
+        "number": {
+          "left": 301.5,
+          "top": 505,
+          "right": 356.5,
+          "bottom": 531,
+          "width": 55,
+          "height": 26,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "1.0B",
+          "fontSize": "24px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 1000000000,
+        "formatted": "1.0B"
+      },
+      {
+        "found": true,
+        "owner": 1,
+        "texture": "nest-1",
+        "units": 1000000000000,
+        "number": {
+          "left": 298,
+          "top": 510,
+          "right": 360,
+          "bottom": 526,
+          "width": 62,
+          "height": 16,
+          "centerX": 329,
+          "centerY": 518,
+          "text": "1000.0B",
+          "fontSize": "14px"
+        },
+        "plate": {
+          "left": 270,
+          "top": 501,
+          "right": 370,
+          "bottom": 535,
+          "width": 100,
+          "height": 34,
+          "color": 16513262,
+          "luma": 0.9722188235294117
+        },
+        "plateSource": "graphics",
+        "hudTop": 792.0000203450521,
+        "plateInField": true,
+        "numberInsidePlate": true,
+        "usableWidth": 96,
+        "numberFitsWidth": true,
+        "requested": 1000000000000,
+        "formatted": "1000.0B"
+      }
+    ]
+  },
+  "results": {
+    "victory": {
+      "fixture": "forced ownership",
+      "className": "result-card won",
+      "title": "又一盏巢灯亮起",
+      "stats": [
+        "00:00",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    "defeat": {
+      "fixture": "forced ownership",
+      "className": "result-card lost",
+      "title": "先歇一程，再点亮巢灯",
+      "stats": [
+        "00:00",
+        "0",
+        "0",
+        "0"
+      ]
+    }
+  },
+  "viewports": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "menu": {
+        "cover": {
+          "src": "./art/cover.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+          "complete": true,
+          "naturalWidth": 1600,
+          "naturalHeight": 900,
+          "rect": {
+            "x": -0.00006103515625,
+            "y": 0,
+            "width": 1920,
+            "height": 1080
+          },
+          "display": "block",
+          "visibility": "visible",
+          "opacity": 1,
+          "insideUi": true,
+          "visible": true,
+          "brightness": 0.8268797498365984,
+          "variance": 0.03895330304130906,
+          "chroma": 0.11680419389978214
+        },
+        "blocked": []
+      },
+      "battle": {
+        "hud": {
+          "missing": [],
+          "overlaps": [],
+          "outsideUi": [],
+          "tipClear": true,
+          "tipGraceOverlap": false,
+          "canvasVisible": true,
+          "elements": [
+            {
+              "selector": ".battle-back",
+              "x": 67.19994354248047,
+              "y": 68.4000015258789,
+              "width": 52.80000305175781,
+              "height": 52.80000305175781
+            },
+            {
+              "selector": ".battle-title",
+              "x": 241.106201171875,
+              "y": 53.156253814697266,
+              "width": 1112.38134765625,
+              "height": 83.26875305175781
+            },
+            {
+              "selector": "#faction-scores",
+              "x": 1375.08740234375,
+              "y": 66,
+              "width": 192.112548828125,
+              "height": 57.600006103515625
+            },
+            {
+              "selector": ".battle-clock",
+              "x": 1588.800048828125,
+              "y": 67.80000305175781,
+              "width": 124.800048828125,
+              "height": 54
+            },
+            {
+              "selector": ".battle-top [data-action=settings]",
+              "x": 1804.800048828125,
+              "y": 70.80000305175781,
+              "width": 48,
+              "height": 48
+            },
+            {
+              "selector": ".selection-info",
+              "x": 67.19994354248047,
+              "y": 975.0000610351562,
+              "width": 403.20001220703125,
+              "height": 65.99993896484375
+            },
+            {
+              "selector": ".dispatch-panel",
+              "x": 491.9999694824219,
+              "y": 964.800048828125,
+              "width": 396.0000305175781,
+              "height": 86.4000244140625
+            },
+            {
+              "selector": ".skill-button",
+              "x": 909.5999755859375,
+              "y": 962.4000244140625,
+              "width": 816.9937744140625,
+              "height": 91.2000732421875
+            },
+            {
+              "selector": ".bottom-help",
+              "x": 1816.800048828125,
+              "y": 990.0000610351562,
+              "width": 36,
+              "height": 35.99993896484375
+            }
+          ]
+        },
+        "blocked": [],
+        "numberBottom": {
+          "max": 716,
+          "hudTop": 792.0000203450521
+        }
+      },
+      "modal": {
+        "insideViewport": true,
+        "closeHit": true,
+        "card": {
+          "x": 551.9999389648438,
+          "y": 157.25625610351562,
+          "width": 816.0000610351562,
+          "height": 765.46875
+        }
+      }
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "menu": {
+        "cover": {
+          "src": "./art/cover.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+          "complete": true,
+          "naturalWidth": 1600,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0.33331298828125,
+            "y": 0,
+            "width": 1365.33349609375,
+            "height": 768
+          },
+          "display": "block",
+          "visibility": "visible",
+          "opacity": 1,
+          "insideUi": true,
+          "visible": true,
+          "brightness": 0.8268797498365984,
+          "variance": 0.03895330304130906,
+          "chroma": 0.11680419389978214
+        },
+        "blocked": []
+      },
+      "battle": {
+        "hud": {
+          "missing": [],
+          "overlaps": [],
+          "outsideUi": [],
+          "tipClear": true,
+          "tipGraceOverlap": false,
+          "canvasVisible": true,
+          "elements": [
+            {
+              "selector": ".battle-back",
+              "x": 48.11997985839844,
+              "y": 48.63999938964844,
+              "width": 37.546669006347656,
+              "height": 37.546669006347656
+            },
+            {
+              "selector": ".battle-title",
+              "x": 171.78665161132812,
+              "y": 37.79999923706055,
+              "width": 789.626708984375,
+              "height": 59.21333694458008
+            },
+            {
+              "selector": "#faction-scores",
+              "x": 976.7733154296875,
+              "y": 46.93333435058594,
+              "width": 138.0133056640625,
+              "height": 40.959999084472656
+            },
+            {
+              "selector": ".battle-clock",
+              "x": 1130.146728515625,
+              "y": 48.21333312988281,
+              "width": 88.74658203125,
+              "height": 38.400001525878906
+            },
+            {
+              "selector": ".battle-top [data-action=settings]",
+              "x": 1283.74658203125,
+              "y": 50.3466682434082,
+              "width": 34.133544921875,
+              "height": 34.13333511352539
+            },
+            {
+              "selector": ".selection-info",
+              "x": 48.11997985839844,
+              "y": 693.3333740234375,
+              "width": 286.72003173828125,
+              "height": 46.93328857421875
+            },
+            {
+              "selector": ".dispatch-panel",
+              "x": 350.1999816894531,
+              "y": 686.0800170898438,
+              "width": 281.6000061035156,
+              "height": 61.44000244140625
+            },
+            {
+              "selector": ".skill-button",
+              "x": 647.1599731445312,
+              "y": 684.3733520507812,
+              "width": 580.9733276367188,
+              "height": 64.85333251953125
+            },
+            {
+              "selector": ".bottom-help",
+              "x": 1292.280029296875,
+              "y": 704,
+              "width": 25.60009765625,
+              "height": 25.60003662109375
+            }
+          ]
+        },
+        "blocked": [],
+        "numberBottom": {
+          "max": 716,
+          "hudTop": 792.0000314712524
+        }
+      },
+      "modal": {
+        "insideViewport": true,
+        "closeHit": true,
+        "card": {
+          "x": 392.8666687011719,
+          "y": 111.82666778564453,
+          "width": 580.2667236328125,
+          "height": 544.3333740234375
+        }
+      }
+    },
+    {
+      "width": 1280,
+      "height": 720,
+      "menu": {
+        "cover": {
+          "src": "./art/cover.svg",
+          "currentSrc": "http://127.0.0.1:4181/art/cover.svg",
+          "complete": true,
+          "naturalWidth": 1600,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 720
+          },
+          "display": "block",
+          "visibility": "visible",
+          "opacity": 1,
+          "insideUi": true,
+          "visible": true,
+          "brightness": 0.8268797498365984,
+          "variance": 0.03895330304130906,
+          "chroma": 0.11680419389978214
+        },
+        "blocked": []
+      },
+      "battle": {
+        "hud": {
+          "missing": [],
+          "overlaps": [],
+          "outsideUi": [],
+          "tipClear": true,
+          "tipGraceOverlap": false,
+          "canvasVisible": true,
+          "elements": [
+            {
+              "selector": ".battle-back",
+              "x": 44.79999923706055,
+              "y": 45.60000228881836,
+              "width": 35.20000076293945,
+              "height": 35.20000076293945
+            },
+            {
+              "selector": ".battle-title",
+              "x": 160.7375030517578,
+              "y": 35.4375,
+              "width": 740.2750244140625,
+              "height": 55.51250457763672
+            },
+            {
+              "selector": "#faction-scores",
+              "x": 915.4125366210938,
+              "y": 44,
+              "width": 129.38751220703125,
+              "height": 38.400001525878906
+            },
+            {
+              "selector": ".battle-clock",
+              "x": 1059.2000732421875,
+              "y": 45.20000076293945,
+              "width": 83.199951171875,
+              "height": 36.000003814697266
+            },
+            {
+              "selector": ".battle-top [data-action=settings]",
+              "x": 1203.2000732421875,
+              "y": 47.20000076293945,
+              "width": 32,
+              "height": 32.000003814697266
+            },
+            {
+              "selector": ".selection-info",
+              "x": 44.79999923706055,
+              "y": 650,
+              "width": 268.8000183105469,
+              "height": 44
+            },
+            {
+              "selector": ".dispatch-panel",
+              "x": 328,
+              "y": 643.2000122070312,
+              "width": 264,
+              "height": 57.5999755859375
+            },
+            {
+              "selector": ".skill-button",
+              "x": 606.4000244140625,
+              "y": 641.6000366210938,
+              "width": 544.6624755859375,
+              "height": 60.79998779296875
+            },
+            {
+              "selector": ".bottom-help",
+              "x": 1211.2000732421875,
+              "y": 660,
+              "width": 24,
+              "height": 24
+            }
+          ]
+        },
+        "blocked": [],
+        "numberBottom": {
+          "max": 716,
+          "hudTop": 792.0000457763672
+        }
+      },
+      "modal": {
+        "insideViewport": true,
+        "closeHit": true,
+        "card": {
+          "x": 368,
+          "y": 104.8375015258789,
+          "width": 544,
+          "height": 510.3125305175781
+        }
+      }
+    }
+  ],
+  "requests": {
+    "pageErrors": [],
+    "consoleErrors": [],
+    "failedRequests": [],
+    "networkFailures": [],
+    "cancelledFixtureMusicRequests": [
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "marsh",
+        "signalAbortAt": 10830.199999988079,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "marsh",
+        "signalAbortAt": 10830.39999999106,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "marsh",
+        "signalAbortAt": 10830.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-marsh-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "marsh",
+        "wantedCueAtAbort": "amber",
+        "signalAbortAt": 10881,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-marsh-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "marsh",
+        "wantedCueAtAbort": "amber",
+        "signalAbortAt": 10881.09999999404,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-marsh-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "marsh",
+        "wantedCueAtAbort": "amber",
+        "signalAbortAt": 10881.09999999404,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-amber-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "amber",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 10918.09999999404,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-amber-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "amber",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 10918.199999988079,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-amber-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "amber",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 10918.199999988079,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "finale",
+        "signalAbortAt": 10938.79999999702,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "finale",
+        "signalAbortAt": 10938.89999999106,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "finale",
+        "signalAbortAt": 10939,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-finale-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "finale",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 11084.79999999702,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-finale-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "finale",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 11084.89999999106,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-finale-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "finale",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 11084.89999999106,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "Other scripted fixture/menu/result switch",
+        "url": "http://127.0.0.1:4181/audio/music-meadow-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "meadow",
+        "wantedCueAtAbort": "defeat",
+        "signalAbortAt": 37345.69999998808,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "Other scripted fixture/menu/result switch",
+        "url": "http://127.0.0.1:4181/audio/music-meadow-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "meadow",
+        "wantedCueAtAbort": "defeat",
+        "signalAbortAt": 37345.79999999702,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "Other scripted fixture/menu/result switch",
+        "url": "http://127.0.0.1:4181/audio/music-meadow-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "meadow",
+        "wantedCueAtAbort": "defeat",
+        "signalAbortAt": 37345.89999999106,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      }
+    ],
+    "externalRequests": []
+  },
+  "error": null,
+  "passed": true,
+  "edge": {
+    "executablePath": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+    "version": "155.0.4283.62",
+    "headless": true
+  },
+  "finishedAt": "2026-10-22T10:39:48.436Z"
+}

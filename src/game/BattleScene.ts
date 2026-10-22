@@ -1,17 +1,42 @@
 import Phaser from 'phaser';
 import { Simulation } from '../core/Simulation';
+import { BATTLE_RULES } from '../core/rules';
 import { formatUnits } from '../ui/format';
+import { directSources, previewSourceSet, roadPreview, roadSegments, type RoadSegment } from './roadRender';
 import type { BuildingKind, Colony, Difficulty, GameEvent, LevelConfig, RaceId } from '../core/types';
 
 /**
  * Sunlit Garden battlefield renderer, matching the approved art direction in
  * docs/art-direction.md (approved cover v2).
  *
- * This is a whole-scene art pass, not a formatting rewrite: simulation, selection,
- * dispatch ratios, input hit-testing, timestep, AI and win/lose rules are untouched.
- * What changes is the visual language: bright daylight backdrops, owner-specific SVG
- * textures (never a full-sprite tint), warm number plates with shape-coded faction
- * marks, readable daylight route/skill/ballistic feedback, and a clean menu backdrop.
+ * This scene owns presentation and input only. Road legality comes exclusively
+ * from the live `world.roads` list through `core/roads.hasRoad`: every dispatch
+ * source must touch the target directly (no relay through a third colony), for
+ * the player and the AI alike. Simulation remains the authority for economy,
+ * combat, statistics and win/lose.
+ *
+ * The visual language is bright daylight: owner-specific SVG textures (never a
+ * full-sprite tint), warm number plates with shape-coded faction marks, readable
+ * skill/ballistic feedback, and a clean menu backdrop. Roads are permanently
+ * visible straight lanes because fleets travel in a straight line along the same
+ * logical edge; they are only trimmed outside the building art. Selecting a
+ * friendly nest highlights its direct neighbours and the actual lanes to them. A
+ * preview never draws a synthetic line between non-adjacent colonies: highlighting
+ * is derived from the same road segments and hasRoad checks that dispatch uses.
+ *
+ * Feedback contract (onAction names consumed by the DOM UI):
+ *   'no-road'           target is not directly connected to any selected source.
+ *                       Nothing was dispatched; units and statistics are unchanged.
+ *                       UI should toast a road/adjacency message, e.g.
+ *                       "目标未与所选巢穴直接相连，无法派兵".
+ *   'partial-dispatch'  at least one selected source was skipped because it had no
+ *                       road to the target, while road-connected sources did send.
+ *                       It replaces 'dispatch' for that order (successful, but not
+ *                       from every selected source). UI may toast
+ *                       "只有与目标相邻的巢穴派出了兵力".
+ *   Existing names keep their meaning: 'select', 'dispatch', 'invalid', 'cancel',
+ *   'not-ready', 'cast'. 'invalid' now only covers non-road failures such as a
+ *   connected source with no available units.
  *
  * Asset contract under public/art:
  *   background-{meadow,roots,marsh,amber}.svg  1600x900 daylight garden
@@ -43,6 +68,14 @@ const ROUTE = 0x2f86d6;
 const MINT = 0x9fd7c3;
 const BALLISTIC = 0xe8b96a;
 const SPARK = 0xfff3cf;
+
+// Road palette: trodden warm earth with a pale rim, readable on both the light
+// field and the darker garden bed without competing with faction colours.
+const ROAD_SHADE = 0x5d7355;
+const ROAD_RIM = 0xfffdf4;
+const ROAD_SAND = 0xdfcfa6;
+const ROAD_LIGHT = 0xf6eed6;
+const ROAD_DOT = 0xb9a87c;
 
 // Fixed layout, kept close to the previous 125/116 / +53 / -66 rhythm so the
 // existing 13-level label clearances and the <792px bottom check still hold.
@@ -77,17 +110,19 @@ interface Effect {
   age: number;
   life: number;
 }
-
 export class BattleScene extends Phaser.Scene {
   sim: Simulation | null = null; level: LevelConfig | null = null; selected = new Set<string>(); ratio = .5; paused = false; skillArmed = false; ready = false; reducedMotion = false; fps = 60; visualUnits = 0;
   onTick: () => void = () => {}; onAction: (name: string) => void = () => {}; onEnd: (status: string) => void = () => {};
   private bg!: Phaser.GameObjects.Image;
   private ground!: Phaser.GameObjects.Graphics;
+  private roadBase!: Phaser.GameObjects.Graphics;
+  private roadHi!: Phaser.GameObjects.Graphics;
   private plates!: Phaser.GameObjects.Graphics;
   private top!: Phaser.GameObjects.Graphics;
   private views = new Map<string, ColonyView>();
   private bugs = new Map<number, Phaser.GameObjects.Sprite[]>();
   private fx: Effect[] = [];
+  private roadLanes: RoadSegment[] = [];
   private drag: { x: number; y: number; source: string | null; active: boolean } | null = null;
   private clock = 0;
   private notified = false;
@@ -110,6 +145,10 @@ export class BattleScene extends Phaser.Scene {
     this.registerUnitFrames();
     this.bg = this.add.image(800, 450, 'bg-meadow').setDisplaySize(1600, 900);
     this.ground = this.add.graphics().setDepth(1);
+    // Static road bed (drawn once per level) stays under the ground feedback but
+    // above the backdrop; selection overlays sit under buildings and number plates.
+    this.roadBase = this.add.graphics().setDepth(0.6);
+    this.roadHi = this.add.graphics().setDepth(6);
     this.plates = this.add.graphics().setDepth(11);
     this.top = this.add.graphics().setDepth(30);
     this.input.mouse?.disableContextMenu();
@@ -122,7 +161,7 @@ export class BattleScene extends Phaser.Scene {
       if (!this.sim || this.paused || this.sim.world.status !== 'playing') return;
       if (e.code === 'Space') { e.preventDefault(); this.selectAll(); }
       if (e.code === 'KeyA') { e.preventDefault(); this.armSkill(); }
-      if (e.code === 'Escape') { this.skillArmed = false; this.selected.clear(); this.onAction('cancel'); }
+      if (e.code === 'Escape') { this.skillArmed = false; this.selected.clear(); this.drag = null; this.onAction('cancel'); }
     });
     this.ready = true;
     this.showMenu();
@@ -151,6 +190,8 @@ export class BattleScene extends Phaser.Scene {
     this.skillArmed = false;
     this.notified = false;
     this.bg.setTexture(`bg-${level.biome}`);
+    this.roadLanes = roadSegments(this.sim.world.roads, this.sim.world.colonies);
+    this.drawRoadBase();
     for (const c of this.sim.world.colonies) {
       const size = BUILDING_SIZE[c.kind];
       const image = this.add.image(c.x, c.y + BUILDING_Y, this.buildingTexture(c.kind, c.owner)).setDisplaySize(size, size).setDepth(7);
@@ -177,6 +218,9 @@ export class BattleScene extends Phaser.Scene {
     this.drag = null;
     this.selected.clear();
     this.tweens.killAll();
+    this.roadLanes = [];
+    this.roadBase?.clear();
+    this.roadHi?.clear();
     this.ground?.clear();
     this.plates?.clear();
     this.top?.clear();
@@ -191,7 +235,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   armSkill() {
-    if (!this.sim || this.sim.world.energy[1] < 100) { this.onAction('not-ready'); return; }
+    if (!this.sim || this.sim.world.energy[1] < BATTLE_RULES.skillCost) { this.onAction('not-ready'); return; }
     this.skillArmed = !this.skillArmed;
     this.onAction('select');
     this.onTick();
@@ -203,7 +247,7 @@ export class BattleScene extends Phaser.Scene {
 
   private down(p: Phaser.Input.Pointer) {
     if (!this.sim || this.paused || this.sim.world.status !== 'playing') return;
-    if (p.rightButtonDown()) { this.skillArmed = false; this.selected.clear(); this.onTick(); return; }
+    if (p.rightButtonDown()) { this.skillArmed = false; this.selected.clear(); this.drag = null; this.onTick(); return; }
     if (p.y < 160 || p.y > 782) return;
     if (this.skillArmed) {
       if (this.sim.castSkill(1, p.x, p.y)) { this.skillArmed = false; this.onAction('cast'); }
@@ -215,29 +259,55 @@ export class BattleScene extends Phaser.Scene {
 
   cancelGesture() { this.drag = null; }
 
+  /**
+   * The sources a preview should show. While dragging from a not-yet-selected
+   * nest, the preview must reflect the pending single-source order; otherwise it
+   * mirrors the current multi-selection. Dispatch itself always re-filters with
+   * directSources(), so preview and Simulation ask hasRoad the same question.
+   */
+  private previewSources(): Set<string> {
+    return previewSourceSet(this.selected, this.drag?.source);
+  }
+
   private up(p: Phaser.Input.Pointer) {
     const d = this.drag;
     this.drag = null;
-    if (!this.sim || this.paused || !d) return;
+    if (!this.sim || this.paused || this.sim.world.status !== 'playing' || !d) return;
     const hit = this.hit(p.x, p.y);
     const shift = p.event instanceof MouseEvent && p.event.shiftKey;
     if (d.active) {
-      if (d.source && hit && hit.id !== d.source) {
+      if (d.source) {
+        if (!hit || hit.id === d.source) return;
+        const sources = this.selected.has(d.source) ? this.selected : new Set([d.source]);
+        if (!directSources(this.sim.world.roads, sources, hit.id).length) {
+          this.onAction('no-road');
+          this.onTick();
+          return;
+        }
         if (!this.selected.has(d.source)) this.selected = new Set([d.source]);
         this.send(hit.id);
-      } else if (!d.source) {
+      } else {
         if (!shift) this.selected.clear();
         for (const c of this.sim.world.colonies) if (c.owner === 1 && c.x >= Math.min(d.x, p.x) && c.x <= Math.max(d.x, p.x) && c.y >= Math.min(d.y, p.y) && c.y <= Math.max(d.y, p.y)) this.selected.add(c.id);
         this.onAction('select');
       }
     } else if (hit) {
       if (hit.owner === 1) {
-        if (this.selected.size && !this.selected.has(hit.id) && !shift) this.send(hit.id);
-        else if (shift) {
+        if (shift) {
           if (this.selected.has(hit.id)) this.selected.delete(hit.id);
           else this.selected.add(hit.id);
           this.onAction('select');
+        } else if (this.selected.has(hit.id)) {
+          // Collapse a multi-selection to the clicked nest without sending.
+          this.selected = new Set([hit.id]);
+          this.onAction('select');
+        } else if (this.selected.size && directSources(this.sim.world.roads, this.selected, hit.id).length) {
+          // Connected friendly target: reinforcement order.
+          this.send(hit.id);
         } else {
+          // Non-adjacent (or no current selection): a click must always be able
+          // to reselect instead of failing an impossible reinforcement. A drag
+          // is still an explicit order and is rejected with 'no-road' above.
           this.selected = new Set([hit.id]);
           this.onAction('select');
         }
@@ -247,9 +317,25 @@ export class BattleScene extends Phaser.Scene {
     this.onTick();
   }
 
+  /**
+   * Dispatch only from selected nests that actually touch the target. Simulation
+   * repeats the same check; this pre-filter exists to report partial orders and
+   * to avoid pretending that an illegal order was accepted.
+   */
   private send(target: string) {
-    const n = this.sim!.dispatch([...this.selected], target, this.ratio, 1);
-    this.onAction(n > 0 ? 'dispatch' : 'invalid');
+    const sim = this.sim!;
+    const all = [...this.selected];
+    const sources = directSources(sim.world.roads, all, target);
+    if (!sources.length) {
+      this.onAction('no-road');
+      this.onTick();
+      return;
+    }
+    const n = sim.dispatch(sources, target, this.ratio, 1);
+    if (n > 0) {
+      const eligible = all.filter((id) => id !== target).length;
+      this.onAction(sources.length < eligible ? 'partial-dispatch' : 'dispatch');
+    } else this.onAction('invalid');
     this.onTick();
   }
 
@@ -260,6 +346,7 @@ export class BattleScene extends Phaser.Scene {
     this.ground.clear();
     this.plates.clear();
     this.top.clear();
+    this.roadHi.clear();
     if (!this.sim) { this.ambient(); return; }
     if (!this.paused) {
       this.sim.step(dt);
@@ -270,6 +357,7 @@ export class BattleScene extends Phaser.Scene {
     }
     for (const id of this.selected) if (this.sim.world.colonies.find(c => c.id === id)?.owner !== 1) this.selected.delete(id);
     this.renderColonies();
+    this.renderRoadSelection();
     this.renderFleets();
     this.renderEffects(this.paused ? 0 : dt);
     this.renderInput();
@@ -328,8 +416,8 @@ export class BattleScene extends Phaser.Scene {
         this.brackets(this.top, c.x, c.y + BUILDING_Y, 88, 70, SELECT, 1, 2.6);
       }
       if (c.kind === 'cannon' && selected) {
-        this.dashedCircle(this.top, c.x, c.y, 200, HALO, .3, 4, 12, 10);
-        this.dashedCircle(this.top, c.x, c.y, 200, color, .38, 1.6, 12, 10);
+        this.dashedCircle(this.top, c.x, c.y, BATTLE_RULES.cannonRange, HALO, .3, 4, 12, 10);
+        this.dashedCircle(this.top, c.x, c.y, BATTLE_RULES.cannonRange, color, .38, 1.6, 12, 10);
       }
       // Resolve a capture before drawing this frame's plate, badge and mark so the
       // owner shape, label and texture all switch together.
@@ -489,7 +577,7 @@ export class BattleScene extends Phaser.Scene {
           }
         }
       } else if (e.type === 'skill') {
-        const radius = 135 * Math.min(1, p * 2.8);
+        const radius = BATTLE_RULES.skillRadius * Math.min(1, p * 2.8);
         g.fillStyle(MINT, a * .16); g.fillCircle(e.x, e.y, radius);
         g.lineStyle(6, HALO, a * .32); g.strokeCircle(e.x, e.y, radius + 1);
         g.lineStyle(2.2, ROUTE, a * .8); g.strokeCircle(e.x, e.y, radius);
@@ -524,27 +612,104 @@ export class BattleScene extends Phaser.Scene {
   }
 
   // ---------------------------------------------------------------------------
-  // Pointer feedback: selection is drawn outside the building footprint, routes
-  // use a white casing for contrast, and cannon range appears only on selection.
+  // Roads: a static warm-earth bed for the whole level plus a per-frame blue
+  // overlay for the direct neighbours of the current sources. Both layers sit
+  // under buildings and number plates, so lanes never paint over the art. The
+  // geometry is straight because fleets travel in a straight line along the same
+  // logical edge; highlighting only ever reuses a real road segment and never
+  // invents a line between non-adjacent colonies.
+  // ---------------------------------------------------------------------------
+  private drawRoadBase() {
+    const g = this.roadBase;
+    g.clear();
+    for (const s of this.roadLanes) {
+      g.lineStyle(18, ROAD_SHADE, .13); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+      g.lineStyle(14, ROAD_RIM, .58); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+      g.lineStyle(9, ROAD_SAND, .8); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+      g.lineStyle(5, ROAD_LIGHT, .5); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+      g.fillStyle(ROAD_SAND, .8);
+      g.fillCircle(s.x1, s.y1, 4.5); g.fillCircle(s.x2, s.y2, 4.5);
+      this.dashedLine(g, s.x1, s.y1, s.x2, s.y2, ROAD_DOT, .5, 1.5, 10, 10);
+    }
+  }
+
+  private renderRoadSelection() {
+    if (!this.sim || this.skillArmed) return;
+    const sources = this.previewSources();
+    if (!sources.size) return;
+    const preview = roadPreview(this.sim.world.roads, this.roadLanes, sources);
+    const phase = this.paused || this.reducedMotion ? 0 : this.clock * 16;
+    for (const s of preview.segments) this.drawRoadHighlight(this.roadHi, s, .55, phase);
+    for (const id of preview.targets) {
+      if (sources.has(id)) continue;
+      const c = this.sim.world.colonies.find((colony) => colony.id === id);
+      if (c) this.drawTargetRing(c, false);
+    }
+  }
+
+  private drawRoadHighlight(g: Phaser.GameObjects.Graphics, s: RoadSegment, alpha: number, phase: number) {
+    g.lineStyle(19, ROUTE, .16); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+    g.lineStyle(15, HALO, .72); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+    g.lineStyle(9, ROUTE, alpha); g.lineBetween(s.x1, s.y1, s.x2, s.y2);
+    this.dashedLine(g, s.x1, s.y1, s.x2, s.y2, 0xffffff, .92, 2.4, 14, 10, phase);
+  }
+
+  /** Blue halo for a legal destination, drawn under the building like other floor marks. */
+  private drawTargetRing(c: Colony, strong: boolean) {
+    const g = this.ground, cy = c.y + 18;
+    g.lineStyle(strong ? 7 : 5, HALO, strong ? .55 : .32);
+    g.strokeEllipse(c.x, cy, 176, 120);
+    g.lineStyle(strong ? 2.8 : 1.7, SELECT, strong ? 1 : .7);
+    g.strokeEllipse(c.x, cy, 176, 120);
+    if (!strong) return;
+    g.lineStyle(2.4, SELECT, 1);
+    for (const sx of [-1, 1]) g.lineBetween(c.x + sx * 88, cy - 6, c.x + sx * 88, cy + 6);
+    g.lineBetween(c.x - 6, cy - 60, c.x + 6, cy - 60);
+    g.lineBetween(c.x - 6, cy + 60, c.x + 6, cy + 60);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Pointer feedback: selection is drawn outside the building footprint, the
+  // hovered legal lane is emphasised, and cannon range appears only on selection.
   // ---------------------------------------------------------------------------
   private renderInput() {
     const g = this.top, p = this.input.activePointer;
     if (this.paused) return;
     if (this.skillArmed) {
       this.game.canvas.style.cursor = 'crosshair';
-      g.fillStyle(0x7fc8c0, .14); g.fillCircle(p.x, p.y, 135);
-      g.lineStyle(5, HALO, .42); g.strokeCircle(p.x, p.y, 135);
-      g.lineStyle(2, ROUTE, .9); g.strokeCircle(p.x, p.y, 135);
+      g.fillStyle(0x7fc8c0, .14); g.fillCircle(p.x, p.y, BATTLE_RULES.skillRadius);
+      g.lineStyle(5, HALO, .42); g.strokeCircle(p.x, p.y, BATTLE_RULES.skillRadius);
+      g.lineStyle(2, ROUTE, .9); g.strokeCircle(p.x, p.y, BATTLE_RULES.skillRadius);
       g.lineStyle(1.2, MINT, .7); g.strokeCircle(p.x, p.y, 22);
       g.fillStyle(0xffffff, .9); g.fillCircle(p.x, p.y, 3);
       return;
     }
     const hover = this.hit(p.x, p.y);
-    this.game.canvas.style.cursor = hover ? 'pointer' : 'default';
+    const sources = this.previewSources();
+    const preview = sources.size
+      ? roadPreview(this.sim!.world.roads, this.roadLanes, sources, hover?.id ?? null)
+      : null;
+    const legal = !!hover && !!preview?.targets.has(hover.id);
+    const isSource = !!hover && sources.has(hover.id);
+    const dragging = !!this.drag?.active && !!this.drag.source;
+    // A non-adjacent enemy is blocked on click and drag; a non-adjacent friendly
+    // nest stays a valid reselect on click, but is blocked during an explicit drag.
+    const blocked = !!hover && !!preview && !isSource && !legal && (dragging || hover.owner !== 1);
+    this.game.canvas.style.cursor = !hover ? 'default' : blocked ? 'not-allowed' : 'pointer';
+    if (preview) {
+      const phase = this.reducedMotion ? 0 : this.clock * 16;
+      for (const s of preview.hoverSegments) this.drawRoadHighlight(this.roadHi, s, 1, phase);
+    }
     if (hover && !this.selected.has(hover.id)) {
-      const color = this.ownerColor(hover.owner);
-      this.ground.lineStyle(6, HALO, .4); this.ground.strokeEllipse(hover.x, hover.y + 20, 158, 100);
-      this.ground.lineStyle(2, color, .8); this.ground.strokeEllipse(hover.x, hover.y + 20, 158, 100);
+      if (legal) this.drawTargetRing(hover, true);
+      else if (blocked) {
+        this.dashedCircle(this.ground, hover.x, hover.y + 12, 86, HALO, .4, 3.5, 12, 9);
+        this.dashedCircle(this.ground, hover.x, hover.y + 12, 86, 0x8c7b64, .85, 1.6, 12, 9);
+      } else {
+        const color = this.ownerColor(hover.owner);
+        this.ground.lineStyle(6, HALO, .4); this.ground.strokeEllipse(hover.x, hover.y + 20, 158, 100);
+        this.ground.lineStyle(2, color, .8); this.ground.strokeEllipse(hover.x, hover.y + 20, 158, 100);
+      }
     }
     if (this.drag?.active && !this.drag.source) {
       const x = Math.min(this.drag.x, p.x), y = Math.min(this.drag.y, p.y);
@@ -556,33 +721,6 @@ export class BattleScene extends Phaser.Scene {
       this.dashedLine(g, x + w, y + h, x, y + h, ROUTE, .95, 2, 10, 7);
       this.dashedLine(g, x, y + h, x, y, ROUTE, .95, 2, 10, 7);
     }
-    const preview = this.drag?.source && !this.selected.has(this.drag.source) ? new Set([this.drag.source]) : this.selected;
-    if (preview.size && p.y > 160 && p.y < 780 && (hover || this.drag?.source)) {
-      for (const id of preview) {
-        const c = this.sim!.world.colonies.find(c => c.id === id);
-        if (!c || c === hover) continue;
-        this.drawRoute(c.x, c.y, hover?.x ?? p.x, hover?.y ?? p.y);
-      }
-    }
-  }
-
-  private drawRoute(x1: number, y1: number, x2: number, y2: number) {
-    const g = this.top;
-    const angle = Math.atan2(y2 - y1, x2 - x1);
-    const sx = x1 + Math.cos(angle) * 66, sy = y1 + Math.sin(angle) * 66;
-    const ex = x2 - Math.cos(angle) * 74, ey = y2 - Math.sin(angle) * 74;
-    if (Math.hypot(ex - sx, ey - sy) < 24) return;
-    this.dashedLine(g, sx, sy, ex, ey, HALO, .92, 5.4, 16, 10);
-    this.dashedLine(g, sx, sy, ex, ey, ROUTE, 1, 2.4, 16, 10);
-    const tip = (size: number) => [
-      { x: ex, y: ey },
-      { x: ex - Math.cos(angle - .5) * size, y: ey - Math.sin(angle - .5) * size },
-      { x: ex - Math.cos(angle + .5) * size, y: ey - Math.sin(angle + .5) * size },
-    ];
-    g.fillStyle(HALO, .95); g.fillPoints(tip(22), true);
-    g.fillStyle(ROUTE, 1); g.fillPoints(tip(15), true);
-    g.fillStyle(HALO, .95); g.fillCircle(sx, sy, 5.4);
-    g.fillStyle(ROUTE, 1); g.fillCircle(sx, sy, 3.1);
   }
 
   private brackets(g: Phaser.GameObjects.Graphics, cx: number, cy: number, rx: number, ry: number, color: number, alpha: number, width: number) {
@@ -595,14 +733,16 @@ export class BattleScene extends Phaser.Scene {
     }
   }
 
-  private dashedLine(g: Phaser.GameObjects.Graphics, x1: number, y1: number, x2: number, y2: number, color: number, alpha: number, width: number, dash = 14, gap = 9) {
+  private dashedLine(g: Phaser.GameObjects.Graphics, x1: number, y1: number, x2: number, y2: number, color: number, alpha: number, width: number, dash = 14, gap = 9, phase = 0) {
     const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
     if (len < 1) return;
     const ux = dx / len, uy = dy / len;
+    const period = dash + gap;
+    const offset = period > 0 ? ((phase % period) + period) % period : 0;
     g.lineStyle(width, color, alpha);
-    for (let d = 0; d < len; d += dash + gap) {
-      const end = Math.min(d + dash, len);
-      g.lineBetween(x1 + ux * d, y1 + uy * d, x1 + ux * end, y1 + uy * end);
+    for (let d = -offset; d < len; d += period) {
+      const start = Math.max(0, d), end = Math.min(d + dash, len);
+      if (end > start) g.lineBetween(x1 + ux * start, y1 + uy * start, x1 + ux * end, y1 + uy * end);
     }
   }
 

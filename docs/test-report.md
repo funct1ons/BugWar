@@ -1,6 +1,63 @@
-# 巢灯交响 · 全游戏配乐验收
+# 固定道路与虫族图鉴验收
 
-执行日期：2026-10-22（本机时间）。本轮在 `346909e` 的日光花园版本上替换全游戏配乐。**游戏提交 `d1a6ca0` 已推送，GitHub Pages 部署成功并通过正式站验收。** 下文分别标明本地与线上证据。技术验收通过，不代表人工听感或专业艺术验收。
+执行日期：2026-10-22（本机时间）。本轮基于 `2ad4b4d`，按用户确认的「仅直接相邻、手动逐巢推进」方案修改道路与AI，补充可暂停查阅的图鉴。**本轮仅本地，未推送／部署。**
+
+设计、冻结范围和方法见 [道路与图鉴](roads-and-codex.md)。下列为本轮记录；下方历史配乐验收不充当本轮功能证据。
+
+## 本轮方法与边界
+
+- 13张显式无向路网；派兵、AI攻击和补给均仅走直接相邻道路。多选逐来源检查，不自动转发。路网连通、岔路和炮塔关口由独立测试约束，不是按距离生成的全连图。
+- 图鉴三类九项，直接读取种族常量与技能常量；未解锁族可查。分别验菜单、战役、战场入口，打开前暂停状态、关闭与Esc恢复、操作期间世界时钟，以及三种桌面尺寸的滚动和遮挡。
+- 保留原195场、13关×3难度×5策略的确定性矩阵；只把easy／normal每关有agile-planner或agile-pulse获胜作为可达性底线，不要求所有弱策略或hard必胜。600秒仍playing不擅称平局或永久死锁。
+- 前三关18组合：标准／敏捷，开局等待8／10／12秒，每3／3.5／4秒最多一条单巢命令，可跳过第3时隙。只读当前可见驻军和道路，后方逐己方相邻建筑补给；同层用固定ID破平局防往返。无预知在途、无技能、无多选、无敌AI规划器。明确道路规则后修正原先无路意识的驾驶器，但未降低18/18断言。
+- 两个浏览器自然通关驾驶器不写本关世界、不加兵或加速；第二关仅预置上一关完成以解锁。它们是自动化脚本，不是新手人类胜率或13关人工通关。
+
+## 本轮发现与修复
+
+初轮未直接放行，保留诊断而不伪装全程一次通过：
+
+1. 逐巢路网使旧的欧氏距离补给出现撤离接敌面、反复往返及炮塔不能补给。改为己方子图到真实敌方接触面的跳数，严格朝前一跳；未接敌才向中立面，允许向友方炮塔送兵。不添加自动跨巢命令。
+2. 第一关起点第二出口允许敌军绕后，第三关前期分支使低频策略频繁失守。仅删改这两张路网修正；不改初兵、经济、所有权、坐标或准备期，第二关七边保持原方案。
+3. 独立审查发现AI将玩家owner 1漏作敌方接触面，多阵营前线待遇不一致；已统一按非中立且非己方判断，并增加对称性回归。
+4. 通用浏览器的第二次P暂停恢复断言暴露了DOM模态与Phaser键盘不同步；保留原断言，修复恢复通路，并检验长按／重复keydown、图鉴内P与Esc不泄露至战场。
+
+## 本轮最终构建与回归结果
+
+Windows／PowerShell 5.1、Node 24.14.1、系统Edge 155.0.4283.62；默认自动播放策略。以下浏览器测试均使用**同一次生产构建**，未在测试之间重建或更改源码。
+
+| 项目 | 实际结果与证据 |
+| --- | --- |
+| 单元测试 | **14文件，325项通过，0失败，1跳过**。跳过项仅按需初兵搜索，不是道路、新手或矩阵测试。[摘要](verification/roads-unit-summary.json)、[原始结果](verification/roads-unit-report.json)、[完整日志](verification/roads-unit-log.txt) |
+| 道路战役矩阵 | 新跑195场。easy／normal每关至少一个agile-planner／agile-pulse胜，覆盖无缺口；easy 59胜／2负／4仍在进行，normal 58／3／4，hard 55／7／3。不把弱策略失败或600秒仍在进行冒充全部通关。[逐场记录与输入哈希](verification/roads-matrix-report.json) |
+| 低频新手 | 前三关18／18组合胜；另有打开教程后延迟首令的普通首关胜。[矩阵报告](verification/roads-matrix-report.json) |
+| 道路／图鉴专项 | 13关真实道路＝战役缩图＝常显道路；所有观察到的AI出兵有合法边。鼠标点击／拖拽非法派兵、混合来源、友方增援、无自动转发通过。三类九项图鉴数值共源、未解锁可查、三尺寸、键盘、实际滚轮、暂停快照及重复P通过。[专项报告](verification/roads-codex-report.json) |
+| 通用浏览器 | 交互、存档不可用回退、OGG失败MP3回退、音乐增益／静音及结算、13关HUD通过；0页面错误／缺资源／外网请求。[报告](verification/roads-browser-report.json) |
+| 视觉／美术 | **122项视觉检查、25张截图**通过；36张正式SVG真实Edge解码、18张步态表透明边界通过。三尺寸菜单／战斗／设置无遮挡。[视觉报告](verification/roads-visual-report.json)、[美术日志](verification/roads-art-decode-log.txt) |
+| 真实时间首关 | normal首关**38.90秒获胜**，21次真实鼠标命令、0技能、0世界写入。[报告](verification/roads-playthrough-report.json) |
+| 低频标准第二关 | 仅解锁上一关；本关**88.35秒获胜**，无技能／加兵／加速。[报告](verification/roads-onboarding-browser-report.json) |
+| 原生离线启动 | Windows自带PowerShell服务、真实鼠标占巢、图鉴暂停恢复／道路非法提示通过，0外网请求。[报告](verification/roads-offline-report.json) |
+| 普通生产URL | **仅本地** `http://127.0.0.1:4180/`，不带`?test=1`且无调试接口；实际派兵占巢、非法道路提示、锁定族图鉴、暂停与恢复通过；0错误／缺资源／外网请求。实际加载JS与本地构建SHA一致。[报告](verification/roads-production-url-report.json) |
+| 范围冻结 | 与`2ad4b4d`逐项比较，88份冻结文件一致；初兵、所有权、坐标、种族参数不变，美术／音频／存储模块不变。[范围报告](verification/roads-scope-report.json) |
+
+构建资产为`index-DUA8bNDa.js`，SHA-256 `40143bca4d98742c39412eaa6ffc711c9734e87a84d755218702225df8672540`；[构建清单](verification/roads-build-report.json)绑定全部源码与构建配置输入及89份产物。`tsc --noEmit`、Vite与许可证复制通过。[构建日志](verification/roads-build-log.txt)
+
+本轮实机图：[道路战斗](screenshots/roads-battle.png) · [战斗内图鉴](screenshots/roads-codex.png) · [1280族群](screenshots/roads-codex-races-1280.png) · [1280建筑](screenshots/roads-codex-buildings-1280.png) · [1280指挥](screenshots/roads-codex-command-1280.png) · [首关自然胜利](screenshots/roads-natural-victory.png)。此前音画截图不覆盖。
+
+## 离线交付与证据边界
+
+- 打包使用`package-release.ps1 -SkipBuild`，复用已验收的`dist/`。最终ZIP为`release/BugWar-VerdantCrown-Windows.zip`。
+- 最终包在含中文及空格的路径解压，再运行同一原生PowerShell离线测试；结果旁置为`release/roads-offline-release-report.json`。`release/roads-release-payload-report.json`核对源码未变、dist未变、解压包92份运行时／启动器／素材许可逐字节一致，并记录**最终ZIP**的大小和SHA-256。
+- **最终解压验收通过**：ZIP为76,434,760 bytes，运行时／启动器／许可92份一致，0外网请求。[最终离线报告](verification/roads-offline-release-report.json)、[最终ZIP与载荷哈希](verification/roads-release-payload-report.json)在打包后追加到本地仓库；它们不在该ZIP的文档快照内。包内文档是打包时快照，最终容器报告留在ZIP外，不宣称包内自证。未推送、未部署，未改线上版本。
+- 专项中的所有权／资源／AI观察fixture，以及通用视觉测试中的强制胜败／极大数字，**仅验功能与显示，不计自然胜利**。专项首占为延长AI准备期的时序fixture；自然通关只认上述两份无本关世界写入报告。
+- 本轮未重制或重新全量主观试听配乐。资源与音乐代码逐字节未变；既有制作／试听边界仍见下方历史章。自动化驾驶器胜利不等于人类新手胜率，不宣称13关人工通关。
+
+---
+
+# 历史：巢灯交响 · 全游戏配乐验收
+
+以下为上一轮已部署的音画版本记录。其「玩法冻结」「已上线」及测试计数均属于当轮，不代表本轮道路／图鉴已经上线或无需重验。
+
+执行日期：2026-10-22（本机时间）。当轮在 `346909e` 的日光花园版本上替换全游戏配乐。**游戏提交 `d1a6ca0` 已推送，GitHub Pages 部署成功并通过正式站验收。** 下文分别标明本地与线上证据。技术验收通过，不代表人工听感或专业艺术验收。
 
 ## 1. 交付范围与协作
 

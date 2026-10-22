@@ -1,5 +1,7 @@
 import { RACES, type RaceId, type Difficulty, type LevelConfig, type World, type GameEvent, type Fleet, type Colony } from './types';
 import { think, THINK_INTERVAL } from './ai';
+import { cloneRoads, hasRoad } from './roads';
+import { BATTLE_RULES } from './rules';
 const TICK=0.05;
 const safe=(n:number,fallback=0)=>Number.isFinite(n)?Math.max(0,Math.min(1e12,n)):fallback;
 export class Simulation {
@@ -11,7 +13,7 @@ export class Simulation {
   private shots=new Map<string,number>();
   constructor(level:LevelConfig,race:RaceId='agile',private difficulty:Difficulty='normal') {
     this.openingGrace=safe(level.openingGrace?.[difficulty]??0);
-    this.world={elapsed:0, colonies:level.colonies.map(c=>({...c,x:safe(c.x),y:safe(c.y),units:safe(c.units),production:c.kind==='cannon'?0:safe(c.production ?? 1)})), factions:level.factions.map(f=>({...f,race:f.id===1?race:f.race})),fleets:[],energy:{},status:'playing',stats:{sent:0,kills:0,captures:0,lost:0,skills:0,casualties:0},events:[]};
+    this.world={elapsed:0, colonies:level.colonies.map(c=>({...c,x:safe(c.x),y:safe(c.y),units:safe(c.units),production:c.kind==='cannon'?0:safe(c.production ?? BATTLE_RULES.nestProduction)})), factions:level.factions.map(f=>({...f,race:f.id===1?race:f.race})),roads:cloneRoads(level.roads),fleets:[],energy:{},status:'playing',stats:{sent:0,kills:0,captures:0,lost:0,skills:0,casualties:0},events:[]};
     for(const f of this.world.factions) this.world.energy[f.id]=0;
   }
   private race(owner:number) { return RACES[this.world.factions.find(f=>f.id===owner)?.race ?? 'agile']; }
@@ -24,6 +26,9 @@ export class Simulation {
     for(const id of new Set(sources)) {
       const c=w.colonies.find(c=>c.id===id);
       if(!c||c===t||c.owner!==owner) continue;
+      // Fixed roads: every selected source must touch the target directly. There is no
+      // fallback line and no A-B-C relay; an illegal pick costs no troops and emits nothing.
+      if(!hasRoad(w.roads,c.id,t.id)) continue;
       c.units=safe(c.units);
       const n=Math.min(Math.floor(c.units),Math.floor(c.units*ratio+1e-9));
       if(n<1) continue;
@@ -36,14 +41,15 @@ export class Simulation {
   }
   castSkill(owner:number,x:number,y:number):boolean {
     const w=this.world;
-    if(w.status!=='playing'||owner<=0||!w.factions.some(f=>f.id===owner)||!Number.isFinite(x)||!Number.isFinite(y)||safe(w.energy[owner])<100) return false;
+    if(w.status!=='playing'||owner<=0||!w.factions.some(f=>f.id===owner)||!Number.isFinite(x)||!Number.isFinite(y)||safe(w.energy[owner])<BATTLE_RULES.skillCost) return false;
     w.energy[owner]=0;
-    // Reconstructed area pulse: radius 135, removes up to 18 enemy units, never captures.
-    for(const c of w.colonies) if(c.owner!==owner&&c.owner!==0&&Math.hypot(c.x-x,c.y-y)<=135) {const n=Math.min(c.units,18);c.units-=n;this.casualties(owner,c.owner,n,0);}
-    for(const f of w.fleets) if(f.owner!==owner&&Math.hypot(f.x-x,f.y-y)<=135) {const n=Math.min(f.count,18);f.count-=n;this.casualties(owner,f.owner,n,0);}
+    // Reconstructed area pulse: fixed radius/damage from BATTLE_RULES; never captures.
+    const {skillRadius,skillDamage}=BATTLE_RULES;
+    for(const c of w.colonies) if(c.owner!==owner&&c.owner!==0&&Math.hypot(c.x-x,c.y-y)<=skillRadius) {const n=Math.min(c.units,skillDamage);c.units-=n;this.casualties(owner,c.owner,n,0);}
+    for(const f of w.fleets) if(f.owner!==owner&&Math.hypot(f.x-x,f.y-y)<=skillRadius) {const n=Math.min(f.count,skillDamage);f.count-=n;this.casualties(owner,f.owner,n,0);}
     w.fleets=w.fleets.filter(f=>f.count>1e-9);
     if(owner===1) w.stats.skills++;
-    w.events.push({type:'skill',owner,x,y,amount:18});this.checkEnd();return true;
+    w.events.push({type:'skill',owner,x,y,amount:skillDamage});this.checkEnd();return true;
   }
   step(dt:number):void {
     if(!Number.isFinite(dt)||dt<=0||this.world.status!=='playing') return;
@@ -54,12 +60,12 @@ export class Simulation {
   private tick():void {
     const w=this.world;w.elapsed+=TICK;
     for(const c of w.colonies) {c.units=safe(c.units);if(c.owner>0&&c.kind==='nest') c.units=safe(c.units+safe(c.production)*this.race(c.owner).production*TICK);}
-    for(const f of w.factions) w.energy[f.id]=Math.min(100,safe(w.energy[f.id])+TICK*2);
+    for(const f of w.factions) w.energy[f.id]=Math.min(BATTLE_RULES.skillCost,safe(w.energy[f.id])+TICK*BATTLE_RULES.energyRate);
     for(const c of w.colonies.filter(c=>c.kind==='cannon'&&c.owner>0)) {
       let cooldown=(this.shots.get(c.id)??0)-TICK;
       if(cooldown<=0) {
-        const enemy=w.fleets.find(f=>f.owner!==c.owner&&f.count>0&&Math.hypot(f.x-c.x,f.y-c.y)<=200);
-        if(enemy) {const n=Math.min(enemy.count,2);enemy.count-=n;this.casualties(c.owner,enemy.owner,n,0);w.events.push({type:'shot',owner:c.owner,x:c.x,y:c.y,targetX:enemy.x,targetY:enemy.y,amount:n});cooldown=0.75;}
+        const enemy=w.fleets.find(f=>f.owner!==c.owner&&f.count>0&&Math.hypot(f.x-c.x,f.y-c.y)<=BATTLE_RULES.cannonRange);
+        if(enemy) {const n=Math.min(enemy.count,BATTLE_RULES.cannonDamage);enemy.count-=n;this.casualties(c.owner,enemy.owner,n,0);w.events.push({type:'shot',owner:c.owner,x:c.x,y:c.y,targetX:enemy.x,targetY:enemy.y,amount:n});cooldown=BATTLE_RULES.cannonCooldown;}
       }
       this.shots.set(c.id,cooldown);
     }
