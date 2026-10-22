@@ -46,9 +46,9 @@ try{
  const digest=buffer=>createHash('sha256').update(buffer).digest('hex');
  report.javascript={file:path.basename(jsFile),localSHA256:digest(await fs.readFile(`dist/assets/${jsFile}`)),remoteSHA256:digest(Buffer.from(await remote.arrayBuffer()))};
  assert.equal(report.javascript.localSHA256,report.javascript.remoteSHA256,'online JavaScript matches the local production build');
- if(![...audio].some(name=>/^music-battle\.(ogg|wav|mp3)$/.test(name)))await page.waitForResponse(r=>/\/music-battle\.(ogg|wav|mp3)$/.test(r.url())&&r.status()===200,{timeout:45000});
+ if(![...audio].some(name=>/^music-meadow-power\.(ogg|mp3)$/.test(name)))await page.waitForResponse(r=>/\/music-meadow-power\.(ogg|mp3)$/.test(r.url())&&r.status()===200,{timeout:45000});
  await page.waitForLoadState('networkidle',{timeout:45000});
- report.audioFiles=[...audio].sort();assert.ok(audio.size>=10,`menu, battle and eight SFX served over ${url.protocol}`);assert.ok(audio.has('music-menu.ogg')&&audio.has('music-battle.ogg'),'compressed music served');
+ report.audioFiles=[...audio].sort();for(const name of ['music-menu.ogg','music-meadow-base.ogg','music-meadow-motion.ogg','music-meadow-power.ogg',...['hover','click','select','dispatch','march','impact','capture','skill'].map(n=>`sfx-${n}.wav`)])assert.ok(audio.has(name),`${name} served over ${url.protocol}`);
  assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);assert.deepEqual(external,[]);
  Object.assign(report,{errors,failedRequests:failed,externalRequests:external,passed:true});
  await fs.writeFile(`${output}/online-report.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

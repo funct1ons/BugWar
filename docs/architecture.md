@@ -4,7 +4,7 @@
 以有来源的规则为基础。13关、Agile/Fast/Strong、Spawn/Cannon、无限驻军、1–5星、通关解锁种族、满能量A施法。禁止声称未知数值为原版精确值。不添加巢穴升级或科技树等未经确认机制。
 
 ## 模块所有权
-本轮日光花园迁移按互斥文件分工：主代理负责调度、整合、文档、实机质量检查、清理与提交；资源代理负责 `public/art/**` 与正式封面生成器；界面代理负责 `src/main.ts`／`src/style.css`；场景代理负责 `src/game/BattleScene.ts`；独立验收工具代理负责美术单测与资源／视觉检查脚本。核心、关卡、存档、音频模块冻结，不因改美术更改玩法。
+日光花园美术迁移已完成。本轮交响配乐按互斥文件分工：音乐制作代理负责采样获取、原创编配、离线渲染和制作溯源；引擎代理负责 `AudioSystem.ts` 与播放单测；战况代理负责 `MusicDirector.ts`、主程序音乐接入及导演单测；主代理负责共享曲目契约、代码复核、真实Edge／离线验收、许可与交付整合。核心规则、关卡、存档、美术、场景输入与八个音效冻结，不因改配乐改变玩法。
 
 ## 画布/关卡
 逻辑画面1600×900，战役建筑中心 x=210..1400,y=230..710；顶部HUD y=20..138、底部HUD y=792..888。提示单行位于y140，最下兵力数字下沿777，不遮挡建筑。坐标均绝对逻辑像素。关卡13个，4类生境，布局各异。渲染Phaser，HTML覆盖层提供可访问的游戏UI。
@@ -58,13 +58,17 @@ export class AudioSystem {
  settings:AudioSettings;
  constructor(settings?:Partial<AudioSettings>);
  unlock():Promise<void>; //首次交互创建/恢复context
- music(track:'menu'|'battle'|'victory'|'defeat'):void;
+ music(track:ScoreId|'battle'):void; // battle为meadow兼容别名
+ setIntensity(level:0|1|2):void;
+ setPaused(paused:boolean):void;
  play(name:'hover'|'click'|'select'|'dispatch'|'march'|'impact'|'capture'|'skill'|'victory'|'defeat'):void;
  configure(settings:Partial<AudioSettings>):void;
  dispose():void;
 }
 ```
-真实同源OGG配乐（失败回退WAV）与WAV音效，不依赖运行时CDN或外部请求。音乐不应只有简单正弦，使用多声部、节奏、合成音色与自然噪声，峰值控制、循环过渡。WebAudio限流。资源路径import.meta.env.BASE_URL。
+`score.ts` 是八个曲目ID、BPM、小节数及18份分轨的共享契约。音乐由合法真实管弦采样离线渲染；同源OGG失败回退同名MP3，八个WAV音效原样保留。音乐组内三层使用同一AudioContext启动时刻与相同长度；强度在下一小节平滑变化，换曲先淡出旧调性再淡入新曲，胜败快速接管。当前／渐退／加载音乐被临时固定，其余缓存立即释放；192MiB为软预算，转场瞬间的超额必须如实报告。资源路径均使用import.meta.env.BASE_URL，不访问运行时CDN或外部服务。
+
+`MusicDirector` 仅读取 World 与 LevelConfig，不修改模拟、不消费事件队列。它按起始兵力比例归一化，结合多敌方来袭、生产巢损失与累计战斗统计差分，使用快升慢降、进入退出不同阈值及8秒最短保持，避免单次碰撞频繁切层。暂停冻结估计器，重试清空状态，胜败模式禁止战场更新覆盖结算曲。实际实现与验收见 `audio.md`。
 
 ## 交付阶段
 1. 研究证据→2.架构与并行模块→3.核心/AI+13关+成长→4.绘制与音乐→5.浏览器操作/视觉/音频/性能验收→6.离线静态包和Windows启动脚本。

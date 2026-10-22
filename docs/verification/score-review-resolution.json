@@ -1,0 +1,34 @@
+{
+  "testedAt": "2026-10-22T08:23:23.774042+00:00",
+  "scope": "Independent reviewers supplied initial findings. Main agent repaired and verified the final assets. Not human listening or an independent second subjective audition.",
+  "initialAudit": "score-initial-audit.json",
+  "fixes": [
+    {
+      "finding": "Timpani incorrectly treated as unpitched percussion with random drum changes.",
+      "resolution": "Measure all 20 principal-modal references, select closest drum before velocity/RR, transpose each selected recording to written D2–A3 target.",
+      "evidence": "score-production-report.json: timpani, source.timpaniCalibration and cue.timpaniRenderedChecks in distributed manifest; score-assets.test.ts",
+      "status": "verified"
+    },
+    {
+      "finding": "Final tonic attack omitted by ending cutoff; both real melodies previously ended on E instead of D.",
+      "resolution": "Rewrite penultimate-bar cadence so final melody really plays D3 before the release-only last bar; assertions check actual events; real browser waits for both cues to finish.",
+      "evidence": "score-production-report.json: endingChecks; score-browser-report.json: victoryEnded/defeatEnded",
+      "status": "verified"
+    },
+    {
+      "finding": "Cold download follows mutable master and cached files are accepted by existence.",
+      "resolution": "Pin immutable commit and actual tree; verify every WAV and license against Git blob SHA-1 plus recorded SHA-256. Disposable corrupt-cache download and wrong-blob rejection tests passed.",
+      "evidence": "score-production-report.json: source",
+      "status": "verified"
+    },
+    {
+      "finding": "Audio decoder cache and stalled transports could grow or remain pending; diagnostics must distinguish targets from actual gains.",
+      "resolution": "Prune nonplaying cues, expose soft-budget overshoot, abort stale requests and bound each format network read; actual gain/duck and effective intensity are separate from pending targets.",
+      "evidence": "unit-report.json: score.test.ts; score-browser-report.json: levels, pressureFixture, paused, cancelledTransitions",
+      "status": "verified"
+    }
+  ],
+  "reproductionNote": "18 WAV masters and all36 decoded PCM identical on separate-output regeneration; MP3 containers identical. OGG only random stream serial/CRC differs, explicitly not 36 byte-identical containers.",
+  "remainingBoundary": "No human audition; free community samples and deterministic arranging may still sound mechanical.",
+  "passedTechnicalReview": true
+}

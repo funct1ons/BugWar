@@ -14,25 +14,25 @@
   "policy": "Read displayed (floored) current garrisons. Nearest neutral affordable with 50% + 5 reserve margin; otherwise nearest enemy affordable with 75% + 20 margin; otherwise reinforce the front with 75% of the largest rear nest. No fleet prediction, enemy interception or planner.",
   "commands": [
     {
-      "time": 12,
+      "time": 12.05,
       "source": "a",
       "target": "c",
       "ratio": 0.5
     },
     {
-      "time": 16,
+      "time": 16.05,
       "source": "a",
       "target": "d",
       "ratio": 0.5
     },
     {
-      "time": 24.05,
+      "time": 24,
       "source": "c",
       "target": "d",
       "ratio": 0.75
     },
     {
-      "time": 28.1,
+      "time": 28.05,
       "source": "a",
       "target": "b",
       "ratio": 0.75
@@ -44,7 +44,7 @@
       "ratio": 0.75
     },
     {
-      "time": 36.1,
+      "time": 36,
       "source": "d",
       "target": "b",
       "ratio": 0.75
@@ -56,7 +56,7 @@
       "ratio": 0.75
     },
     {
-      "time": 48,
+      "time": 48.05,
       "source": "a",
       "target": "e",
       "ratio": 0.75
@@ -68,44 +68,38 @@
       "ratio": 0.75
     },
     {
-      "time": 56,
-      "source": "c",
+      "time": 56.1,
+      "source": "b",
       "target": "e",
       "ratio": 0.75
     },
     {
-      "time": 60,
+      "time": 60.05,
       "source": "e",
       "target": "f",
       "ratio": 0.75
     },
     {
-      "time": 64.05,
-      "source": "f",
-      "target": "b",
-      "ratio": 0.75
-    },
-    {
-      "time": 68,
+      "time": 64,
       "source": "e",
       "target": "b",
       "ratio": 0.75
     },
     {
-      "time": 72.05,
-      "source": "a",
+      "time": 68,
+      "source": "c",
       "target": "b",
       "ratio": 0.75
     },
     {
-      "time": 76,
+      "time": 72.05,
       "source": "b",
       "target": "d",
       "ratio": 0.75
     },
     {
-      "time": 80.05,
-      "source": "c",
+      "time": 76.05,
+      "source": "f",
       "target": "b",
       "ratio": 0.75
     }
@@ -146,14 +140,14 @@
   ],
   "graceSeconds": 13,
   "status": "won",
-  "elapsed": 80.15,
+  "elapsed": 76.25,
   "stats": {
-    "sent": 522,
-    "kills": 180.0500000000005,
+    "sent": 472,
+    "kills": 176.45000000000044,
     "captures": 6,
     "lost": 2,
     "skills": 0,
-    "casualties": 190.05000000000047
+    "casualties": 186.45000000000044
   },
   "passed": true
 }

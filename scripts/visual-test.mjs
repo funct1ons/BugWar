@@ -44,6 +44,9 @@ const PAGE_ERRORS = [];
 const CONSOLE_ERRORS = [];
 const FAILED_REQUESTS = [];
 const NETWORK_FAILURES = [];
+const CANCELLED_FIXTURE_MUSIC = [];
+const MUSIC_CANCELLATION_CHECKS = [];
+let syntheticMusicAbortPhase = null;
 const EXTERNAL_REQUESTS = [];
 const report = {
   startedAt: new Date().toISOString(),
@@ -103,7 +106,28 @@ function attachDiagnostics(page, label) {
     if (response.status() >= 400) FAILED_REQUESTS.push(`${label} ${response.status()} ${response.url()}`);
   });
   page.on('requestfailed', request => {
-    NETWORK_FAILURES.push(`${label} ${request.failure()?.errorText ?? 'failed'} ${request.url()}`);
+    const failure = request.failure()?.errorText ?? 'failed';
+    // The 13-layout loop deliberately starts several cues before their downloads
+    // can finish. AudioSystem must abort obsolete loads, not leak them. Do NOT
+    // suppress HTTP errors, SFX/art failures, other network errors, or normal play.
+    const music = /\/audio\/music-(meadow|roots|marsh|amber|finale)-(?:base|motion|power)\.(?:ogg|mp3)$/.exec(request.url());
+    if (label === 'test' && failure === 'net::ERR_ABORTED' && music) {
+      const phase = syntheticMusicAbortPhase ?? 'Other scripted fixture/menu/result switch';
+      // Read the cue captured synchronously at AbortSignal dispatch, NOT later:
+      // the 13-layout fixture can return to the same cue before this callback.
+      // An aborted CURRENT cue is still a failure, even in a synthetic phase.
+      MUSIC_CANCELLATION_CHECKS.push(page.evaluate(url => {
+        const records = window.__VISUAL_AUDIO_ABORTS__ ?? [];
+        const index = records.findIndex(record => record.url === url);
+        return index < 0 ? null : records.splice(index, 1)[0];
+      }, request.url()).then(abort => {
+        if (abort?.wantedCue && abort.wantedCue !== music[1]) CANCELLED_FIXTURE_MUSIC.push({ phase,
+          url: request.url(), failure, cancelledCue: music[1], wantedCueAtAbort: abort.wantedCue,
+          signalAbortAt: abort.at,
+          reason: 'Native AbortSignal observed synchronously; the director already wanted a different cue.' });
+        else NETWORK_FAILURES.push(`${label} ${failure} ${request.url()} (wanted at abort: ${abort?.wantedCue ?? 'unverified'})`);
+      }).catch(error => NETWORK_FAILURES.push(`${label} ${failure} ${request.url()} (cannot verify cancellation: ${error.message})`)));
+    } else NETWORK_FAILURES.push(`${label} ${failure} ${request.url()}`);
   });
   page.on('request', request => {
     const url = request.url();
@@ -599,6 +623,22 @@ async function main() {
     await normal.close();
 
     const page = await context.newPage();
+    // Observation only: forward the original request/signal unchanged. Capture
+    // cancellation-time intent before rapid fixtures can change it again.
+    await page.addInitScript(() => {
+      const originalFetch = window.fetch.bind(window);
+      window.__VISUAL_AUDIO_ABORTS__ = [];
+      window.fetch = (input, init) => {
+        const url = new URL(input instanceof Request ? input.url : String(input), location.href).href;
+        if (/\/audio\/music-(?:meadow|roots|marsh|amber|finale)-(?:base|motion|power)\.(?:ogg|mp3)$/.test(url)) {
+          init?.signal?.addEventListener('abort', () => {
+            window.__VISUAL_AUDIO_ABORTS__.push({ url,
+              wantedCue: window.__BUGWAR__?.music.diagnostics().cue ?? null, at: performance.now() });
+          }, { once: true });
+        }
+        return originalFetch(input, init);
+      };
+    });
     attachDiagnostics(page, 'test');
     const coverResponses = [];
     page.on('response', response => {
@@ -669,6 +709,7 @@ async function main() {
     await page.waitForSelector('.battle-screen');
     await page.waitForTimeout(250);
     await shot(page, '1920-battle');
+    syntheticMusicAbortPhase = '13 layouts and three chapter screenshot switches';
     const layouts = await layoutRows(page);
     report.layouts = layouts;
     for (const row of layouts) {
@@ -684,9 +725,12 @@ async function main() {
     }
 
     // 5. Multi-owner / all three race sheets, on level 9 (four factions).
-    await page.evaluate(() => window.__BUGWAR__.start(8));
+    await page.evaluate(() => { window.__BUGWAR__.start(8); window.__BUGWAR__.scene.paused = true; });
     await page.waitForSelector('.battle-screen');
-    await page.waitForTimeout(150);
+    await page.waitForFunction(() => { const d = window.__BUGWAR__.audio.diagnostics();
+      return d.pendingLoads === 0 && !d.crossfading;
+    }, undefined, { timeout: 45000 });
+    syntheticMusicAbortPhase = null;
     const multi = await page.evaluate(() => {
       const app = window.__BUGWAR__;
       const scene = app.scene;
@@ -917,10 +961,16 @@ async function main() {
       await page.waitForFunction(() => !document.getElementById('modal'));
     }
 
+    // Do not count teardown of a still-loading current cue as a product failure.
+    // Finish its real download/decode first; failures of a wanted cue remain fatal.
+    await page.waitForFunction(() => window.__BUGWAR__.audio.diagnostics().pendingLoads === 0, undefined, { timeout: 45000 });
+    await page.waitForLoadState('networkidle', { timeout: 45000 });
+    await Promise.all(MUSIC_CANCELLATION_CHECKS);
     report.passed = true;
   } catch (error) {
     report.error = String(error?.stack ?? error);
   } finally {
+    await Promise.all(MUSIC_CANCELLATION_CHECKS);
     try { if (browser) await browser.close(); } catch (error) { PAGE_ERRORS.push(`browser close: ${error.message}`); }
     await stopServer(server);
     report.finishedAt = new Date().toISOString();
@@ -929,6 +979,7 @@ async function main() {
       consoleErrors: CONSOLE_ERRORS,
       failedRequests: FAILED_REQUESTS,
       networkFailures: NETWORK_FAILURES,
+      cancelledFixtureMusicRequests: CANCELLED_FIXTURE_MUSIC,
       externalRequests: EXTERNAL_REQUESTS,
     };
     const failedChecks = CHECKS.filter(entry => !entry.ok);

@@ -1,0 +1,10 @@
+> bug-war-verdant-crown@1.0.0 test:art
+> node scripts/art-preview.cjs
+
+INFO cover.svg: raster mean luminance 0.827 (sunlit check belongs to tests/art.test.ts)
+INFO background-meadow.svg: raster mean luminance 0.847 (sunlit check belongs to tests/art.test.ts)
+INFO background-roots.svg: raster mean luminance 0.814 (sunlit check belongs to tests/art.test.ts)
+INFO background-marsh.svg: raster mean luminance 0.869 (sunlit check belongs to tests/art.test.ts)
+INFO background-amber.svg: raster mean luminance 0.827 (sunlit check belongs to tests/art.test.ts)
+INFO contact sheet: test-results/art-sheet.png (36 formal files)
+PASS system Edge: 36 formal SVGs decoded at the contracted sizes; all 18 unit sheets have transparent frame boundaries and non-empty frames; defaults match their owner files; test-results/art-sheet.png written.

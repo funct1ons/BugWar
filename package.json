@@ -16,8 +16,17 @@
     "test:onboarding": "node scripts/onboarding-browser-test.mjs",
     "test:art": "node scripts/art-preview.cjs",
     "test:visual": "node scripts/visual-test.mjs",
+    "test:score": "node scripts/score-browser-test.mjs",
     "serve": "node scripts/serve.mjs"
   },
-  "dependencies": { "phaser": "^3.90.0" },
-  "devDependencies": { "@playwright/test": "^1.56.0", "typescript": "^5.9.3", "vite": "^7.1.12", "vitest": "^3.2.4" }
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^24.19.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vitest": "^3.2.4"
+  }
 }

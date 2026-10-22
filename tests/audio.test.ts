@@ -46,25 +46,6 @@ describe('audio regressions', () => {
     expect(starts).toBe(25);
   });
 
-  it('cancels an in-flight switch when the currently playing track is requested again', async () => {
-    const audio = new AudioSystem();
-    const internals = audio as unknown as {
-      ctx: unknown; currentMusic: unknown; load: () => Promise<unknown>;
-      startMusic: (track: 'battle') => Promise<void>; swapMusic: () => void;
-    };
-    internals.ctx = { state: 'running' };
-    internals.currentMusic = { track: 'menu', ended: false, source: { loop: true } };
-    let finish!: (value: unknown) => void;
-    internals.load = () => new Promise(resolve => { finish = resolve; });
-    const swapped = vi.fn();
-    internals.swapMusic = swapped;
-    const pending = internals.startMusic('battle');
-    audio.music('menu');
-    finish({});
-    await pending;
-    expect(swapped).not.toHaveBeenCalled();
-    expect(audio.diagnostics().pendingTrack).toBeNull();
-  });
   it.each(['missing', 'unsupported'])('falls back honestly when OGG is %s', async (mode) => {
     const audio = new AudioSystem();
     const internals = audio as unknown as {
@@ -86,9 +67,9 @@ describe('audio regressions', () => {
         arrayBuffer: async () => new ArrayBuffer(4) };
     }));
     expect(await internals.load('music-menu.ogg')).toBe(buffer);
-    expect(urls.map(url => url.split('/').pop())).toEqual(['music-menu.ogg', 'music-menu.wav']);
-    expect(audio.diagnostics().decodedFiles).toEqual(['music-menu.wav']);
-    expect(audio.diagnostics().fallbackFiles).toEqual(['music-menu.wav']);
+    expect(urls.map(url => url.split('/').pop())).toEqual(['music-menu.ogg', 'music-menu.mp3']);
+    expect(audio.diagnostics().decodedFiles).toEqual(['music-menu.mp3']);
+    expect(audio.diagnostics().fallbackFiles).toEqual(['music-menu.mp3']);
     expect(audio.diagnostics().failedFiles).toEqual([]);
     expect(audio.diagnostics().pendingLoads).toBe(0);
     expect(await internals.load('music-menu.ogg')).toBe(buffer);

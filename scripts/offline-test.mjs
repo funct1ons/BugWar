@@ -14,8 +14,12 @@ try{
  await page.goto(`${base}/?test=1`);await page.waitForFunction(()=>window.__BUGWAR__?.scene.ready);
  await page.locator('[data-action=campaign]').first().click();await page.locator('[data-action=level][data-value="0"]').click();
  await page.mouse.click(320,465);await page.mouse.click(730,330);await page.waitForFunction(()=>window.__BUGWAR__.scene.sim.world.colonies.find(c=>c.id==='b').owner===1);
- await page.waitForFunction(()=>window.__BUGWAR__.audio.diagnostics().contextState==='running'&&window.__BUGWAR__.audio.diagnostics().decodedBuffers>=9);
+ await page.waitForFunction(()=>{const d=window.__BUGWAR__.audio.diagnostics();return d.contextState==='running'&&d.currentTrack==='meadow'&&d.pendingLoads===0&&!d.crossfading&&d.activeLayers.length===3;},undefined,{timeout:45000});
  report.audio=await page.evaluate(()=>window.__BUGWAR__.audio.diagnostics());
+ assert.equal(report.audio.musicLoop,true);
+ assert.equal(new Set(report.audio.activeLayers.map(l=>l.startedAt)).size,1);
+ for(const stem of ['base','motion','power'])assert.ok(report.audio.decodedFiles.includes(`music-meadow-${stem}.ogg`));
+ for(const name of ['hover','click','select','dispatch','march','impact','capture','skill'])assert.ok(report.audio.decodedFiles.includes(`sfx-${name}.wav`));
  report.realMouseCapture=await page.evaluate(()=>window.__BUGWAR__.scene.sim.world.stats.captures>0);
  assert.equal(report.realMouseCapture,true);assert.deepEqual(report.errors,[]);assert.deepEqual(report.failed,[]);assert.deepEqual(report.external,[]);report.passed=true;
  await fs.mkdir('test-results',{recursive:true});await page.screenshot({path:`test-results/${release?'11-release-offline':'09-powershell-offline'}.png`});await fs.writeFile(`test-results/${release?'offline-release':'offline'}-report.json`,JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

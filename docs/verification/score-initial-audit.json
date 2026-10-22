@@ -1,0 +1,82 @@
+{
+  "role": "independent composition/source engineering audit",
+  "scope": "Read-only production sources/assets; no full 36-file decode, no listening, no browser scheduling test, no commit.",
+  "verdict": "Recorded-source provenance is supported locally; do not accept final composition/engineering quality without fixing pitched-timpani selection and reviewing ending cadence defects.",
+  "verified": {
+    "sourceTree": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+    "sampleCount": 437,
+    "cachedSampleSha256Failures": 0,
+    "cachedLicenseSha256Matches": true,
+    "cachedLicenseStartsWith": "CC0 1.0 Universal",
+    "generatorSha256MatchesManifest": true,
+    "synthesis": "Orchestra.note reads recorded WAV audio and polyphase-resamples it; no oscillator instrumental replacement found. Cached repository provenance not independently re-fetched from network.",
+    "base": "Contains bass/cello roots, viola/violin chord voices, cue-specific lead melody and answering wind lines; not just an empty pad.",
+    "development": "Separate theme arrays and progressions exist; 48 bars are not literal repeated audio clips. Melody transformations and orchestration/dynamic changes exist, but repeated algorithmic rhythm/chord templates remain.",
+    "licensing": "Local CC0 license plus explicit original-arrangement dedication and no-endorsement notice present; no source-license blocker identified. Not a legal opinion."
+  },
+  "findings": [
+    {
+      "severity": "high",
+      "title": "Pitched timpani selects random drum number, ignoring composed pitch",
+      "locations": [
+        "scripts/generate-score.py:82-90",
+        "scripts/generate-score.py:194",
+        "scripts/generate-score.py:275-276"
+      ],
+      "evidence": "Timpani is included in per, so every drum number qualifies for opts and ratio is always 1. variant modulo opts selects among Timpani1 through Timpani5 as well as round robins. Composed harmonic/harmonic+4 MIDI pitches have no influence on sound. maximumNearestSampleShiftSemitones reports 0 for timpani, not actual tuning error.",
+      "impact": "Power-layer tuned percussion is not assured compatible with base harmony; tonal randomization is distinct from intentional round robin. Documentation disclosure does not repair it.",
+      "fix": "Measure/annotate stable fundamental for each numbered drum, choose nearest mapped pitch and velocity then round-robin only that drum, with bounded pitch shift if necessary. Record actual chosen source, measured/target pitch and cents deviation; exclude unpitched drums from pitched statistics rather than claiming zero error."
+    },
+    {
+      "severity": "high",
+      "title": "Ending cutoff removes both final theme bars; final audible melody does not resolve to tonic",
+      "locations": [
+        "scripts/generate-score.py:123-124",
+        "scripts/generate-score.py:145",
+        "scripts/generate-score.py:198-199",
+        "public/audio/score-manifest.json:cues.victory.events",
+        "public/audio/score-manifest.json:cues.defeat.events"
+      ],
+      "evidence": "Nonloop events at beat >=27 are discarded, including every eighth-bar attack (beat 28). Both written final theme [0] bars are therefore never sounded. Added tonic chord starts beat24, lasts about2 beats, overlapping the normal seventh-bar accompaniment. Last victory trumpet is E3 MIDI52 at beat26.50334, not D; last defeat cello E3 MIDI52 at beat25.98771 over D-minor material. Defeat seventh-bar melody C3/E3 overlaps D/F/A chord. There are zero attacks at beat>=28 in either manifest cue.",
+      "impact": "A fade/release and tonic chord do exist, but documentation's claim of a composed final tonic resolution is not supported by the final melody. Defeat can intentionally be unresolved; victory especially needs review.",
+      "fix": "Write explicit closing bars instead of generating then suppressing their events. Put the final lead D and coordinated D-major/minor voicing at beat24 or26, suppress conflicting normal bar material, then reserve release silence. Retain defeat dissonance only as an explicit artistic decision and describe it accurately."
+    },
+    {
+      "severity": "medium",
+      "title": "Fresh regeneration follows mutable master, not documented fixed tree",
+      "locations": [
+        "scripts/generate-score.py:38-47",
+        "scripts/generate-score.py:29-36",
+        "docs/score-production.md:fixed tree and regeneration sections"
+      ],
+      "evidence": "When pinned-tree.json is absent the generator queries master?recursive=1; the documented SHA is not a constant or required input. Existing cached WAVs/license are accepted by existence, not checked against expected hashes. Manifest records hashes after use, rather than enforcing published inputs.",
+      "impact": "Current local cached run is traceable, but clean-machine reproduction may silently choose a different upstream tree or altered cached samples.",
+      "fix": "Hard-pin tree/commit SHA in generator or checked-in lock file, fetch that SHA, validate cached/downloaded sample and license hashes against the lock, and pin tool versions for claimed byte-identical reproduction."
+    },
+    {
+      "severity": "medium",
+      "title": "Development and power counter-subject are more formulaic than prose suggests",
+      "locations": [
+        "scripts/generate-score.py:150-170",
+        "scripts/generate-score.py:183-195",
+        "docs/score-production.md:composition strategy"
+      ],
+      "evidence": "All cues use two-bar root blocks with root/third/fifth sustained voicings; melody durations depend only on note count. Sections0,1,5 mostly reuse same eight-bar lead pitches; section4 restores own melody after four shared-menu bars. Power in all regions is the same chord arpeggiation [root,fifth,third] at offsets0,1.5,3, not a separately written regional counter-melody.",
+      "impact": "This is real variation, not a copied short audio clip, but does not establish sophisticated harmonic development, voice-leading or many independent counter-subjects. Diatonic leads over changing triads may create accented nonchord tones; their quality cannot be decided from peak statistics.",
+      "fix": "Avoid calling chord arpeggiation an independently composed counter-subject; add cue-specific rhythmic subjects, explicit phrase cadences, voice-led inner parts, and inspect accented melody/chord clashes. Human listening required before any premium-quality claim."
+    },
+    {
+      "severity": "limitation",
+      "title": "Sample realism and space are bounded, not independently aurally verified",
+      "locations": [
+        "scripts/generate-score.py:70-108",
+        "scripts/generate-score.py:201-209",
+        "docs/score-production.md:last paragraph"
+      ],
+      "evidence": "Source stereo is collapsed to mono; fixed pan and shared 12 delayed stereo-swapped taps create space. Sustain extension repeats recording35%-82% after original tail with50ms crossfade, not a curated sustain loop. Plain resampling changes formants and duration; documented short-bow shifts reach7 semitones. Velocity thresholds and amplitude multipliers do not create true legato or continuously sampled dynamics.",
+      "impact": "No oscillator replacement or reverb-only composition found, but audible timbral/repetition artifacts remain plausible. No human audition was performed and no subjective sound-quality verdict is offered.",
+      "fix": "Audition exposed sustained winds/strings, high shifted shorts and repeated attacks; prefer mapped authentic-range samples, curated loop points, phrase envelopes and preserved sample stereo where useful."
+    }
+  ],
+  "nextAcceptance": "Main agent browser tests cover decoding/synchrony/scheduling separately. Human listening must specifically check victory/defeat cadence, pitched timpani against harmony, exposed sustained-note looping, high shorts and base-only musical balance. Objective RMS/peak/track-count statistics cannot substitute for that."
+}

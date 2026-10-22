@@ -1,16 +1,17 @@
 {
   "server": "Windows PowerShell 5.1 native TCP HTTP",
   "unpackedRelease": false,
-  "requests": 95,
+  "requests": 97,
   "errors": [],
   "failed": [],
   "external": [],
   "audio": {
     "contextState": "running",
-    "decodedBuffers": 10,
+    "decodedBuffers": 11,
     "decodedFiles": [
-      "music-battle.ogg",
-      "music-menu.ogg",
+      "music-meadow-base.ogg",
+      "music-meadow-motion.ogg",
+      "music-meadow-power.ogg",
       "sfx-capture.wav",
       "sfx-click.wav",
       "sfx-dispatch.wav",
@@ -24,11 +25,11 @@
     "failedFiles": [],
     "fallbackFiles": [],
     "activeVoices": 2,
-    "activeMusicSources": 1,
-    "currentTrack": "battle",
+    "activeMusicSources": 3,
+    "currentTrack": "meadow",
     "pendingTrack": null,
-    "currentTrackTime": 4.570666666666667,
-    "currentTrackDuration": 48,
+    "currentTrackTime": 4.22,
+    "currentTrackDuration": 106.66666666666667,
     "musicLoop": true,
     "crossfading": false,
     "limiterReduction": 0,
@@ -37,7 +38,42 @@
     "music": 0.55,
     "sfx": 0.65,
     "muted": false,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 0,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-meadow-base.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 0.5
+      },
+      {
+        "name": "motion",
+        "file": "music-meadow-motion.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 0.5
+      },
+      {
+        "name": "power",
+        "file": "music-meadow-power.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 0.5
+      }
+    ],
+    "scheduledTransitionTime": null,
+    "nextBarTime": 4.944444444444445,
+    "decodedBytes": 124026232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
   },
   "realMouseCapture": true,
   "passed": true

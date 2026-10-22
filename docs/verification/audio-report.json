@@ -1,110 +1,276 @@
 {
-  "music-battle.wav": {
-    "seconds": 48.0,
-    "channels": 2,
-    "sampleRate": 44100,
-    "peak": 0.707947,
-    "rms": 0.142149,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
+  "sfx": {
+    "sfx-hover.wav": {
+      "seconds": 0.13,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.422119,
+      "rms": 0.102083,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "93ef43e375383df85d0a90fdd5d56602a74f10a979cd8730a2d1da73c18699dd"
+    },
+    "sfx-click.wav": {
+      "seconds": 0.18,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.45282,
+      "rms": 0.094338,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "e701121d949c5690084c1fb366ffae6ed099a6124e10f8e56ec78873b01a5c6a"
+    },
+    "sfx-select.wav": {
+      "seconds": 0.46,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.5,
+      "rms": 0.174594,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "f440e371a5dea76ed45aa02ca86a1602cf360ab9c3ecb38af53bbe51477d01ee"
+    },
+    "sfx-dispatch.wav": {
+      "seconds": 0.86,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.5,
+      "rms": 0.153418,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "c16ad908120220d303cd6b433a2fa68c74ab4b68927a26205f66d45899fa3c09"
+    },
+    "sfx-march.wav": {
+      "seconds": 1.12,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.5,
+      "rms": 0.076053,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "47b214dc118d57646166e25d95387c541d7db1f9a380bf3021a7d3a02af56bd2"
+    },
+    "sfx-impact.wav": {
+      "seconds": 0.78,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.5,
+      "rms": 0.074638,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "ee92ff31e9e745f0bd014c9ed645df8a58b14b32fc36d7d448921dc1f0c512a8"
+    },
+    "sfx-capture.wav": {
+      "seconds": 1.06,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.5,
+      "rms": 0.111925,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "0bbd944dcfd722a7f23410c5ea3969eb684218d41a1036e34074b6ab998ce255"
+    },
+    "sfx-skill.wav": {
+      "seconds": 1.379977,
+      "channels": 1,
+      "sampleRate": 44100,
+      "peak": 0.5,
+      "rms": 0.119195,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0,
+      "sha256": "86fa723d431d0b6542119cdf936d56cf62db046e44878cf2074328c912d70658"
+    }
   },
-  "music-defeat.wav": {
-    "seconds": 16.0,
-    "channels": 2,
-    "sampleRate": 44100,
-    "peak": 0.707916,
-    "rms": 0.154172,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
+  "musicFiles": [
+    {
+      "file": "music-amber-base.mp3",
+      "bytes": 1987440,
+      "sha256": "b09d68504c998d95f0f7bbf68999969de8abd2fd202d62a8b4adbd8d8b682991"
+    },
+    {
+      "file": "music-amber-base.ogg",
+      "bytes": 1507909,
+      "sha256": "c6d67780eecd657887338ea513e5a1cdbe626f17278a5de88e5bc0326c398215"
+    },
+    {
+      "file": "music-amber-motion.mp3",
+      "bytes": 1987440,
+      "sha256": "9e7a89c64715ed75854031e36becb2c1ad8d6450ab015a70412206dad4970267"
+    },
+    {
+      "file": "music-amber-motion.ogg",
+      "bytes": 1616337,
+      "sha256": "859e7c7045b149d5dbac6da41885d4ada5cec07a1d612a96fd84895ea1f9f22b"
+    },
+    {
+      "file": "music-amber-power.mp3",
+      "bytes": 1987440,
+      "sha256": "2fd2e60a6eacfe5cd06c905b05888a824797ab2a2a0374e72d04a8386cc2f41c"
+    },
+    {
+      "file": "music-amber-power.ogg",
+      "bytes": 1159248,
+      "sha256": "9a517a849fab3ea93bfcfd27c791078f856acbd800a5d9f1072945571228d0fa"
+    },
+    {
+      "file": "music-defeat.mp3",
+      "bytes": 506819,
+      "sha256": "12dff9cf5c915d0b810843ce3861368daf96b4ae4990d9b188772067d1e525b6"
+    },
+    {
+      "file": "music-defeat.ogg",
+      "bytes": 320758,
+      "sha256": "0af42690ce5d9e9a12cfd5de00839c555f0e90ee696332a89128fe9a12e03f88"
+    },
+    {
+      "file": "music-finale-base.mp3",
+      "bytes": 1921088,
+      "sha256": "4cc73e113d51da1a7ca4f636bf415788d656d85db3cebd3d3284045d6cd8c6c2"
+    },
+    {
+      "file": "music-finale-base.ogg",
+      "bytes": 1437969,
+      "sha256": "6d4f666277b0664bb800f72f003a39c1f6124342bb72dfa379919efa17c97588"
+    },
+    {
+      "file": "music-finale-motion.mp3",
+      "bytes": 1921088,
+      "sha256": "f46d5e937cccd3858167f2441e5527ea57d29a695a0a65299237265fde663d74"
+    },
+    {
+      "file": "music-finale-motion.ogg",
+      "bytes": 1535999,
+      "sha256": "c7ba212bda4eca7041538c72b02d92fd9de8e2ce2097a63dd76978b7e1e8ddfb"
+    },
+    {
+      "file": "music-finale-power.mp3",
+      "bytes": 1921088,
+      "sha256": "d4b71ef6ec1b983d0595d6aa2e054e7b176b682337aee8d272675c19dfbd93f6"
+    },
+    {
+      "file": "music-finale-power.ogg",
+      "bytes": 1171950,
+      "sha256": "20ba02647d3404234e17d8c30294d60fad6977b75df830fae719f4746a372df9"
+    },
+    {
+      "file": "music-marsh-base.mp3",
+      "bytes": 2505709,
+      "sha256": "7d1c5fd3c6ef050e83d010165aea7bca1588d948a6644c19da0c60cd6f864853"
+    },
+    {
+      "file": "music-marsh-base.ogg",
+      "bytes": 1901984,
+      "sha256": "a444138a58b98f092491051983a422b0fb83da80c2da834ee9e3077cfdaf60ce"
+    },
+    {
+      "file": "music-marsh-motion.mp3",
+      "bytes": 2505709,
+      "sha256": "8f41cf9836e35a5d05ff99a68e08444d161db0b33c15b4090f498cabdfd242db"
+    },
+    {
+      "file": "music-marsh-motion.ogg",
+      "bytes": 1882248,
+      "sha256": "29d198533c286da4d50ec17b6f213684948805dac94afee470e751089fcdaa4f"
+    },
+    {
+      "file": "music-marsh-power.mp3",
+      "bytes": 2505709,
+      "sha256": "08766eccf246bb1d8fe52026d11bf551660d698afe0bd349d07ca37f6c952675"
+    },
+    {
+      "file": "music-marsh-power.ogg",
+      "bytes": 1429915,
+      "sha256": "11390969730436195349bee326d4db990d44ea857f2d09671fc08ca0bdb22843"
+    },
+    {
+      "file": "music-meadow-base.mp3",
+      "bytes": 2134770,
+      "sha256": "06360b2d87a47353e87c9e089c0ce80e2d620016f38a886370ec39cc4d9afaa0"
+    },
+    {
+      "file": "music-meadow-base.ogg",
+      "bytes": 1607508,
+      "sha256": "80f9cc154e9e79eaa5675886e061a17c5e7ae7f6416b8df41a1762a9db64aacf"
+    },
+    {
+      "file": "music-meadow-motion.mp3",
+      "bytes": 2134770,
+      "sha256": "a00de6471771915e93648a5066502f17a02fa0ec769a095e1a409c4c5ae68161"
+    },
+    {
+      "file": "music-meadow-motion.ogg",
+      "bytes": 1602102,
+      "sha256": "948c57dbd8f4f73a226410ca6b7715d617ceab0acf3eef29ba38758bad63a3b2"
+    },
+    {
+      "file": "music-meadow-power.mp3",
+      "bytes": 2134770,
+      "sha256": "09d44d2745813563310aa11628c19d593b4617cc6b972a20433fdc64ba9ea79a"
+    },
+    {
+      "file": "music-meadow-power.ogg",
+      "bytes": 1219272,
+      "sha256": "00125981dad4ecef1b77988ace474c6331ae62870e7b74209f5c2a262437b2a5"
+    },
+    {
+      "file": "music-menu.mp3",
+      "bytes": 2401219,
+      "sha256": "a44d21515896c6d56814b2b1dc5d9cfdf08094bd85d7162f744d977edd64b24d"
+    },
+    {
+      "file": "music-menu.ogg",
+      "bytes": 1868354,
+      "sha256": "a6ed5f03fa11e18be7550ec23b02aad6b7ed2ce2a8de93dfb57802e25827a235"
+    },
+    {
+      "file": "music-roots-base.mp3",
+      "bytes": 2305088,
+      "sha256": "5707d8cb4f4e892698e7c2fe7dfaa055fcf55ac7eff2a9a8bacbb94fdd819da3"
+    },
+    {
+      "file": "music-roots-base.ogg",
+      "bytes": 1591865,
+      "sha256": "1486e4005beacc3d8be75c32bc9080fb11e5c3a7b05e7b26cd5ceb14ccb1b9f2"
+    },
+    {
+      "file": "music-roots-motion.mp3",
+      "bytes": 2305088,
+      "sha256": "158eeea84a7b94836651a76dcad18b15ab2ef30d3f51140a5b1157a382c71c4c"
+    },
+    {
+      "file": "music-roots-motion.ogg",
+      "bytes": 1531568,
+      "sha256": "d366419803df1c4424822c177e8ba62c22c557de1fa71fb1c14b02eda2b7f780"
+    },
+    {
+      "file": "music-roots-power.mp3",
+      "bytes": 2305088,
+      "sha256": "3ad318f1163586740dc3d7ca95036f809d8c197fa75af791970669eb01d1fdca"
+    },
+    {
+      "file": "music-roots-power.ogg",
+      "bytes": 1329115,
+      "sha256": "6a134cf5e002305c4c2bdca6fb027c288344b4cd1615a829f6f19fca398ae458"
+    },
+    {
+      "file": "music-victory.mp3",
+      "bytes": 356876,
+      "sha256": "2a7d3bf01e5b478c4a6b664ccbfe5905370d6886b0308572f65a2f14f0b484cd"
+    },
+    {
+      "file": "music-victory.ogg",
+      "bytes": 241913,
+      "sha256": "854bd70253c5fa795d6ddf895c5a40d029d1041f082747a6b7ac46a3e2b2d585"
+    }
+  ],
+  "scope": "PCM checks for unchanged SFX; exact hash/inventory/production metadata binding for compressed score. Browser acceptance decodes the music.",
+  "productionChecks": {
+    "generatorHashMatches": true,
+    "allMusicHashesMatchManifest": true,
+    "sourceCommitAndTreePinned": true,
+    "fullSourceLicenseHashMatches": true,
+    "bothEndingsActuallyResolveToTonic": true
   },
-  "music-menu.wav": {
-    "seconds": 48.0,
-    "channels": 2,
-    "sampleRate": 44100,
-    "peak": 0.707947,
-    "rms": 0.13484,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "music-victory.wav": {
-    "seconds": 16.0,
-    "channels": 2,
-    "sampleRate": 44100,
-    "peak": 0.707947,
-    "rms": 0.160576,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-capture.wav": {
-    "seconds": 1.06,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.5,
-    "rms": 0.111925,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-click.wav": {
-    "seconds": 0.18,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.45282,
-    "rms": 0.094338,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-dispatch.wav": {
-    "seconds": 0.86,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.5,
-    "rms": 0.153418,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-hover.wav": {
-    "seconds": 0.13,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.422119,
-    "rms": 0.102083,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-impact.wav": {
-    "seconds": 0.78,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.5,
-    "rms": 0.074638,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-march.wav": {
-    "seconds": 1.12,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.5,
-    "rms": 0.076053,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-select.wav": {
-    "seconds": 0.46,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.5,
-    "rms": 0.174594,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  },
-  "sfx-skill.wav": {
-    "seconds": 1.38,
-    "channels": 1,
-    "sampleRate": 44100,
-    "peak": 0.5,
-    "rms": 0.119195,
-    "clippedSamples": 0,
-    "endpointDifference": 0.0
-  }
+  "musicBytes": 60783213,
+  "passed": true
 }

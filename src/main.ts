@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { BattleScene } from './game/BattleScene';
 import { AudioSystem } from './audio/AudioSystem';
+import { MusicDirector } from './audio/MusicDirector';
 import { LEVELS, BIOMES } from './data/levels';
 import { ACHIEVEMENTS, SaveSystem } from './storage/SaveSystem';
 import { rateVictory } from './core/Simulation';
@@ -26,6 +27,7 @@ const LEAF_ICON = `<span class="leaf-mark" aria-hidden="true"><svg viewBox="0 0 
 class Application {
   save = new SaveSystem();
   audio = new AudioSystem(this.save.data.settings);
+  music = new MusicDirector(this.audio);
   scene = new BattleScene();
   screen: 'menu' | 'campaign' | 'battle' | 'result' = 'menu';
   race: RaceId = 'agile';
@@ -57,7 +59,10 @@ class Application {
     resize();
     window.addEventListener('resize', resize);
 
-    this.scene.onTick = () => this.updateHUD();
+    this.scene.onTick = () => {
+      if (this.screen === 'battle' && this.scene.sim) this.music.update(this.scene.sim.world, this.scene.paused);
+      this.updateHUD();
+    };
     this.scene.onAction = (n: string) => this.feedback(n);
     this.scene.onEnd = (s: string) => this.end(s);
 
@@ -74,7 +79,7 @@ class Application {
     });
 
     document.addEventListener('pointerdown', () => {
-      void this.audio.unlock().then(() => this.audio.music(this.screen === 'battle' ? 'battle' : 'menu'));
+      void this.audio.unlock();
     }, { once: true });
 
     document.addEventListener('keydown', (e) => {
@@ -125,7 +130,7 @@ class Application {
     this.screen = 'menu';
     this.modal = '';
     if (this.scene.ready) this.scene.showMenu();
-    this.audio.music('menu');
+    this.music.menu();
     const done = Object.keys(this.save.data.results.agile).length;
     const totalStars = this.save.stars('agile');
     this.ui.innerHTML = `<section class="menu-screen">
@@ -161,7 +166,7 @@ class Application {
     this.screen = 'campaign';
     this.modal = '';
     if (this.scene.ready) this.scene.showMenu();
-    this.audio.music('menu');
+    this.music.menu();
     const unlocked = this.save.unlocked(this.race);
     this.ui.innerHTML = `<section class="campaign-screen">
       ${this.header('十三巢远征图 · 四幕纪事')}
@@ -212,7 +217,7 @@ class Application {
     this.modal = '';
     this.scene.reducedMotion = this.save.data.settings.reducedMotion;
     this.scene.start(LEVELS[index], this.race, this.save.data.settings.difficulty);
-    this.audio.music('battle');
+    this.music.startLevel(LEVELS[index]);
     this.renderBattle();
     this.hideToast();
   }
@@ -296,7 +301,7 @@ class Application {
     const win = status === 'won';
     const rating = win ? rateVictory(w.elapsed, w.stats.lost, l.par) : 0;
     const earned = win ? this.save.record(this.race, l.id, { stars: rating, time: w.elapsed, lost: w.stats.lost }, w.stats) : [];
-    this.audio.music(win ? 'victory' : 'defeat');
+    this.music.result(win);
     this.ui.innerHTML = `<section class="result-screen"><div class="result-card ${win ? 'won' : 'lost'}">
       <div class="eyebrow">${win ? '守望记录 / 巢灯重燃' : '行旅暂歇 / 归途仍在'}</div>
       <div class="result-sigil">${win ? `<img src="${base}art/emblem.svg" alt="种核与守望灯环">` : '❧'}</div>
@@ -333,6 +338,7 @@ class Application {
     this.wasPaused = false;
     this.scene.cancelGesture();
     this.scene.paused = true;
+    this.music.setPaused(true);
     this.modal = 'pause';
     this.overlay(`<span class="eyebrow">雨声暂歇</span><h2>林间小憩</h2><p>虫群正在等候你的指令。</p><div class="modal-stack"><button class="button primary" data-action="close">继续战斗 →</button><button class="button secondary" data-action="retry">重新挑战</button><button class="button secondary" data-action="campaign">返回战役地图</button></div><span class="hint">P / Esc 返回战场</span>`);
   }
@@ -351,6 +357,7 @@ class Application {
     this.wasPaused = this.scene.paused;
     this.scene.cancelGesture();
     this.scene.paused = true;
+    this.music.setPaused(true);
     this.modal = name;
   }
 
@@ -358,6 +365,7 @@ class Application {
     document.getElementById('modal')?.remove();
     this.modal = '';
     if (this.screen === 'battle') this.scene.paused = this.wasPaused;
+    this.music.setPaused(this.screen === 'battle' && this.scene.paused);
   }
 
   private settings() {
@@ -394,7 +402,7 @@ class Application {
 
   private credits() {
     this.openModal('credits');
-    this.overlay(`<span class="eyebrow">研究参考与原创边界</span><h2>以热爱，重建一个小世界</h2><p>《虫界战争 · 翡翠王冠》是以 Rudy Sudarto / Artlogic 的 Bug War 2 为研究参考的独立、非官方重制。未使用原版SWF或受保护的画面与声音素材。</p><div class="credits-columns"><article><h3>玩法研究</h3><p>Kongregate / Newgrounds 作者说明<br>MaxGames 操作手册<br>Anne in Red（2010）同期评测</p></article><article><h3>原创制作</h3><p>场景、虫巢、虫兵：自制SVG<br>原创配乐与音效：WAV母带 + 网页压缩版<br>Phaser 3 · TypeScript · Web Audio</p></article></div><p class="hint">13张关卡地图、战斗数值、AI、魔法具体效果、评分阈值为原创重建。原版细节仍有未确认部分，完整证据与差异见项目 docs/original-game-analysis.md。非官方关联、无原作者背书。</p><button class="button primary" data-action="close">返回</button>`, true);
+    this.overlay(`<span class="eyebrow">研究参考与原创边界</span><h2>以热爱，重建一个小世界</h2><p>《虫界战争 · 翡翠王冠》是以 Rudy Sudarto / Artlogic 的 Bug War 2 为研究参考的独立、非官方重制。未使用原版SWF或受保护的画面与声音素材。</p><div class="credits-columns"><article><h3>玩法研究</h3><p>Kongregate / Newgrounds 作者说明<br>MaxGames 操作手册<br>Anne in Red（2010）同期评测</p></article><article><h3>原创制作</h3><p>场景、虫巢、虫兵：自制SVG<br>真实管弦采样 · 原创编曲 · 自适应分层配乐<br>Phaser 3 · TypeScript · Web Audio</p></article></div><p class="hint">13张关卡地图、战斗数值、AI、魔法具体效果、评分阈值为原创重建。原版细节仍有未确认部分，完整证据与差异见项目 docs/original-game-analysis.md。非官方关联、无原作者背书。</p><button class="button primary" data-action="close">返回</button>`, true);
   }
 
   private action(action: string, value?: string) {

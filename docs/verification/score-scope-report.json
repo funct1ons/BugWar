@@ -1,0 +1,234 @@
+{
+  "testedAt": "2026-10-22T08:23:23.774042+00:00",
+  "baselineCommit": "346909e6700734ccc4f225eb7ff23fc3416457d8",
+  "scope": "This score-only change freezes game/AI/maps/storage/input/visuals and all eight SFX; only main music hooks and credits may change.",
+  "frozenPathspecs": [
+    "src/core",
+    "src/storage",
+    "src/data",
+    "src/game",
+    "src/ui",
+    "src/style.css",
+    "public/art",
+    "public/audio/sfx-*.wav"
+  ],
+  "changedFrozenPaths": [],
+  "baselineSHA256Files": [
+    {
+      "file": "src/core/Simulation.ts",
+      "sha256": "3e13d6ab72df2de292dde60a39a5201f0a53a73b43f366d538f59a7237140b18"
+    },
+    {
+      "file": "src/core/AI.ts",
+      "sha256": "8a811f2f132f5ac7dd318eb970fc25cbf55bc94d1b4ed75d8d933c762e93040f"
+    },
+    {
+      "file": "src/core/types.ts",
+      "sha256": "23116ac38c8bdbe2235f48d55ab422a9423e30767ff134274c26cb51a8d88446"
+    },
+    {
+      "file": "src/storage/SaveSystem.ts",
+      "sha256": "d213278ee3b37bf55032463af6e626c15ea2774c2690f1856ed7d0aa68376290"
+    },
+    {
+      "file": "src/data/levels.ts",
+      "sha256": "2258b97ec8839497808bef27d5ee6cf7b301ac39f9456b85ca08ff1b0051d20b"
+    },
+    {
+      "file": "src/data/lore.ts",
+      "sha256": "8e3755df23615b66b60f9dbbc28162732df6a56abb35db34a0ac116a42077fde"
+    },
+    {
+      "file": "src/game/BattleScene.ts",
+      "sha256": "d8ae1651a21dc906c35dbadf0f9e8b4dcb35eee3c3fc30b1c8e4b4775933754b"
+    },
+    {
+      "file": "src/style.css",
+      "sha256": "54020285606bf65d4d04f3d212dd1a6118425474f436637b243d865cdafd7631"
+    },
+    {
+      "file": "public/audio/sfx-capture.wav",
+      "sha256": "0bbd944dcfd722a7f23410c5ea3969eb684218d41a1036e34074b6ab998ce255"
+    },
+    {
+      "file": "public/audio/sfx-click.wav",
+      "sha256": "e701121d949c5690084c1fb366ffae6ed099a6124e10f8e56ec78873b01a5c6a"
+    },
+    {
+      "file": "public/audio/sfx-dispatch.wav",
+      "sha256": "c16ad908120220d303cd6b433a2fa68c74ab4b68927a26205f66d45899fa3c09"
+    },
+    {
+      "file": "public/audio/sfx-hover.wav",
+      "sha256": "93ef43e375383df85d0a90fdd5d56602a74f10a979cd8730a2d1da73c18699dd"
+    },
+    {
+      "file": "public/audio/sfx-impact.wav",
+      "sha256": "ee92ff31e9e745f0bd014c9ed645df8a58b14b32fc36d7d448921dc1f0c512a8"
+    },
+    {
+      "file": "public/audio/sfx-march.wav",
+      "sha256": "47b214dc118d57646166e25d95387c541d7db1f9a380bf3021a7d3a02af56bd2"
+    },
+    {
+      "file": "public/audio/sfx-select.wav",
+      "sha256": "f440e371a5dea76ed45aa02ca86a1602cf360ab9c3ecb38af53bbe51477d01ee"
+    },
+    {
+      "file": "public/audio/sfx-skill.wav",
+      "sha256": "86fa723d431d0b6542119cdf936d56cf62db046e44878cf2074328c912d70658"
+    }
+  ],
+  "allBaselineSHA256Match": true,
+  "artSVGCount": 36,
+  "artSVGs": [
+    {
+      "file": "public/art/background-amber.svg",
+      "sha256": "4d21ba585ba528acac5362b77d355626890dd992bd7315ea079b73d0e80f66c3"
+    },
+    {
+      "file": "public/art/background-marsh.svg",
+      "sha256": "329b96b2213141d27bc64eb4f96b5e6d7162a19d696e2882eebd535b7f064b1d"
+    },
+    {
+      "file": "public/art/background-meadow.svg",
+      "sha256": "32630ac2e7c4fd7453d52d0dbf08bc6a8cc30ce399519bf56d612d0e7308e226"
+    },
+    {
+      "file": "public/art/background-roots.svg",
+      "sha256": "782ffdcf7b14670e9cda65b690c4be20a62b390f75c0dd43119dceda03ef4037"
+    },
+    {
+      "file": "public/art/bug-agile-0.svg",
+      "sha256": "c91d873fb05866e151805fba781f96a5866c0cd45701ccada725958c94abf9d7"
+    },
+    {
+      "file": "public/art/bug-agile-1.svg",
+      "sha256": "d10165558dfa0c4fe07fbf68c1180d060de2662828b015e8b41915e1aad806ae"
+    },
+    {
+      "file": "public/art/bug-agile-2.svg",
+      "sha256": "e44684300f4f347974085d5ca6c56e2e88e8bdd3f011196a73959993a4a96ae4"
+    },
+    {
+      "file": "public/art/bug-agile-3.svg",
+      "sha256": "e95ed57ebd4d31ab608dd98e119fb224bb4a0917164f5d9b5d2b930794406231"
+    },
+    {
+      "file": "public/art/bug-agile-4.svg",
+      "sha256": "0a20adcd0b4192c2168b3f6afc826868453444226e2809f6855036d8d12d808f"
+    },
+    {
+      "file": "public/art/bug-agile.svg",
+      "sha256": "d10165558dfa0c4fe07fbf68c1180d060de2662828b015e8b41915e1aad806ae"
+    },
+    {
+      "file": "public/art/bug-fast-0.svg",
+      "sha256": "941aa50edd28bc347ec2cba064b1d30ad4336d75b4261ae23a8a04c03633e2c9"
+    },
+    {
+      "file": "public/art/bug-fast-1.svg",
+      "sha256": "fc198cac2e9f964e793b1cecd189f05f94f0137e8030fc615c8d584c64911800"
+    },
+    {
+      "file": "public/art/bug-fast-2.svg",
+      "sha256": "ab8bb0b36657e98eef3f02afb15ad777147a40aa98c933ca05c3e82f4ce64f4c"
+    },
+    {
+      "file": "public/art/bug-fast-3.svg",
+      "sha256": "7bfad580d8faf84ef1bf1fc9abbdb3ffafc4f2e7e69023ef6c39b0789855611f"
+    },
+    {
+      "file": "public/art/bug-fast-4.svg",
+      "sha256": "c73f45c01f50286baff111d589115d3f5e3f108d3ed98d07d1352049369cc377"
+    },
+    {
+      "file": "public/art/bug-fast.svg",
+      "sha256": "fc198cac2e9f964e793b1cecd189f05f94f0137e8030fc615c8d584c64911800"
+    },
+    {
+      "file": "public/art/bug-strong-0.svg",
+      "sha256": "4563adb2cd3cadb9c692ec29086e7e8780c37a1fae5abb338a8b465c2690dbea"
+    },
+    {
+      "file": "public/art/bug-strong-1.svg",
+      "sha256": "7bda83834895c11c8d579450016da7f3a7a79b1bb4b7d136509041bffb8bb486"
+    },
+    {
+      "file": "public/art/bug-strong-2.svg",
+      "sha256": "1d17304fc4af0e5a597e1f981db1b9e0c5fb9a3fac6a25e0ed0ada3d57bd8fbd"
+    },
+    {
+      "file": "public/art/bug-strong-3.svg",
+      "sha256": "ee67138b36c67e99686d86ec708d356d3d851fdb9efc93aa94e364e9d9553e14"
+    },
+    {
+      "file": "public/art/bug-strong-4.svg",
+      "sha256": "ca39e4d580f1094665ced9ae25b2aa97cb77ffee75957de1f54481ad30030b69"
+    },
+    {
+      "file": "public/art/bug-strong.svg",
+      "sha256": "7bda83834895c11c8d579450016da7f3a7a79b1bb4b7d136509041bffb8bb486"
+    },
+    {
+      "file": "public/art/cannon-0.svg",
+      "sha256": "712b40eb549c7ec27dcdbef9370725ce6fb1a88a615fc8527d8a815a4375048f"
+    },
+    {
+      "file": "public/art/cannon-1.svg",
+      "sha256": "8d57245a0c531b2c00582e8c8fa6e38b171703b4c11c423b8f7dc11149b034d0"
+    },
+    {
+      "file": "public/art/cannon-2.svg",
+      "sha256": "99d34f3628357ad297748cb0411b1dd162e5927d2b19440727d7d66dc39825a8"
+    },
+    {
+      "file": "public/art/cannon-3.svg",
+      "sha256": "8383de67ee87a1387762bf0c3c51f3f7cd9a176f98c48d5ae1920932f1c8d846"
+    },
+    {
+      "file": "public/art/cannon-4.svg",
+      "sha256": "055e6c0a8ada0b81bd6eb9e429de0186b072afd8cb0daf87c3075d548fb4c687"
+    },
+    {
+      "file": "public/art/cannon.svg",
+      "sha256": "712b40eb549c7ec27dcdbef9370725ce6fb1a88a615fc8527d8a815a4375048f"
+    },
+    {
+      "file": "public/art/cover.svg",
+      "sha256": "6abc652dedcea92021a66fa02f1fb1728ac30647a216eec9ec49f988d8e7942a"
+    },
+    {
+      "file": "public/art/emblem.svg",
+      "sha256": "39482ea1dd3040ae48d6c9aeaa1c8192e9bab460946a6266b03104919b3b77be"
+    },
+    {
+      "file": "public/art/nest-0.svg",
+      "sha256": "2f3c2fb45220be402dfea277ba21ab617a8ce7faabcf0481cf4c46e47b295e6c"
+    },
+    {
+      "file": "public/art/nest-1.svg",
+      "sha256": "fd274ca331a79f40b02905d9449ce0bf7a625f150758a2dd93a64c0b973bbd43"
+    },
+    {
+      "file": "public/art/nest-2.svg",
+      "sha256": "60d33c878941d5d0e1db5390009477976d9a2562e810b5e9a74c037ed623b544"
+    },
+    {
+      "file": "public/art/nest-3.svg",
+      "sha256": "060d5dbc8c1c1a529526d8edaac32ef7e5a1d12382b6eeb589d8926b394b8e2f"
+    },
+    {
+      "file": "public/art/nest-4.svg",
+      "sha256": "79ac9e3840440cfe249414bbdd75be90a117767c002982172eb07443cfe41dee"
+    },
+    {
+      "file": "public/art/nest.svg",
+      "sha256": "2f3c2fb45220be402dfea277ba21ab617a8ce7faabcf0481cf4c46e47b295e6c"
+    }
+  ],
+  "gitDiffToBaselineHasNoArtChanges": true,
+  "saveKey": "bugwar-verdant-v1",
+  "saveVersion": 1,
+  "passed": true
+}

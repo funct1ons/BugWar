@@ -1,91 +1,89 @@
-# 日光花园 · 全游戏改版验收
+# 巢灯交响 · 全游戏配乐验收
 
-执行日期：2026-10-22（本机时间）。**本轮仅本地提交，未推送、未发布到Pages。** 以下是本地新版的实际自动化验收与主代理截图复核，不是人工连续试玩或主观听音报告。
+执行日期：2026-10-22（本机时间）。本轮在 `346909e` 的日光花园版本上替换全游戏配乐。**未推送、未部署 Pages；以下均为本地新版证据。** 技术验收通过，不代表人工听感或专业艺术验收。
 
-## 环境与复现
+## 1. 交付范围与协作
 
-Windows / PowerShell 5.1、Node 24.14.1、系统Edge 155.0.4283.62；默认自动播放策略，无绕过参数。
+- 3个实施子代理分别负责音乐制作、Web Audio引擎、战况音乐导演；另2个子代理独立审查代码与音乐制作。主代理集成、返修并运行最终验收。
+- 菜单、草甸、幽根、湿地、琥珀、最终关、胜利、失败共 **8套主题**；五套战斗配乐各有基础／推进／高潮三层。18份逻辑音频各提供 OGG 和 MP3，**36份共60,783,213 bytes（约57.97 MiB）**，不是只替换一段样板。
+- 使用 VSCO 2 Community Edition 的真实录制管弦采样，原创确定性程序编曲；不是简易振荡器音色，也不冒充新录真人交响乐团。437份源录音仅用于开发，不随包分发；固定版本、逐份SHA及完整CC0许可随包可查。
+- 音乐导演按13关地域／最终关及战况请求三档强度，暂停降低配器，结算优先；引擎在同一音频时钟同步三层、小节边界混合，避免不同调性直接重叠。旧设置与存档兼容。
+- [score-scope-report.json](verification/score-scope-report.json)：玩法、AI、地图、剧情、输入、存储、UI样式、36张SVG及八个WAV音效与本轮基线逐项相同。存档仍为 `bugwar-verdant-v1`／version 1。仅 `main.ts` 的音乐挂接及制作说明随之调整。
+
+## 2. 独立审查发现与返修
+
+初轮并非直接放行。审查发现以下3项制作阻断，全部修复后重新渲染全量资源：
+
+1. **定音鼓曾按无音高打击随机跨鼓选样。** 改为测定五鼓20份力度／RR录音的主模态，先选最近鼓再选力度／变体，按实际参考频率移调。231份渲染变体最大主模态误差约2.64 cents；这不是人耳音准认证。
+2. **结算最后主音曾被截止条件丢弃。** 重写第7小节终止，两曲末旋律真实落在D3，第8小节只留释放；单测核实际音符事件，浏览器等待两曲完整自然结束。
+3. **冷下载跟随master、缓存仅检查存在。** 固定commit及真实tree，逐份验证Git blob与SHA-256；实际损坏一次性缓存后能重下正确数据，模拟错误下载被拒绝。
+
+引擎另补资源网络截止、陈旧加载取消、缓存释放和真实增益诊断；目标值不再冒充已生效值。见 [初轮审查](verification/score-initial-audit.json)、[修复闭环](verification/score-review-resolution.json)。初轮报告是历史发现，不代表最终资源仍有这些阻断。
+
+## 3. 构建、逻辑和制作验证
+
+Windows／PowerShell 5.1、Node 24.14.1、Python 3.12.10、系统Edge 155.0.4283.62；默认自动播放策略，无绕过参数。
+
+- TypeScript严格检查、Vite生产构建通过。**10文件、266项单测通过、0失败、1项跳过**。跳过项仅为按需 `CAMPAIGN_SCAN` 初兵搜索，不是关卡矩阵。音频资产51项、音乐契约／引擎12项、导演9项；其余含既有玩法、存档和105项美术回归。见 [unit-summary.json](verification/unit-summary.json)。
+- `test:art` 真实Edge解码36张SVG；18张虫兵表四帧非空、透明边界正确、默认别名匹配。见 [art-decode-report.txt](verification/art-decode-report.txt)。本轮未重新制作美术。
+- [audio-report.json](verification/audio-report.json) 核八SFX的PCM质量，以及36音乐的库存、实际SHA、帧长契约、来源／完整许可与生成器SHA绑定；它不冒充压缩音乐的独立解码器。
+- [score-production-report.json](verification/score-production-report.json)：36音乐全部经FFmpeg精确帧长检查；两格式全编4×峰值最大约 **−1.8844 dBFS**，无削波。循环边界差均低于各自相邻样本差分第99百分位，但这不等于主观无缝。
+- 独立目录完整再生：**18份WAV母带和36份解码PCM一致，18份MP3容器逐字节一致**；OGG随机流序号及相应页面CRC不同，逐页证明仅这两项不同。不能宣称36个容器SHA均可稳定再现。再生与复核脚本已保留。
+- 运行依赖审计 **0漏洞**；开发依赖仍有既存的2项moderate、1项critical告警，修复涉及Vitest跨主版本升级，本轮未静默升级。见两份 dependency-audit 报告。Vite的Phaser大包提示仍保留。
+
+历史 [campaign-v2-report.json](verification/campaign-v2-report.json) 与 [input-scope-report.json](verification/input-scope-report.json) 保留作此前平衡／美术证据，不把它们冒称本轮新跑的独立195场对战。当前相关单测已重跑，玩法文件完全冻结。
+
+## 4. 真实浏览器与自然通关
+
+[score-browser-report.json](verification/score-browser-report.json) 使用真实Edge，正式修正版资源全部通过：
+
+- 两种编码共36文件逐份解码，16组cue／codec全编检查；立体声、精确长度、同cue层间对齐、动态变化与无削波。
+- 经真实应用启动全部13关，地域／最终关映射正确；三源共享启动时刻，稳定后缓存低于192 MiB软预算。转场瞬态可超预算，诊断如实报告；该预算不是进程总内存上限。
+- 与live世界脱离的600敌军多阵营来袭fixture使强度升至2，恢复后降至0；这些是**合成战况**，不是自然战斗或人工试玩证据。
+- 核实际层增益、暂停约0.32的duck、取消待切换、强度变化不重启源、胜利抢占；胜败完整播完后活动源归零。强制不可解码OGG后三层MP3同步回退。
+
+[browser-report.json](verification/browser-report.json) 通用交互通过：真实鼠标自然占领、框选／多选／比例、技能、暂停／Esc、取消拖拽、重试／下一关、设置与存档重载、存储拒绝降级。实际混音播放RMS约.14262，静音RMS／峰值为0；恢复并叠加7种音效后峰值约.73616。合成压力场景49批／1000精灵短时采样约75.81 FPS，非低端设备或长期帧率保证。
+
+[visual-report.json](verification/visual-report.json) **122/122检查通过、25次截图**，覆盖1920×1080、1366×768、1280×720、全部弹窗及13关。图形未改，确认新音乐接入没有破坏UI。快速fixture换关产生15次过时音乐请求取消：观察原生AbortSignal触发当刻的目标曲，仅经证明已经过时的请求单列；当前所需曲、未证实取消、其它网络／HTTP错误仍会使测试失败。真正网络失败、页面／控制台异常、HTTP错误、站外请求均0。
+
+真实时间、真实UI自然通关，不写本关世界状态：
+
+- [关2低频报告](verification/onboarding-browser-report.json)：normal／Agile；等待12秒、每4秒最多一个单巢命令、第3时隙跳过、不用技能或多选；**76.25模拟秒、15令、失守2次，自然获胜**。仅预置关1完成以解锁关2。
+- [首关报告](verification/playthrough-report.json)：可见状态UI驾驶器，**40.60模拟秒、6令、失守0、不施法，自然获胜**。不是新手人类胜率。
+
+主代理复核了本次制作说明、关2战斗与自然胜利截图；既有美术哈希全部未变。精选：[战斗](screenshots/battle.png) · [自然胜利](screenshots/victory.png) · [制作说明](screenshots/credits.png)。
+
+## 5. 离线包、普通URL与发布边界
+
+- [offline-report.json](verification/offline-report.json)：从原生 `Start-Game.ps1` PowerShell TCP HTTP服务加载，97响应、真实鼠标自然占领；八SFX和草甸三层实际解码，同钟、无错误、无缺失、无站外请求。
+- `release/BugWar-VerdantCrown-Windows.zip` 重新打包。解压至含中文及空格的路径，从**包内**启动器运行同一浏览器验收，见 [offline-release-report.json](verification/offline-release-report.json)。加入最终文档证据再次压包后，游戏与启动器逐文件SHA必须与实测包一致；清单见 [release-payload-report.json](verification/release-payload-report.json)。
+- 双击 `Start-Game.cmd`，不要直接打开file://。运行无需Node、Python或联网；首次点击后有声。包中包含两种音乐格式与完整CC0许可，不含原始采样库、母带、开发工具或第三方研究截图。
+- [production-smoke-report.json](verification/production-smoke-report.json) 为**本地HTTP普通生产URL**：无测试接口，真实鼠标自然占领、四幕／锁关、暂停恢复及12个流程音频文件服务通过。页面实际加载的JS与本地构建同SHA，见 [build-verification.json](verification/build-verification.json)。不是正式站验收。
+- **本轮未push、未发布。** 公开Pages仍为此前 `67b3a91`。保留的 [online-report.json](verification/online-report.json) 仅为旧站历史证据，不证明当前配乐已上线。
+
+## 复现
 
 ```powershell
 npm.cmd test -- --reporter=default --reporter=json --outputFile.json=test-results/unit-report.json
 npm.cmd run build
-npm.cmd run test:art
-npm.cmd run test:visual
+python scripts/check-audio.py
+npm.cmd run test:score
 npm.cmd run test:browser
+npm.cmd run test:visual
+npm.cmd run test:art
+npm.cmd run test:offline
 npm.cmd run test:onboarding
 npm.cmd run test:playthrough
-python scripts/check-audio.py
-npm.cmd run test:offline
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/package-release.ps1
-# 实际解压ZIP后，将OFFLINE_ROOT设为解压根目录，再运行test:offline。
-# 普通URL冒烟：先启动本地生产服务，再将GAME_URL设为该地址：
-# $env:PORT='4182'; npm.cmd run serve
-# 另一个终端：$env:GAME_URL='http://127.0.0.1:4182/'; npm.cmd run test:online
+# 解压ZIP后：$env:OFFLINE_ROOT='C:\你的中文 空格路径'; npm.cmd run test:offline
+# 本地生产服务另起终端：$env:PORT='4182'; npm.cmd run serve
+# $env:GAME_URL='http://127.0.0.1:4182/'; npm.cmd run test:online
 ```
 
-正式机器证据在 [verification/](verification/)，精选成品截图在 [screenshots/](screenshots/)。测试会重新生成gitignored的 `test-results/`；本次交付前已删除临时运行目录及设计预览。仅 `?test=1` 提供开发测试接口，普通网址不提供。
+制作再生见 [score-production.md](score-production.md)。正式机器证据保留在 `docs/verification/`，临时采样／工具／母带／测试工作目录交付前清理。
 
-## 1. 全游戏视觉落地与范围
+## 未覆盖的边界
 
-- 用户确认的第二次封面重绘已提升为正式 `public/art/cover.svg`，菜单直接使用它，不再保留人形骑士版或暗色封面。
-- 菜单、四幕纪事、战役图、设置/帮助/成就/制作说明、胜败结算、战场HUD、选区、路线与反馈统一为暖白、浅绿、天蓝的日光花园。
-- 四幕全部重绘；**36张正式SVG**：1封面、4背景、10阵营建筑、15阵营虫兵表、5兼容别名、1徽记。每张虫兵表含四个24×32帧。
-- 己方湖蓝，敌方珊瑚红/紫/金，中立灰绿；大屋顶/甲壳使用阵营色，木石和虫腿保留材料本色，不再全图染色。数字牌另有形状与己方/敌方/中立文字，不能只靠颜色判断。
-- 两个正式生成器再生前后36文件逐字节一致；封面SHA-256为 `6abc652dedcea92021a66fa02f1fb1728ac30647a216eec9ec49f988d8e7942a`。无临时目录、第三方图片或网络资源依赖。程序原创矢量，不冒充人类手绘或新增装备系统。
-- [input-scope-report.json](verification/input-scope-report.json) 确认核心、AI、存储、音频、剧情数据及音频文件与基线无修改；七个输入/派兵方法去空白注释后token完全一致。关卡文件唯一变化是首关提示「点击绿巢」改为「点击蓝巢」，布局、初兵与规则未变。存档键及version1不变。
+**没有人工耳听，也未获得模型音听证据。** 真实录制样本与客观技术指标不能保证音乐会级演奏、自然连奏或长时间不疲劳；免费社区库、重采样与程序编曲仍可能有机械感，需要你实际试听评价。不声称最终艺术验收通过。
 
-## 2. 构建、逻辑与资产
-
-- TypeScript严格检查和Vite生产构建通过。**7文件、195项单测通过、0失败、1项按需扫描跳过**，其中105项为美术回归。唯一跳过项是额外初兵搜索 `CAMPAIGN_SCAN`，不是跳过关卡矩阵。见 [unit-summary.json](verification/unit-summary.json)、[unit-report.json](verification/unit-report.json)。
-- 独立于上述单测计数，13关×3难度×5策略的**195场逻辑对战**全部重跑，结果逐项等于此前 [campaign-v2-report.json](verification/campaign-v2-report.json)。easy/normal每关仍至少有一种Agile策略获胜；13个策略/难度组合在600模拟秒仍未终局，不保证所有打法或hard获胜。
-- 前3关18组低频策略仍18/18胜，第二关6/6；这不是18名人类测试者。平衡规则没有在本次美术改版中调整，历史变化与边界见 [balance-v2.md](balance-v2.md)。
-- `test:art` 用真实Edge解码全部36SVG：尺寸正确，18张虫兵表的四帧均非空、边缘透明，默认别名与对应阵营图像像素一致。XML、内链、封面哈希及阵营有效色面另有单测。
-- 本地构建文件及SHA-256见 [build-verification.json](verification/build-verification.json)；Vite保留Phaser大包提示，未将其伪称为小体积构建。
-
-## 3. 实际浏览器、视觉与自然通关
-
-[visual-report.json](verification/visual-report.json) **122/122检查通过**，覆盖1920×1080、1366×768、1280×720及25次截图：
-
-- 正式封面请求和可见绘制、菜单/四幕/13关地图、全部弹窗、单帧虫族图标裁剪、胜败面板。
-- 逐关检查13个战场：标题/分数不重叠，提示/准备期不遮建筑标签，数字牌在HUD之上。最低数字下沿776，HUD上沿792。
-- 多阵营三种虫族的实际fleet与可见sprite纹理逐一对应；捕获后建筑纹理、阵营形状、标签同步；极端兵数仍在数字牌内。
-- 多阵营展示、连续捕获、极端数字、通用终局与压力场景使用明确标注的**合成fixture**；展示图暂停并将行军放到路径中点，不是实际行军时间证据。
-- page/console异常、HTTP失败、网络失败、运行时站外请求均0。
-
-[browser-report.json](verification/browser-report.json) 通用交互全部通过：真实鼠标派兵自然占领、框选/多选/比例、A施法、P暂停、Esc先取消再暂停、暂停取消拖拽、重试/下一关、旧成绩与设置重载、localStorage拒绝降级、失败后改悠闲重试。合成压力场景49批、1000个昆虫精灵，本次短时采样 **77.56 FPS**；这是本机无头Edge采样，不是低端设备或长期帧率保证，表现上限不截断逻辑兵力。
-
-另行验证真实时间、真实UI的自然胜利，均不写世界状态：
-
-- [关2低频报告](verification/onboarding-browser-report.json)：normal、Agile；等待12秒，每4秒最多一个单巢命令，第3时隙跳过，不用技能或多选。**80.15模拟秒获胜，16令，失守2次**；保存后关3解锁。仅预置关1已完成以解锁本关，不注入本关资源、时间或胜负。
-- [首关报告](verification/playthrough-report.json)：较强的可见状态UI驾驶器，**40.30模拟秒获胜，6令，失守0，不施法**。它证明自然胜利/保存链路，不代替新手平衡证据。
-- 真实输入时序可造成轨迹小幅变化；上述结果不是人类胜率。
-
-主代理直接读取并复核了菜单、关卡图、帮助、纪事、四幕战场、多阵营、1280小屏及自然胜利截图，不只依赖机器断言。精选：[菜单](screenshots/menu.png) · [纪事](screenshots/lore.png) · [战役](screenshots/campaign.png) · [自然关2战斗](screenshots/battle.png) · [自然胜利](screenshots/victory.png) · [幽根](screenshots/roots.png) · [湿地](screenshots/marsh.png) · [琥珀最终图](screenshots/final-map.png) · [多阵营fixture](screenshots/multi-faction.png) · [1280战场](screenshots/battle-1280.png) · [资产接触表](screenshots/art-sheet.png)。
-
-## 4. 音频与存档保持
-
-- 四首OGG、八个WAV音效在跨重载会话中全部实际解码。菜单/战斗各48秒循环，胜败各16秒不循环；WAV母带保留，音频资源未改。
-- 手势前Context suspended、无活动音乐；点击后running。强制不可解码OGG后真实回退WAV，失败/回退记录诚实区分；淡化结束回到单音乐源。
-- 压缩器后分析器实测播放与恢复RMS非零，静音RMS/peak均0；本次恢复并叠加音效peak约.670。会话内已解码总数受异步菜单切换影响，验收按实际曲目与跨会话12声覆盖，不假定每次都恰好11个。
-- [audio-report.json](verification/audio-report.json)：12份PCM均44.1kHz/16-bit；音乐双声道峰值约.708、RMS .135–.161，削波样本0、首尾差0。
-- 没有耳机/扬声器人工试听，不能声称专业混音、真实乐器或主观无缝认证。首尾差0也不能单独证明主观无接缝。详见 [audio.md](audio.md)。
-
-## 5. 原生Windows离线包与普通URL
-
-- [offline-report.json](verification/offline-report.json) 使用 `Start-Game.ps1` 原生PowerShell TCP HTTP服务，不是Node替代服务。实际Edge加载95响应、鼠标派兵自然占领、10个当前流程声音解码；异常、缺失、站外请求均0。
-- ZIP已实际解压至含中文和空格的 `release/日光花园 解压验证/`，从**包内**启动脚本完成同样检查：95响应、自然占领、10声解码、全部错误0，见 [offline-release-report.json](verification/offline-release-report.json)。最终更新文档证据后重打包，游戏文件与已实测内容逐文件校验一致。
-- `release/BugWar-VerdantCrown-Windows.zip` 包含游戏、启动器、许可、文档及精选证据，不包含第三方研究图 `docs/reference`。双击 `Start-Game.cmd`；不要直接打开file://页面。运行不需Node、Python或网络；相同端口/浏览器保留原本地存档。
-- [production-smoke-report.json](verification/production-smoke-report.json) 是**本地HTTP普通生产URL**，不是公开Pages：无 `__BUGWAR__`、四幕/初始锁关正常、实际鼠标自然占领、暂停/恢复及声音加载通过。页面自身加载的JS与本地生产构建SHA-256相同：`21f8127f9f5e7ab3026ce9e09c87c3411b82c33217ba00cc5991b92fd9ae86d9`。异常/失败/外请求0。
-
-## 6. 发布状态与历史证据
-
-**本轮没有push或Pages部署。** https://funct1ons.github.io/BugWar/ 仍是此前游戏提交 `67b3a91` 的发布，不是本次日光花园新版。
-
-保留的 [online-report.json](verification/online-report.json) 仅是上次正式站点历史证据：旧 `index-ByE338w_.js`，SHA-256 `37f4294613239d7c424529bee82fbbab390aa4cd120c02a0c5e7148885c0a173`。不得把它当作本轮上线成功证明。之后明确授权推送、部署完成后，才应对正式站运行新版 `test:online`。
-
-## 已知边界
-
-- 未运行原版SWF；原作精确地图、数值、AI、技能及评级未知，本作是明确标注的原创重建。
-- 未做13关人工连续通关、多人测试、数小时浸泡、手机/触屏、Firefox/Safari或所有显卡测试。
-- 原创程序矢量与算法音频，不冒充专业人类画师手绘、真实录音或人工听感验收；插画武器不是新增玩法。
-- 自动化证明可复现路径和已覆盖的回归，不保证每种策略必胜或任何设备恒定帧率。
+未做13关人工连续通关、长时浸泡、多人、手机触屏或Firefox／Safari测试。原版SWF未运行，原作精确规则未知，本项目是明确标注的原创重建。自动化覆盖不等于任何策略必胜或所有设备恒定帧率。

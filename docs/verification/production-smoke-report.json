@@ -1,23 +1,25 @@
 {
   "url": "http://127.0.0.1:4182/",
-  "testedAt": "2026-10-22T04:07:29.970Z",
+  "testedAt": "2026-10-22T08:05:13.124Z",
   "browser": "155.0.4283.62",
   "httpStatus": 200,
   "storyActs": 4,
   "capture": {
     "faction": "2 巢",
     "time": "00:04",
-    "fps": "149 FPS",
+    "fps": "148 FPS",
     "method": "Normal production URL; real mouse dispatch and naturally arriving fleet; no test interface or world mutation."
   },
-  "loadedJavaScript": "./assets/index-By5VNHWi.js",
+  "loadedJavaScript": "./assets/index-Dfb9Bb_k.js",
   "javascript": {
-    "file": "index-By5VNHWi.js",
-    "localSHA256": "21f8127f9f5e7ab3026ce9e09c87c3411b82c33217ba00cc5991b92fd9ae86d9",
-    "remoteSHA256": "21f8127f9f5e7ab3026ce9e09c87c3411b82c33217ba00cc5991b92fd9ae86d9"
+    "file": "index-Dfb9Bb_k.js",
+    "localSHA256": "0b873dbe1a5178d40a7d8e90bfc761e2db031f0f6c572aa261088e228efe230c",
+    "remoteSHA256": "0b873dbe1a5178d40a7d8e90bfc761e2db031f0f6c572aa261088e228efe230c"
   },
   "audioFiles": [
-    "music-battle.ogg",
+    "music-meadow-base.ogg",
+    "music-meadow-motion.ogg",
+    "music-meadow-power.ogg",
     "music-menu.ogg",
     "sfx-capture.wav",
     "sfx-click.wav",

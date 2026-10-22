@@ -1,24 +1,6 @@
-/**
- * Bug War — Web Audio playback layer.
- *
- * Every sound has a real local WAV master under `public/audio/` (generated offline by
- * `scripts/generate-audio.py`); runtime fetches use only these same-origin assets.
- * All asset URLs go through `import.meta.env.BASE_URL`, so the game also works
- * from a sub-directory deployment or the offline static bundle.
- *
- * Behaviour highlights:
- *  - Lazy AudioContext creation, resumed on the first real user gesture
- *    (autoplay policy), with a pending-track queue so `music()` may be called
- *    before the page has been unlocked.
- *  - Music tracks are decoded once, looped sample-accurately and swapped with
- *    an equal-power cross-fade (two sources are alive for the fade window).
- *  - SFX are decoded once from the UI bank, throttled per sound, rate-limited
- *    in bursts and capped by a global voice budget.
- *  - `master` / `music` / `sfx` / `muted` apply in real time through three gain
- *    buses; `configure()` and direct `settings` writes both take effect.
- *  - Audio is strictly optional: any fetch/decode failure is remembered, logged
- *    once and never breaks the game loop.
- */
+import { SCORE, type ScoreId, type MusicIntensity } from './score';
+/** Sample-clock adaptive score playback. OGG with same-name MP3 fallback;
+ * eight WAV SFX remain resident. No timer drives musical scheduling. */
 
 export interface AudioSettings {
   master: number;
@@ -27,7 +9,7 @@ export interface AudioSettings {
   muted: boolean;
 }
 
-export type MusicTrack = 'menu' | 'battle' | 'victory' | 'defeat';
+export type MusicTrack = ScoreId | 'battle';
 export type SoundName =
   | 'hover'
   | 'click'
@@ -50,7 +32,7 @@ export interface AudioDiagnostics {
   decodedFiles: string[];
   /** In-flight fetch/decode operations. */
   pendingLoads: number;
-  /** Actual failed preferred formats followed by a successful WAV decode. */
+  /** Actual failed preferred formats followed by a successful MP3 decode. */
   fallbackFiles: string[];
   /** Files that failed to load; playback for them is silently skipped. */
   failedFiles: string[];
@@ -73,14 +55,41 @@ export interface AudioDiagnostics {
   sfx: number;
   muted: boolean;
   baseUrl: string;
+  intensity: MusicIntensity;
+  requestedIntensity: MusicIntensity;
+  paused: boolean;
+  activeLayers: { name: string; file: string; gain: number; targetGain: number; startedAt: number }[];
+  /** Effective pause multiplier on the sample-clock envelope (not its target). */
+  pauseGain: number;
+  targetPauseGain: number;
+  pendingIntensity: MusicIntensity | null;
+  mixSettledAt: number | null;
+  scheduledTransitionTime: number | null;
+  nextBarTime: number | null;
+  decodedBytes: number;
+  /** Music cache is capped at current + outgoing + pending cue (max 9 stems).
+   * Byte budget is soft while these playback-critical buffers are pinned. */
+  cacheBudgetBytes: number;
+  cacheOverBudgetBytes: number;
 }
 
 interface MusicVoice {
-  track: MusicTrack;
+  track: ScoreId;
   source: AudioBufferSourceNode;
   gain: GainNode;
   startedAt: number;
   ended: boolean;
+  layer: string;
+  index: number;
+  target: number;
+}
+interface MusicGroup {
+  track: ScoreId; voices: MusicVoice[]; startedAt: number;
+  intensity: MusicIntensity;
+  pendingMix: { intensity: MusicIntensity; at: number } | null;
+  duckGain: GainNode;
+  mixAt: number;
+  mixSettledAt: number;
 }
 
 interface SfxVoice {
@@ -93,35 +102,6 @@ const DEFAULT_SETTINGS: AudioSettings = {
   music: 0.55,
   sfx: 0.65,
   muted: false,
-};
-
-const MUSIC_FILES: Record<MusicTrack, string> = {
-  menu: 'music-menu.ogg',
-  battle: 'music-battle.ogg',
-  victory: 'music-victory.ogg',
-  defeat: 'music-defeat.ogg',
-};
-
-const LOOPING_MUSIC: Record<MusicTrack, boolean> = {
-  menu: true,
-  battle: true,
-  victory: false,
-  defeat: false,
-};
-
-const MUSIC_LEVEL: Record<MusicTrack, number> = {
-  menu: 0.95,
-  battle: 1.0,
-  victory: 1.0,
-  defeat: 1.0,
-};
-
-/** Cross-fade length in seconds. Short cues come in a little faster. */
-const MUSIC_FADE: Record<MusicTrack, number> = {
-  menu: 1.1,
-  battle: 1.1,
-  victory: 0.45,
-  defeat: 0.6,
 };
 
 const SFX_FILES: Record<SoundName, string> = {
@@ -183,6 +163,8 @@ const UI_BANK: SoundName[] = [
   'hover', 'click', 'select', 'dispatch', 'march', 'impact', 'capture', 'skill',
 ];
 
+/** Network-only deadline; never used for musical timing. Each codec gets its own budget. */
+const FORMAT_NETWORK_DEADLINE_MS = 15_000;
 const MAX_SFX_VOICES = 16;
 const MAX_SFX_BURST = 24;
 const SFX_BURST_WINDOW_MS = 1000;
@@ -217,6 +199,7 @@ export class AudioSystem {
   private limiter: DynamicsCompressorNode | null = null;
 
   private readonly buffers = new Map<string, Promise<AudioBuffer | null>>();
+  private readonly loadControllers = new Map<string, AbortController>();
   private readonly decoded = new Map<string, AudioBuffer>();
   private readonly failed = new Set<string>();
   private pendingLoads = 0;
@@ -229,6 +212,13 @@ export class AudioSystem {
   private throttledPlays = 0;
 
   private currentMusic: MusicVoice | null = null;
+  private group: MusicGroup | null = null;
+  private previousGroup: MusicGroup | null = null;
+  private readonly musicGroups = new Set<MusicGroup>();
+  private requestedIntensity: MusicIntensity = 0;
+  private paused = false;
+  private scheduledTransitionTime: number | null = null;
+  private readonly cacheBudgetBytes = 192 * 1024 * 1024;
   private readonly fadingMusic = new Set<MusicVoice>();
   private pendingTrack: MusicTrack | null = null;
   private musicRequest = 0;
@@ -290,28 +280,42 @@ export class AudioSystem {
   /** Start a music track; looping tracks cross-fade, short cues play once. */
   music(track: MusicTrack): void {
     if (this.disposed) return;
-    if (!(track in MUSIC_FILES)) return;
-
+    const id = track === 'battle' ? 'meadow' : track;
+    if (!Object.prototype.hasOwnProperty.call(SCORE, id)) return;
     this.applyVolumes();
     const ctx = this.ensureContext();
     if (!ctx) return;
-
-    const active = this.currentMusic;
-    if (active && active.track === track) {
-      const stillPlaying = !active.ended || active.source.loop;
-      if (stillPlaying) {
-        // Already audible: nothing to do (do not restart or re-fade).
-        this.musicRequest += 1; // Cancel any older in-flight track switch.
-        this.pendingTrack = null;
-        return;
-      }
-    }
-
-    this.pendingTrack = track;
-    if (ctx.state !== 'running') {
+    this.settleTransition();
+    if (this.pendingTrack === id) return;
+    ++this.musicRequest;
+    if (this.group?.track === id && this.group.voices.some(v => !v.ended)) {
+      this.pendingTrack = null;
+      this.pruneMusicCache();
       return;
     }
-    void this.startMusic(track);
+    this.cancelFutureSwitch();
+    if (this.group?.track === id && this.group.voices.some(v => !v.ended)) {
+      this.pendingTrack = null;
+      this.pruneMusicCache();
+      return;
+    }
+    this.pendingTrack = id;
+    this.pruneMusicCache();
+    if (ctx.state === 'running') void this.startMusic(id);
+  }
+
+  /** Mix changes are scheduled on the cue's AudioContext bar grid, never timers. */
+  setIntensity(level: MusicIntensity): void {
+    if (this.disposed || ![0, 1, 2].includes(level)) return;
+    this.requestedIntensity = level;
+    this.scheduleMix();
+  }
+
+  /** Keep the clock running; pause ducks the score and suppresses motion/power. */
+  setPaused(paused: boolean): void {
+    if (this.disposed || this.paused === paused) return;
+    this.paused = paused;
+    this.scheduleMix();
   }
 
   /** Fire a one-shot sound effect. Unknown names and excess hits are ignored. */
@@ -347,7 +351,7 @@ export class AudioSystem {
       this.throttledPlays += 1;
       return;
     }
-    const buffer = this.decoded.get(file) ?? this.decoded.get(file.replace(/\.ogg$/, '.wav'));
+    const buffer = this.decoded.get(file) ?? this.decoded.get(file.replace(/\.ogg$/, '.mp3'));
     if (!buffer) {
       // Not decoded yet: warm it up and drop this request rather than fire a
       // late, out-of-sync sound.
@@ -407,6 +411,7 @@ export class AudioSystem {
    */
   diagnostics(): AudioDiagnostics {
     const ctx = this.ctx;
+    this.settleTransition();
     const current = this.currentMusic;
     const state: AudioDiagnostics['contextState'] = ctx
       ? (ctx.state as AudioDiagnostics['contextState'])
@@ -414,6 +419,10 @@ export class AudioSystem {
         ? 'unsupported'
         : 'uninitialized';
     const trackEnded = Boolean(current && current.ended && !current.source.loop);
+    const now = this.currentTime();
+    const audibleGroup = this.group && now < this.group.startedAt ? this.previousGroup : this.group;
+    if (audibleGroup) this.settleMix(audibleGroup);
+    const mix = this.group;
     return {
       contextState: state,
       decodedBuffers: this.decoded.size,
@@ -422,7 +431,7 @@ export class AudioSystem {
       failedFiles: [...this.failed].sort(),
       fallbackFiles: [...this.fallbacks].sort(),
       activeVoices: this.activeSfx.size,
-      activeMusicSources: (current && !trackEnded ? 1 : 0) + this.fadingMusic.size,
+      activeMusicSources: (this.group?.voices.filter(v => !v.ended).length ?? 0) + this.fadingMusic.size,
       currentTrack: current && !trackEnded ? current.track : null,
       pendingTrack: this.pendingTrack,
       currentTrackTime: current && !trackEnded ? this.trackTime(current) : 0,
@@ -436,6 +445,19 @@ export class AudioSystem {
       sfx: this.settings.sfx,
       muted: this.settings.muted,
       baseUrl: assetBase(),
+      intensity: audibleGroup?.intensity ?? 0,
+      requestedIntensity: this.requestedIntensity,
+      paused: this.paused,
+      pauseGain: audibleGroup?.duckGain.gain.value ?? 1,
+      targetPauseGain: this.paused ? 0.32 : 1,
+      pendingIntensity: mix?.pendingMix?.intensity ?? null,
+      mixSettledAt: mix && now < mix.mixSettledAt ? mix.mixSettledAt : null,
+      activeLayers: this.group?.voices.filter(v => !v.ended).map(v => ({ name: v.layer, file: SCORE[v.track].files[v.index], gain: v.gain.gain.value * this.group!.duckGain.gain.value, targetGain: v.target, startedAt: v.startedAt })) ?? [],
+      scheduledTransitionTime: mix && now < mix.mixSettledAt ? mix.mixAt : null,
+      nextBarTime: this.group ? this.nextBar(this.group) : null,
+      decodedBytes: [...this.decoded.values()].reduce((n, b) => n + (b.length || 0) * (b.numberOfChannels || 0) * 4, 0),
+      cacheBudgetBytes: this.cacheBudgetBytes,
+      cacheOverBudgetBytes: Math.max(0, [...this.decoded.values()].reduce((n, b) => n + (b.length || 0) * (b.numberOfChannels || 0) * 4, 0) - this.cacheBudgetBytes),
     };
   }
 
@@ -451,11 +473,17 @@ export class AudioSystem {
       this.visibilityHandler = null;
     }
 
-    if (this.currentMusic) {
-      this.stopSource(this.currentMusic.source);
-      this.currentMusic = null;
+    for (const voice of this.group?.voices ?? []) {
+      this.stopSource(voice.source);
+      voice.source.disconnect();
+      voice.gain.disconnect();
     }
-    for (const voice of this.fadingMusic) this.stopSource(voice.source);
+    for (const group of this.musicGroups) group.duckGain.disconnect();
+    this.musicGroups.clear();
+    this.group = null;
+    this.previousGroup = null;
+    this.currentMusic = null;
+    for (const voice of this.fadingMusic) { this.stopSource(voice.source); voice.source.disconnect(); voice.gain.disconnect(); }
     this.fadingMusic.clear();
     for (const voice of [...this.activeSfx]) {
       this.stopSource(voice.source);
@@ -477,6 +505,8 @@ export class AudioSystem {
 
     const ctx = this.ctx;
     this.ctx = null;
+    for (const controller of this.loadControllers.values()) controller.abort();
+    this.loadControllers.clear();
     this.buffers.clear();
     this.decoded.clear();
     this.lastPlayed.clear();
@@ -612,32 +642,74 @@ export class AudioSystem {
     const ctx = this.ctx;
     if (!ctx) return Promise.resolve(null);
 
+    const controller = new AbortController();
+    this.loadControllers.set(file, controller);
+    const managed = file.startsWith('music-') && this.keptMusicFiles().has(file);
+    const cancelled = () => this.disposed || controller.signal.aborted || (managed && !this.keptMusicFiles().has(file));
     const promise = (async (): Promise<AudioBuffer | null> => {
-      const candidates = file.endsWith('.ogg') ? [file, file.replace(/\.ogg$/, '.wav')] : [file];
+      const candidates = file.endsWith('.ogg') ? [file, file.replace(/\.ogg$/, '.mp3')] : [file];
       try {
         for (const candidate of candidates) {
           try {
-            const res = await fetch(this.urlFor(candidate));
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const buffer = await this.decode(ctx, await res.arrayBuffer());
-            if (this.disposed) return null;
+            if (cancelled()) return null;
+            const data = await this.fetchFormat(candidate, controller.signal);
+            // Abort cannot interrupt decodeAudioData itself: recheck ownership
+            // immediately before expensive decoding and discard late results.
+            if (cancelled()) return null;
+            const buffer = await this.decode(ctx, data);
+            if (cancelled()) return null;
             this.decoded.set(candidate, buffer);
             if (candidate !== file) this.fallbacks.add(candidate);
             return buffer;
           } catch {
+            if (cancelled()) return null;
             // A missing/unsupported preferred format is not an asset failure.
           }
         }
-        if (!this.disposed) this.failed.add(file);
+        if (!cancelled()) this.failed.add(file);
         return null;
       } finally {
         this.pendingLoads = Math.max(0, this.pendingLoads - 1);
+        if (this.loadControllers.get(file) === controller) this.loadControllers.delete(file);
       }
     })();
 
     this.pendingLoads += 1;
     this.buffers.set(file, promise);
     return promise;
+  }
+
+  /** Bound fetch AND body reading even if a transport ignores AbortSignal.
+   * A format timeout aborts only its child request, so MP3 still gets a fresh
+   * deadline. Asset eviction/dispose aborts the parent and clears this timer. */
+  private async fetchFormat(file: string, parent: AbortSignal): Promise<ArrayBuffer> {
+    if (parent.aborted) throw new Error('Audio asset cancelled');
+    const format = new AbortController();
+    let rejectDeadline!: (reason: Error) => void;
+    const deadline = new Promise<never>((_, reject) => { rejectDeadline = reject; });
+    const cancel = () => {
+      format.abort();
+      rejectDeadline(new Error('Audio asset cancelled'));
+    };
+    parent.addEventListener('abort', cancel, { once: true });
+    const timer = setTimeout(() => {
+      format.abort();
+      rejectDeadline(new Error('Audio format network deadline exceeded'));
+    }, FORMAT_NETWORK_DEADLINE_MS);
+    try {
+      const network = (async () => {
+        const res = await fetch(this.urlFor(file), { signal: format.signal });
+        if (format.signal.aborted) throw new Error('Audio format cancelled');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.arrayBuffer();
+        if (format.signal.aborted) throw new Error('Audio format cancelled');
+        return data;
+      })();
+      return await Promise.race([network, deadline]);
+    } finally {
+      clearTimeout(timer);
+      parent.removeEventListener('abort', cancel);
+    }
   }
 
   private decode(ctx: AudioContext, data: ArrayBuffer): Promise<AudioBuffer> {
@@ -680,106 +752,205 @@ export class AudioSystem {
   // --------------------------------------------------------------------- //
 
   private async startMusic(track: MusicTrack): Promise<void> {
+    const id = track === 'battle' ? 'meadow' : track;
     const token = ++this.musicRequest;
-    const buffer = await this.load(MUSIC_FILES[track]);
-    if (this.disposed || token !== this.musicRequest) return;
+    this.pendingTrack = id;
+    const buffers = await Promise.all(SCORE[id].files.map(file => this.load(file)));
+    if (this.disposed || token !== this.musicRequest) { this.pruneMusicCache(); return; }
     this.pendingTrack = null;
-    if (!buffer) return;
+    if (!buffers[0]) { this.pruneMusicCache(); return; }
     const ctx = this.ctx;
-    if (!ctx || ctx.state !== 'running') {
-      // Still locked: remember the request, unlock() will pick it up.
-      this.pendingTrack = track;
-      return;
-    }
-    this.swapMusic(track, buffer);
+    if (!ctx || ctx.state !== 'running') { this.pendingTrack = id; return; }
+    this.swapMusic(id, buffers);
+    this.pruneMusicCache();
   }
 
-  private swapMusic(track: MusicTrack, buffer: AudioBuffer): void {
+  private nextBar(group: MusicGroup): number {
+    const cue = SCORE[group.track];
+    const bar = 60 / cue.bpm * cue.beatsPerBar;
+    const now = this.currentTime();
+    if (now < group.startedAt) return group.startedAt;
+    return group.startedAt + (Math.floor((now - group.startedAt + 0.000001) / bar) + 1) * bar;
+  }
+
+  private layerTargetFor(index: number): number {
+    return index <= (this.paused ? 0 : this.requestedIntensity) ? 1 : 0;
+  }
+
+  private targetFor(index: number): number {
+    return this.layerTargetFor(index) * (this.paused ? 0.32 : 1);
+  }
+
+  private hold(param: AudioParam, now: number): void {
+    if (typeof param.cancelAndHoldAtTime === 'function') param.cancelAndHoldAtTime(now);
+    else { param.cancelScheduledValues(now); param.setValueAtTime(param.value, now); }
+  }
+
+  private scheduleMix(): void {
+    this.settleTransition();
+    const group = this.group;
+    if (!group) return;
+    const now = this.currentTime();
+    const at = this.nextBar(group);
+    this.configureMix(group, at, 0.12);
+    for (const voice of group.voices) {
+      this.hold(voice.gain.gain, now);
+      voice.target = this.targetFor(voice.index);
+      voice.gain.gain.setTargetAtTime(this.layerTargetFor(voice.index), at, 0.12);
+    }
+  }
+
+  /** Harmonic policy: outgoing cue fades to silence before the new downbeat;
+   * incoming cue fades up after it. Stingers take over in 80 ms instead. */
+  private swapMusic(track: ScoreId, buffers: (AudioBuffer | null)[]): void {
     const ctx = this.ctx;
     if (!ctx || !this.musicBus) return;
-
+    this.settleTransition();
     const now = ctx.currentTime;
-    const fade = MUSIC_FADE[track] ?? 1.0;
-
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.loop = LOOPING_MUSIC[track];
-    if (source.loop) {
-      source.loopStart = 0;
-      source.loopEnd = buffer.duration;
-    }
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.0001, now);
-    source.connect(gain);
-    gain.connect(this.musicBus);
-
-    const previous = this.currentMusic;
-    if (previous) this.fadeOutMusic(previous, fade);
-
-    const voice: MusicVoice = { track, source, gain, startedAt: now, ended: false };
-    source.onended = () => {
+    const previous = this.group;
+    // At most one outgoing cue: rapid stingers cannot accumulate tails.
+    for (const voice of [...this.fadingMusic]) {
+      this.stopSource(voice.source);
+      voice.source.disconnect(); voice.gain.disconnect();
       voice.ended = true;
       this.fadingMusic.delete(voice);
-      if (this.currentMusic === voice) this.currentMusic = null;
-      try {
-        source.disconnect();
-      } catch {
-        /* ignore */
-      }
-      try {
-        gain.disconnect();
-      } catch {
-        /* ignore */
-      }
-    };
-
-    try {
-      source.start(now);
-    } catch {
-      return;
     }
-    this.currentMusic = voice;
-    this.pendingTrack = null;
-    this.crossfadeUntil = now + fade;
-
-    // Equal-power fade-in (sqrt/sine) so the crossfade does not dip in the middle.
-    const target = MUSIC_LEVEL[track] ?? 1;
-    const curve = new Float32Array(32);
-    for (let i = 0; i < curve.length; i += 1) {
-      const t = i / (curve.length - 1);
-      curve[i] = Math.max(0.0001, Math.sin((Math.PI / 2) * t) * target);
+    const urgent = !SCORE[track].loop;
+    const at = previous ? (urgent ? now + 0.08 : this.nextBar(previous)) : now + 0.02;
+    const fadeStart = Math.max(now, at - (urgent ? 0.08 : 0.3));
+    if (previous) {
+      for (const voice of previous.voices) {
+        this.fadingMusic.add(voice);
+        this.hold(voice.gain.gain, now);
+        voice.gain.gain.setValueAtTime(voice.gain.gain.value, fadeStart);
+        voice.gain.gain.linearRampToValueAtTime(0, at);
+        this.stopSource(voice.source, at);
+      }
     }
-    try {
-      gain.gain.setValueCurveAtTime(curve, now, fade);
-    } catch {
-      gain.gain.linearRampToValueAtTime(target, now + fade);
+    const duckGain = ctx.createGain();
+    duckGain.gain.value = this.paused ? 0.32 : 1;
+    duckGain.connect(this.musicBus);
+    const group: MusicGroup = { track, voices: [], startedAt: at,
+      intensity: 0, pendingMix: null, duckGain,
+      mixAt: at, mixSettledAt: at + 0.15 };
+    this.musicGroups.add(group);
+    this.configureMix(group, at, 0.12);
+    group.mixSettledAt = Math.max(at + 0.15, group.mixSettledAt);
+    buffers.forEach((buffer, index) => {
+      if (!buffer) return;
+      // A corrupt/misaligned optional layer must never drift against the base.
+      if (index && (buffer.length !== buffers[0]!.length || buffer.sampleRate !== buffers[0]!.sampleRate)) {
+        this.failed.add(SCORE[track].files[index]);
+        return;
+      }
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = SCORE[track].loop;
+      source.loopStart = 0;
+      source.loopEnd = buffer.duration;
+      const gain = ctx.createGain();
+      const target = this.targetFor(index);
+      gain.gain.setValueAtTime(0, at);
+      gain.gain.linearRampToValueAtTime(this.layerTargetFor(index), at + 0.15);
+      source.connect(gain);
+      gain.connect(group.duckGain);
+      const voice: MusicVoice = { track, source, gain, startedAt: at, ended: false,
+        index, layer: ['base', 'motion', 'power'][index], target };
+      group.voices.push(voice);
+      source.onended = () => {
+        voice.ended = true;
+        this.fadingMusic.delete(voice);
+        source.disconnect(); gain.disconnect();
+        if (group.voices.every(v => v.ended)) {
+          group.duckGain.disconnect();
+          this.musicGroups.delete(group);
+        }
+        if (this.group === group && group.voices.every(v => v.ended)) {
+          this.group = null; this.currentMusic = null;
+        }
+        this.settleTransition();
+        this.pruneMusicCache();
+      };
+      try { source.start(at); } catch { voice.ended = true; source.disconnect(); gain.disconnect(); }
+    });
+    this.previousGroup = previous;
+    this.group = group;
+    this.currentMusic = group.voices[0] ?? null;
+    this.scheduledTransitionTime = at;
+    this.crossfadeUntil = at + 0.15;
+  }
+
+  private settleMix(group: MusicGroup): void {
+    if (group.pendingMix && this.currentTime() >= group.pendingMix.at) {
+      group.intensity = group.pendingMix.intensity;
+      group.pendingMix = null;
     }
   }
 
-  private fadeOutMusic(voice: MusicVoice, seconds: number): void {
-    const ctx = this.ctx;
-    if (!ctx) {
+  private configureMix(group: MusicGroup, at: number, tau: number): void {
+    this.settleMix(group);
+    this.hold(group.duckGain.gain, this.currentTime());
+    group.duckGain.gain.setTargetAtTime(this.paused ? 0.32 : 1, at, tau);
+    group.pendingMix = { intensity: this.paused ? 0 : this.requestedIntensity, at };
+    group.mixAt = at;
+    group.mixSettledAt = at + 6 * tau; // <= 0.25% residual, not instantaneous.
+    this.scheduledTransitionTime = at;
+  }
+
+  private settleTransition(): void {
+    if (this.group) this.settleMix(this.group);
+    if (this.group && this.currentTime() >= this.group.startedAt) this.previousGroup = null;
+  }
+
+  private cancelFutureSwitch(): void {
+    const group = this.group;
+    if (!group || group.startedAt <= this.currentTime()) return;
+    this.group = this.previousGroup;
+    this.previousGroup = null;
+    for (const voice of group.voices) {
+      voice.source.onended = null;
       this.stopSource(voice.source);
-      return;
+      voice.source.disconnect(); voice.gain.disconnect();
     }
-    this.fadingMusic.add(voice);
-    const now = ctx.currentTime;
-    const start = Math.max(0.0001, voice.gain.gain.value);
-    const steps = 24;
-    const curve = new Float32Array(steps);
-    for (let i = 0; i < steps; i += 1) {
-      const t = i / (steps - 1);
-      curve[i] = Math.max(0, Math.cos((Math.PI / 2) * t) * start);
+    group.duckGain.disconnect();
+    this.musicGroups.delete(group);
+    const now = this.currentTime();
+    if (this.group) this.configureMix(this.group, now, 0.04);
+    for (const voice of this.group?.voices ?? []) {
+      this.fadingMusic.delete(voice);
+      // Web Audio permits replacing a scheduled stop before it has occurred.
+      this.stopSource(voice.source, now + 1e9);
+      this.hold(voice.gain.gain, now);
+      voice.target = this.targetFor(voice.index);
+      voice.gain.gain.setTargetAtTime(this.layerTargetFor(voice.index), now, 0.04);
     }
-    try {
-      voice.gain.gain.cancelScheduledValues(now);
-      voice.gain.gain.setValueAtTime(start, now);
-      voice.gain.gain.setValueCurveAtTime(curve, now, Math.max(0.05, seconds));
-    } catch {
-      voice.gain.gain.setValueAtTime(start, now);
-      voice.gain.gain.linearRampToValueAtTime(0, now + seconds);
+    this.currentMusic = this.group?.voices[0] ?? null;
+    this.scheduledTransitionTime = null;
+  }
+
+  private keptMusicFiles(): Set<string> {
+    const files = new Set<string>();
+    const add = (track: MusicTrack) => SCORE[track === 'battle' ? 'meadow' : track].files.forEach(f => files.add(f));
+    if (this.pendingTrack) add(this.pendingTrack);
+    if (this.group) add(this.group.track);
+    for (const voice of this.fadingMusic) if (!voice.ended) add(voice.track);
+    return files;
+  }
+
+  /** No historical music LRU: only playing/outgoing/loading cues are pinned.
+   * SFX stay resident. Promise entries are evicted with their decoded buffers. */
+  private pruneMusicCache(): void {
+    const keep = this.keptMusicFiles();
+    for (const file of this.decoded.keys()) {
+      const preferred = file.replace(/\.mp3$/, '.ogg');
+      if (file.startsWith('music-') && !keep.has(preferred)) this.decoded.delete(file);
     }
-    this.stopSource(voice.source, now + Math.max(0.05, seconds) + 0.05);
+    for (const file of this.buffers.keys()) {
+      if (file.startsWith('music-') && !keep.has(file)) {
+        this.loadControllers.get(file)?.abort();
+        this.buffers.delete(file);
+      }
+    }
   }
 
   private stopSource(source: AudioBufferSourceNode, when?: number): void {

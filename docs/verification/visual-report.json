@@ -1,5 +1,5 @@
 {
-  "startedAt": "2026-10-22T04:03:47.897Z",
+  "startedAt": "2026-10-22T08:13:58.424Z",
   "url": "http://127.0.0.1:4181/?test=1",
   "normalUrl": "http://127.0.0.1:4181/",
   "port": 4181,
@@ -86,7 +86,7 @@
           "naturalWidth": 1600,
           "naturalHeight": 900,
           "rect": {
-            "x": -0.00006103515625,
+            "x": -6.103515625e-05,
             "y": 0,
             "width": 1920,
             "height": 1080
@@ -113,7 +113,7 @@
         "naturalWidth": 1600,
         "naturalHeight": 900,
         "rect": {
-          "x": -0.00006103515625,
+          "x": -6.103515625e-05,
           "y": 0,
           "width": 1920,
           "height": 1080
@@ -138,7 +138,7 @@
         "naturalWidth": 1600,
         "naturalHeight": 900,
         "rect": {
-          "x": -0.00006103515625,
+          "x": -6.103515625e-05,
           "y": 0,
           "width": 1920,
           "height": 1080
@@ -163,7 +163,7 @@
         "naturalWidth": 1600,
         "naturalHeight": 900,
         "rect": {
-          "x": -0.00006103515625,
+          "x": -6.103515625e-05,
           "y": 0,
           "width": 1920,
           "height": 1080
@@ -3576,7 +3576,7 @@
         "naturalWidth": 1600,
         "naturalHeight": 900,
         "rect": {
-          "x": -0.00006103515625,
+          "x": -6.103515625e-05,
           "y": 0,
           "width": 1920,
           "height": 1080
@@ -3606,7 +3606,7 @@
         "naturalWidth": 1600,
         "naturalHeight": 900,
         "rect": {
-          "x": -0.00006103515625,
+          "x": -6.103515625e-05,
           "y": 0,
           "width": 1920,
           "height": 1080
@@ -4319,7 +4319,7 @@
       "naturalWidth": 1600,
       "naturalHeight": 900,
       "rect": {
-        "x": -0.00006103515625,
+        "x": -6.103515625e-05,
         "y": 0,
         "width": 1920,
         "height": 1080
@@ -5850,7 +5850,7 @@
           "naturalWidth": 1600,
           "naturalHeight": 900,
           "rect": {
-            "x": -0.00006103515625,
+            "x": -6.103515625e-05,
             "y": 0,
             "width": 1920,
             "height": 1080
@@ -6199,6 +6199,143 @@
     "consoleErrors": [],
     "failedRequests": [],
     "networkFailures": [],
+    "cancelledFixtureMusicRequests": [
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "marsh",
+        "signalAbortAt": 5634.29999999702,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "marsh",
+        "signalAbortAt": 5634.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "marsh",
+        "signalAbortAt": 5634.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-marsh-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "marsh",
+        "wantedCueAtAbort": "amber",
+        "signalAbortAt": 5678.0999999940395,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-marsh-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "marsh",
+        "wantedCueAtAbort": "amber",
+        "signalAbortAt": 5678.199999988079,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-marsh-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "marsh",
+        "wantedCueAtAbort": "amber",
+        "signalAbortAt": 5678.199999988079,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-amber-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "amber",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 5703.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-amber-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "amber",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 5703.5999999940395,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-amber-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "amber",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 5703.5999999940395,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "finale",
+        "signalAbortAt": 5717.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "finale",
+        "signalAbortAt": 5717.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-roots-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "roots",
+        "wantedCueAtAbort": "finale",
+        "signalAbortAt": 5717.5,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-finale-base.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "finale",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 5794.899999991059,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-finale-motion.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "finale",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 5795,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      },
+      {
+        "phase": "13 layouts and three chapter screenshot switches",
+        "url": "http://127.0.0.1:4181/audio/music-finale-power.ogg",
+        "failure": "net::ERR_ABORTED",
+        "cancelledCue": "finale",
+        "wantedCueAtAbort": "roots",
+        "signalAbortAt": 5795,
+        "reason": "Native AbortSignal observed synchronously; the director already wanted a different cue."
+      }
+    ],
     "externalRequests": []
   },
   "error": null,
@@ -6208,5 +6345,5 @@
     "version": "155.0.4283.62",
     "headless": true
   },
-  "finishedAt": "2026-10-22T04:04:10.012Z"
+  "finishedAt": "2026-10-22T08:14:26.901Z"
 }

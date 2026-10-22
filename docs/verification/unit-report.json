@@ -1,1 +1,3045 @@
-{"numTotalTestSuites":22,"numPassedTestSuites":22,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":196,"numPassedTests":195,"numFailedTests":0,"numPendingTests":1,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1792641222652,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["formal art set"],"fullName":"formal art set ships all 36 formal SVG files","status":"passed","title":"ships all 36 formal SVG files","duration":1.1866999999999734,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal art set"],"fullName":"formal art set cover.svg is the approved cover, byte-for-byte","status":"passed","title":"cover.svg is the approved cover, byte-for-byte","duration":1.0822000000000571,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cover.svg","status":"passed","title":"cover.svg","duration":0.9094000000000051,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox background-meadow.svg","status":"passed","title":"background-meadow.svg","duration":0.8309000000000424,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox background-roots.svg","status":"passed","title":"background-roots.svg","duration":0.43689999999992324,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox background-marsh.svg","status":"passed","title":"background-marsh.svg","duration":0.42849999999998545,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox background-amber.svg","status":"passed","title":"background-amber.svg","duration":0.3793000000000575,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox nest-0.svg","status":"passed","title":"nest-0.svg","duration":0.27139999999997144,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cannon-0.svg","status":"passed","title":"cannon-0.svg","duration":0.2987000000000535,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox nest-1.svg","status":"passed","title":"nest-1.svg","duration":0.23250000000007276,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cannon-1.svg","status":"passed","title":"cannon-1.svg","duration":0.16290000000003602,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox nest-2.svg","status":"passed","title":"nest-2.svg","duration":0.14409999999998035,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cannon-2.svg","status":"passed","title":"cannon-2.svg","duration":0.13400000000001455,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox nest-3.svg","status":"passed","title":"nest-3.svg","duration":0.23689999999999145,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cannon-3.svg","status":"passed","title":"cannon-3.svg","duration":0.15250000000003183,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox nest-4.svg","status":"passed","title":"nest-4.svg","duration":0.12389999999993506,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cannon-4.svg","status":"passed","title":"cannon-4.svg","duration":0.11430000000007112,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-0.svg","status":"passed","title":"bug-agile-0.svg","duration":0.12520000000006348,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-1.svg","status":"passed","title":"bug-agile-1.svg","duration":0.11610000000007403,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-2.svg","status":"passed","title":"bug-agile-2.svg","duration":0.11390000000005784,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-3.svg","status":"passed","title":"bug-agile-3.svg","duration":0.11389999999994416,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-4.svg","status":"passed","title":"bug-agile-4.svg","duration":0.11730000000000018,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-0.svg","status":"passed","title":"bug-fast-0.svg","duration":0.11690000000010059,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-1.svg","status":"passed","title":"bug-fast-1.svg","duration":0.2886999999999489,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-2.svg","status":"passed","title":"bug-fast-2.svg","duration":0.18460000000004584,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-3.svg","status":"passed","title":"bug-fast-3.svg","duration":0.1393999999999096,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-4.svg","status":"passed","title":"bug-fast-4.svg","duration":0.15579999999999927,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-0.svg","status":"passed","title":"bug-strong-0.svg","duration":0.1294999999998936,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-1.svg","status":"passed","title":"bug-strong-1.svg","duration":0.15429999999992106,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-2.svg","status":"passed","title":"bug-strong-2.svg","duration":0.19029999999997926,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-3.svg","status":"passed","title":"bug-strong-3.svg","duration":0.16989999999998417,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-4.svg","status":"passed","title":"bug-strong-4.svg","duration":0.1554999999999609,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox nest.svg","status":"passed","title":"nest.svg","duration":0.12220000000002074,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox cannon.svg","status":"passed","title":"cannon.svg","duration":0.13179999999999836,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile.svg","status":"passed","title":"bug-agile.svg","duration":0.15359999999998308,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast.svg","status":"passed","title":"bug-fast.svg","duration":0.18260000000009313,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong.svg","status":"passed","title":"bug-strong.svg","duration":0.16420000000005075,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox emblem.svg","status":"passed","title":"emblem.svg","duration":0.1330000000000382,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-0.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-agile-0.svg is a 96x32 four-frame sheet","duration":0.34770000000003165,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-1.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-agile-1.svg is a 96x32 four-frame sheet","duration":0.17699999999990723,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-2.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-agile-2.svg is a 96x32 four-frame sheet","duration":0.16499999999996362,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-3.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-agile-3.svg is a 96x32 four-frame sheet","duration":0.14390000000003056,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-agile-4.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-agile-4.svg is a 96x32 four-frame sheet","duration":0.15239999999994325,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-0.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-fast-0.svg is a 96x32 four-frame sheet","duration":0.14629999999999654,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-1.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-fast-1.svg is a 96x32 four-frame sheet","duration":0.1532999999999447,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-2.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-fast-2.svg is a 96x32 four-frame sheet","duration":0.13370000000008986,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-3.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-fast-3.svg is a 96x32 four-frame sheet","duration":0.17799999999999727,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-fast-4.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-fast-4.svg is a 96x32 four-frame sheet","duration":0.17570000000000618,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-0.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-strong-0.svg is a 96x32 four-frame sheet","duration":0.17309999999997672,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-1.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-strong-1.svg is a 96x32 four-frame sheet","duration":0.15639999999996235,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-2.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-strong-2.svg is a 96x32 four-frame sheet","duration":0.17489999999997963,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-3.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-strong-3.svg is a 96x32 four-frame sheet","duration":0.2744000000000142,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG dimensions and viewBox"],"fullName":"formal SVG dimensions and viewBox bug-strong-4.svg is a 96x32 four-frame sheet","status":"passed","title":"bug-strong-4.svg is a 96x32 four-frame sheet","duration":0.1675000000000182,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained background-amber.svg","status":"passed","title":"background-amber.svg","duration":1.3722999999999956,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained background-marsh.svg","status":"passed","title":"background-marsh.svg","duration":0.675899999999956,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained background-meadow.svg","status":"passed","title":"background-meadow.svg","duration":0.6684999999999945,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained background-roots.svg","status":"passed","title":"background-roots.svg","duration":0.48460000000000036,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-agile-0.svg","status":"passed","title":"bug-agile-0.svg","duration":0.322400000000016,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-agile-1.svg","status":"passed","title":"bug-agile-1.svg","duration":0.297800000000052,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-agile-2.svg","status":"passed","title":"bug-agile-2.svg","duration":0.3245999999999185,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-agile-3.svg","status":"passed","title":"bug-agile-3.svg","duration":0.2738999999999123,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-agile-4.svg","status":"passed","title":"bug-agile-4.svg","duration":0.26089999999999236,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-agile.svg","status":"passed","title":"bug-agile.svg","duration":0.308400000000006,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-fast-0.svg","status":"passed","title":"bug-fast-0.svg","duration":0.27709999999990487,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-fast-1.svg","status":"passed","title":"bug-fast-1.svg","duration":0.2536999999999807,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-fast-2.svg","status":"passed","title":"bug-fast-2.svg","duration":0.2625000000000455,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-fast-3.svg","status":"passed","title":"bug-fast-3.svg","duration":0.28909999999996217,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-fast-4.svg","status":"passed","title":"bug-fast-4.svg","duration":0.29949999999996635,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-fast.svg","status":"passed","title":"bug-fast.svg","duration":0.31009999999992033,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-strong-0.svg","status":"passed","title":"bug-strong-0.svg","duration":0.27490000000000236,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-strong-1.svg","status":"passed","title":"bug-strong-1.svg","duration":0.2921000000000049,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-strong-2.svg","status":"passed","title":"bug-strong-2.svg","duration":0.2459999999999809,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-strong-3.svg","status":"passed","title":"bug-strong-3.svg","duration":0.37170000000003256,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-strong-4.svg","status":"passed","title":"bug-strong-4.svg","duration":0.36950000000001637,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained bug-strong.svg","status":"passed","title":"bug-strong.svg","duration":0.310100000000034,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cannon-0.svg","status":"passed","title":"cannon-0.svg","duration":0.23869999999999436,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cannon-1.svg","status":"passed","title":"cannon-1.svg","duration":0.2563999999999851,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cannon-2.svg","status":"passed","title":"cannon-2.svg","duration":0.22129999999992833,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cannon-3.svg","status":"passed","title":"cannon-3.svg","duration":0.244199999999978,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cannon-4.svg","status":"passed","title":"cannon-4.svg","duration":0.2573000000001002,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cannon.svg","status":"passed","title":"cannon.svg","duration":0.2603000000000293,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained cover.svg","status":"passed","title":"cover.svg","duration":0.36800000000005184,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained emblem.svg","status":"passed","title":"emblem.svg","duration":0.26959999999996853,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained nest-0.svg","status":"passed","title":"nest-0.svg","duration":0.20609999999999218,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained nest-1.svg","status":"passed","title":"nest-1.svg","duration":0.27129999999999654,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained nest-2.svg","status":"passed","title":"nest-2.svg","duration":0.3017000000000962,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained nest-3.svg","status":"passed","title":"nest-3.svg","duration":0.3787999999999556,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained nest-4.svg","status":"passed","title":"nest-4.svg","duration":0.3451999999999771,"failureMessages":[],"meta":{}},{"ancestorTitles":["formal SVG markup is self-contained"],"fullName":"formal SVG markup is self-contained nest.svg","status":"passed","title":"nest.svg","duration":0.42399999999997817,"failureMessages":[],"meta":{}},{"ancestorTitles":["default UI SVG files match the documented owner variant"],"fullName":"default UI SVG files match the documented owner variant nest.svg equals nest-0.svg","status":"passed","title":"nest.svg equals nest-0.svg","duration":0.7075999999999567,"failureMessages":[],"meta":{}},{"ancestorTitles":["default UI SVG files match the documented owner variant"],"fullName":"default UI SVG files match the documented owner variant cannon.svg equals cannon-0.svg","status":"passed","title":"cannon.svg equals cannon-0.svg","duration":0.477800000000002,"failureMessages":[],"meta":{}},{"ancestorTitles":["default UI SVG files match the documented owner variant"],"fullName":"default UI SVG files match the documented owner variant bug-agile.svg equals bug-agile-1.svg","status":"passed","title":"bug-agile.svg equals bug-agile-1.svg","duration":0.3208999999999378,"failureMessages":[],"meta":{}},{"ancestorTitles":["default UI SVG files match the documented owner variant"],"fullName":"default UI SVG files match the documented owner variant bug-fast.svg equals bug-fast-1.svg","status":"passed","title":"bug-fast.svg equals bug-fast-1.svg","duration":0.2500999999999749,"failureMessages":[],"meta":{}},{"ancestorTitles":["default UI SVG files match the documented owner variant"],"fullName":"default UI SVG files match the documented owner variant bug-strong.svg equals bug-strong-1.svg","status":"passed","title":"bug-strong.svg equals bug-strong-1.svg","duration":0.21820000000002437,"failureMessages":[],"meta":{}},{"ancestorTitles":["owner variants carry a substantial, distinct body colour"],"fullName":"owner variants carry a substantial, distinct body colour nest uses five visibly different owner colours","status":"passed","title":"nest uses five visibly different owner colours","duration":4.55460000000005,"failureMessages":[],"meta":{}},{"ancestorTitles":["owner variants carry a substantial, distinct body colour"],"fullName":"owner variants carry a substantial, distinct body colour cannon uses five visibly different owner colours","status":"passed","title":"cannon uses five visibly different owner colours","duration":1.7531999999999925,"failureMessages":[],"meta":{}},{"ancestorTitles":["owner variants carry a substantial, distinct body colour"],"fullName":"owner variants carry a substantial, distinct body colour bug-agile uses five visibly different owner colours","status":"passed","title":"bug-agile uses five visibly different owner colours","duration":1.7309999999999945,"failureMessages":[],"meta":{}},{"ancestorTitles":["owner variants carry a substantial, distinct body colour"],"fullName":"owner variants carry a substantial, distinct body colour bug-fast uses five visibly different owner colours","status":"passed","title":"bug-fast uses five visibly different owner colours","duration":1.6112000000000535,"failureMessages":[],"meta":{}},{"ancestorTitles":["owner variants carry a substantial, distinct body colour"],"fullName":"owner variants carry a substantial, distinct body colour bug-strong uses five visibly different owner colours","status":"passed","title":"bug-strong uses five visibly different owner colours","duration":2.079399999999964,"failureMessages":[],"meta":{}},{"ancestorTitles":["sunlit full-scene SVGs are not dark night art"],"fullName":"sunlit full-scene SVGs are not dark night art cover.svg keeps a bright overall palette","status":"passed","title":"cover.svg keeps a bright overall palette","duration":1.016300000000001,"failureMessages":[],"meta":{}},{"ancestorTitles":["sunlit full-scene SVGs are not dark night art"],"fullName":"sunlit full-scene SVGs are not dark night art background-meadow.svg keeps a bright overall palette","status":"passed","title":"background-meadow.svg keeps a bright overall palette","duration":0.6906000000000176,"failureMessages":[],"meta":{}},{"ancestorTitles":["sunlit full-scene SVGs are not dark night art"],"fullName":"sunlit full-scene SVGs are not dark night art background-roots.svg keeps a bright overall palette","status":"passed","title":"background-roots.svg keeps a bright overall palette","duration":0.49329999999997654,"failureMessages":[],"meta":{}},{"ancestorTitles":["sunlit full-scene SVGs are not dark night art"],"fullName":"sunlit full-scene SVGs are not dark night art background-marsh.svg keeps a bright overall palette","status":"passed","title":"background-marsh.svg keeps a bright overall palette","duration":0.4864000000000033,"failureMessages":[],"meta":{}},{"ancestorTitles":["sunlit full-scene SVGs are not dark night art"],"fullName":"sunlit full-scene SVGs are not dark night art background-amber.svg keeps a bright overall palette","status":"passed","title":"background-amber.svg keeps a bright overall palette","duration":0.5168999999999642,"failureMessages":[],"meta":{}},{"ancestorTitles":["scene palette exports stay available to the rest of the game"],"fullName":"scene palette exports stay available to the rest of the game exports the five owner HEX and numeric COLORS entries in owner order","status":"passed","title":"exports the five owner HEX and numeric COLORS entries in owner order","duration":0.7105999999999995,"failureMessages":[],"meta":{}}],"startTime":1792641223404,"endTime":1792641223448.7107,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/art.test.ts"},{"assertionResults":[{"ancestorTitles":["audio regressions"],"fullName":"audio regressions uses conservative defaults and returns detached serializable diagnostics","status":"passed","title":"uses conservative defaults and returns detached serializable diagnostics","duration":2.384100000000103,"failureMessages":[],"meta":{}},{"ancestorTitles":["audio regressions"],"fullName":"audio regressions retains the rolling burst history and admits new hits after expiry","status":"passed","title":"retains the rolling burst history and admits new hits after expiry","duration":0.9950999999999794,"failureMessages":[],"meta":{}},{"ancestorTitles":["audio regressions"],"fullName":"audio regressions cancels an in-flight switch when the currently playing track is requested again","status":"passed","title":"cancels an in-flight switch when the currently playing track is requested again","duration":1.232900000000086,"failureMessages":[],"meta":{}},{"ancestorTitles":["audio regressions"],"fullName":"audio regressions falls back honestly when OGG is missing","status":"passed","title":"falls back honestly when OGG is missing","duration":1.401399999999967,"failureMessages":[],"meta":{}},{"ancestorTitles":["audio regressions"],"fullName":"audio regressions falls back honestly when OGG is unsupported","status":"passed","title":"falls back honestly when OGG is unsupported","duration":0.5948999999999387,"failureMessages":[],"meta":{}},{"ancestorTitles":["audio regressions"],"fullName":"audio regressions reports the actual compressed decode without a fictitious WAV","status":"passed","title":"reports the actual compressed decode without a fictitious WAV","duration":0.44669999999996435,"failureMessages":[],"meta":{}}],"startTime":1792641223428,"endTime":1792641223434.595,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/audio.test.ts"},{"assertionResults":[{"ancestorTitles":["campaign geometry and ownership"],"fullName":"campaign geometry and ownership has thirteen distinct layouts, four biomes and legal factions","status":"passed","title":"has thirteen distinct layouts, four biomes and legal factions","duration":29.621399999999994,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 1 easy: five strategies <=600s","status":"passed","title":"level 1 easy: five strategies <=600s","duration":39.008800000000065,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 1 normal: five strategies <=600s","status":"passed","title":"level 1 normal: five strategies <=600s","duration":26.408999999999992,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 1 hard: five strategies <=600s","status":"passed","title":"level 1 hard: five strategies <=600s","duration":17.297900000000027,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 2 easy: five strategies <=600s","status":"passed","title":"level 2 easy: five strategies <=600s","duration":110.83339999999998,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 2 normal: five strategies <=600s","status":"passed","title":"level 2 normal: five strategies <=600s","duration":82.86180000000013,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 2 hard: five strategies <=600s","status":"passed","title":"level 2 hard: five strategies <=600s","duration":35.34349999999995,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 3 easy: five strategies <=600s","status":"passed","title":"level 3 easy: five strategies <=600s","duration":21.73960000000011,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 3 normal: five strategies <=600s","status":"passed","title":"level 3 normal: five strategies <=600s","duration":31.364299999999957,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 3 hard: five strategies <=600s","status":"passed","title":"level 3 hard: five strategies <=600s","duration":76.44820000000004,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 4 easy: five strategies <=600s","status":"passed","title":"level 4 easy: five strategies <=600s","duration":26.69380000000001,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 4 normal: five strategies <=600s","status":"passed","title":"level 4 normal: five strategies <=600s","duration":17.38909999999987,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 4 hard: five strategies <=600s","status":"passed","title":"level 4 hard: five strategies <=600s","duration":19.501199999999926,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 5 easy: five strategies <=600s","status":"passed","title":"level 5 easy: five strategies <=600s","duration":26.907000000000153,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 5 normal: five strategies <=600s","status":"passed","title":"level 5 normal: five strategies <=600s","duration":19.541500000000042,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 5 hard: five strategies <=600s","status":"passed","title":"level 5 hard: five strategies <=600s","duration":50.74720000000002,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 6 easy: five strategies <=600s","status":"passed","title":"level 6 easy: five strategies <=600s","duration":35.719299999999976,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 6 normal: five strategies <=600s","status":"passed","title":"level 6 normal: five strategies <=600s","duration":17.86200000000008,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 6 hard: five strategies <=600s","status":"passed","title":"level 6 hard: five strategies <=600s","duration":27.34120000000007,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 7 easy: five strategies <=600s","status":"passed","title":"level 7 easy: five strategies <=600s","duration":75.04130000000009,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 7 normal: five strategies <=600s","status":"passed","title":"level 7 normal: five strategies <=600s","duration":127.55870000000004,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 7 hard: five strategies <=600s","status":"passed","title":"level 7 hard: five strategies <=600s","duration":201.47030000000018,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 8 easy: five strategies <=600s","status":"passed","title":"level 8 easy: five strategies <=600s","duration":29.1413,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 8 normal: five strategies <=600s","status":"passed","title":"level 8 normal: five strategies <=600s","duration":39.178699999999935,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 8 hard: five strategies <=600s","status":"passed","title":"level 8 hard: five strategies <=600s","duration":166.6777000000002,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 9 easy: five strategies <=600s","status":"passed","title":"level 9 easy: five strategies <=600s","duration":27.672599999999875,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 9 normal: five strategies <=600s","status":"passed","title":"level 9 normal: five strategies <=600s","duration":31.778400000000147,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 9 hard: five strategies <=600s","status":"passed","title":"level 9 hard: five strategies <=600s","duration":47.735999999999876,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 10 easy: five strategies <=600s","status":"passed","title":"level 10 easy: five strategies <=600s","duration":181.0038999999997,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 10 normal: five strategies <=600s","status":"passed","title":"level 10 normal: five strategies <=600s","duration":181.42719999999963,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 10 hard: five strategies <=600s","status":"passed","title":"level 10 hard: five strategies <=600s","duration":162.47519999999986,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 11 easy: five strategies <=600s","status":"passed","title":"level 11 easy: five strategies <=600s","duration":58.9078999999997,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 11 normal: five strategies <=600s","status":"passed","title":"level 11 normal: five strategies <=600s","duration":72.59280000000035,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 11 hard: five strategies <=600s","status":"passed","title":"level 11 hard: five strategies <=600s","duration":85.12959999999975,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 12 easy: five strategies <=600s","status":"passed","title":"level 12 easy: five strategies <=600s","duration":171.58499999999958,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 12 normal: five strategies <=600s","status":"passed","title":"level 12 normal: five strategies <=600s","duration":98.77369999999974,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 12 hard: five strategies <=600s","status":"passed","title":"level 12 hard: five strategies <=600s","duration":106.1221999999998,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 13 easy: five strategies <=600s","status":"passed","title":"level 13 easy: five strategies <=600s","duration":140.60650000000032,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 13 normal: five strategies <=600s","status":"passed","title":"level 13 normal: five strategies <=600s","duration":109.1284999999998,"failureMessages":[],"meta":{}},{"ancestorTitles":["bounded campaign robot experiments"],"fullName":"bounded campaign robot experiments level 13 hard: five strategies <=600s","status":"passed","title":"level 13 hard: five strategies <=600s","duration":184.07279999999992,"failureMessages":[],"meta":{}},{"ancestorTitles":[],"fullName":"scans conservative Agile opening garrisons","status":"skipped","title":"scans conservative Agile opening garrisons","failureMessages":[],"meta":{}},{"ancestorTitles":[],"fullName":"tutorial tolerates six seconds without player orders on normal","status":"passed","title":"tutorial tolerates six seconds without player orders on normal","duration":3.5284999999998945,"failureMessages":[],"meta":{}},{"ancestorTitles":["campaign persistence"],"fullName":"campaign persistence recovers broken JSON, wrong versions and malformed results","status":"passed","title":"recovers broken JSON, wrong versions and malformed results","duration":3.4776999999999134,"failureMessages":[],"meta":{}},{"ancestorTitles":["campaign persistence"],"fullName":"campaign persistence round trips volume/mute/difficulty, clamps corrupt volume and resets","status":"passed","title":"round trips volume/mute/difficulty, clamps corrupt volume and resets","duration":1.196100000000115,"failureMessages":[],"meta":{}},{"ancestorTitles":["campaign persistence"],"fullName":"campaign persistence keeps best stars, then best time, independently for each race","status":"passed","title":"keeps best stars, then best time, independently for each race","duration":0.7535000000002583,"failureMessages":[],"meta":{}},{"ancestorTitles":["campaign persistence"],"fullName":"campaign persistence unlocks 13 stages and races, earns all achievements once and reloads","status":"passed","title":"unlocks 13 stages and races, earns all achievements once and reloads","duration":2.6688999999996668,"failureMessages":[],"meta":{}}],"startTime":1792641223504,"endTime":1792641226529.669,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/campaign.test.ts"},{"assertionResults":[{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation produces per second, never produces at cannon, no garrison cap","status":"passed","title":"produces per second, never produces at cannon, no garrison cap","duration":1.5568000000000666,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation has balanced, fast weak, and slow strong races","status":"passed","title":"has balanced, fast weak, and slow strong races","duration":0.23210000000005948,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation dispatches integer batches with deduplicated sources and friendly reinforcement","status":"passed","title":"dispatches integer batches with deduplicated sources and friendly reinforcement","duration":0.378400000000056,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation captures neutral and resolves multi-faction weighted combat","status":"passed","title":"captures neutral and resolves multi-faction weighted combat","duration":0.2626000000000204,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation cannons shoot enemy fleets without spending their garrison","status":"passed","title":"cannons shoot enemy fleets without spending their garrison","duration":0.5276000000000067,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation skill needs full energy, spares friendly and neutral, does not capture","status":"passed","title":"skill needs full energy, spares friendly and neutral, does not capture","duration":0.3162999999999556,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation counts hostile and friendly in-flight survivors for ending","status":"passed","title":"counts hostile and friendly in-flight survivors for ending","duration":0.47289999999998145,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation fixed stepping is frame-partition invariant and rejects invalid input","status":"passed","title":"fixed stepping is frame-partition invariant and rejects invalid input","duration":9.301999999999907,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation AI coordinates, accounts for incoming, keeps reserves and does not invent units","status":"passed","title":"AI coordinates, accounts for incoming, keeps reserves and does not invent units","duration":0.7398000000000593,"failureMessages":[],"meta":{}},{"ancestorTitles":["pure deterministic simulation"],"fullName":"pure deterministic simulation sanitizes initial extreme units and rates within 1–5","status":"passed","title":"sanitizes initial extreme units and rates within 1–5","duration":0.24060000000008586,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions counts lost buildings, not dead soldiers, and excludes neutral kills","status":"passed","title":"counts lost buildings, not dead soldiers, and excludes neutral kills","duration":0.21840000000008786,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions counts each building loss again after a recapture","status":"passed","title":"counts each building loss again after a recapture","duration":0.1751000000000431,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions does not count a repelled attack or skill casualties as a building loss","status":"passed","title":"does not count a repelled attack or skill casualties as a building loss","duration":0.13930000000004839,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions penalizes each lost building directly when rating","status":"passed","title":"penalizes each lost building directly when rating","duration":0.10969999999997526,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI reinforces in time and does not repeatedly duplicate the reinforcement","status":"passed","title":"AI reinforces in time and does not repeatedly duplicate the reinforcement","duration":0.3431000000000495,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI declines a reinforcement that cannot arrive before the attack","status":"passed","title":"AI declines a reinforcement that cannot arrive before the attack","duration":0.11670000000003711,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI includes production during travel, declining an impossible growing target","status":"passed","title":"AI includes production during travel, declining an impossible growing target","duration":0.5998000000000729,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI allocates sufficient troops for production during travel","status":"passed","title":"AI allocates sufficient troops for production during travel","duration":0.1528000000000702,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI uses multiple sources for an attack no single source can win","status":"passed","title":"AI uses multiple sources for an attack no single source can win","duration":0.13750000000004547,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI refreshes ownership between decisions and cannot use captured sources","status":"passed","title":"AI refreshes ownership between decisions and cannot use captured sources","duration":0.14409999999998035,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions AI values a productive nest over an otherwise equal empty nest","status":"passed","title":"AI values a productive nest over an otherwise equal empty nest","duration":0.09109999999998308,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions difficulty changes thinking cadence without production bonuses","status":"passed","title":"difficulty changes thinking cadence without production bonuses","duration":0.35770000000002256,"failureMessages":[],"meta":{}},{"ancestorTitles":["review regressions"],"fullName":"review regressions irregular frame partitions preserve AI, combat, energy, stats and events","status":"passed","title":"irregular frame partitions preserve AI, combat, energy, stats and events","duration":1.2469999999999573,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions clips the circle chord to the route and accounts for race speed","status":"passed","title":"clips the circle chord to the route and accounts for race speed","duration":0.1714999999999236,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions handles off-path, friendly, neutral and overlapping cannons","status":"passed","title":"handles off-path, friendly, neutral and overlapping cannons","duration":0.08780000000001564,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions does not dispatch repeatedly doomed small batches toward a cannon","status":"passed","title":"does not dispatch repeatedly doomed small batches toward a cannon","duration":0.32989999999995234,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions does not mistake doomed existing fleets for a successful projected capture","status":"passed","title":"does not mistake doomed existing fleets for a successful projected capture","duration":0.1312000000000353,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions uses only remaining route exposure for fleets already past a cannon","status":"passed","title":"uses only remaining route exposure for fleets already past a cannon","duration":0.10720000000003438,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions Strong accumulates then actually breaks through on easy without one-unit cannon loops","status":"passed","title":"Strong accumulates then actually breaks through on easy without one-unit cannon loops","duration":0.995900000000006,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions Strong accumulates then actually breaks through on normal without one-unit cannon loops","status":"passed","title":"Strong accumulates then actually breaks through on normal without one-unit cannon loops","duration":1.3993000000000393,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions Strong accumulates then actually breaks through on hard without one-unit cannon loops","status":"passed","title":"Strong accumulates then actually breaks through on hard without one-unit cannon loops","duration":0.6286000000000058,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions never uses late friendly inbound to cancel an imminent hostile threat","status":"passed","title":"never uses late friendly inbound to cancel an imminent hostile threat","duration":0.24149999999997362,"failureMessages":[],"meta":{}},{"ancestorTitles":["cannon-aware AI regressions"],"fullName":"cannon-aware AI regressions deducts production before distant inbound attacks instead of freezing all current troops","status":"passed","title":"deducts production before distant inbound attacks instead of freezing all current troops","duration":0.14870000000007622,"failureMessages":[],"meta":{}}],"startTime":1792641223437,"endTime":1792641223459.2415,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/core.test.ts"},{"assertionResults":[{"ancestorTitles":[],"fullName":"keeps normal garrisons exact and extreme HUD totals compact","status":"passed","title":"keeps normal garrisons exact and extreme HUD totals compact","duration":1.142599999999959,"failureMessages":[],"meta":{}}],"startTime":1792641223423,"endTime":1792641223424.1426,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/format.test.ts"},{"assertionResults":[{"ancestorTitles":[],"fullName":"low frequency onboarding matrix","status":"passed","title":"low frequency onboarding matrix","duration":100.75520000000006,"failureMessages":[],"meta":{}},{"ancestorTitles":[],"fullName":"grace is public, produces normally and thinks immediately at its boundary","status":"passed","title":"grace is public, produces normally and thinks immediately at its boundary","duration":2.0049000000000206,"failureMessages":[],"meta":{}},{"ancestorTitles":[],"fullName":"normal/easy limit offensive objectives, hard retains full planning","status":"passed","title":"normal/easy limit offensive objectives, hard retains full planning","duration":0.9239999999999782,"failureMessages":[],"meta":{}}],"startTime":1792641223501,"endTime":1792641223604.924,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/onboarding.test.ts"},{"assertionResults":[{"ancestorTitles":["storage failure hardening"],"fullName":"storage failure hardening survives a localStorage getter SecurityError, not just getItem errors","status":"passed","title":"survives a localStorage getter SecurityError, not just getItem errors","duration":1.304300000000012,"failureMessages":[],"meta":{}},{"ancestorTitles":["storage failure hardening"],"fullName":"storage failure hardening skips a null record without discarding later results and settings","status":"passed","title":"skips a null record without discarding later results and settings","duration":0.7467000000000326,"failureMessages":[],"meta":{}}],"startTime":1792641223423,"endTime":1792641223424.7466,"status":"passed","message":"","name":"C:/files/code/BugWar/tests/storage-hardening.test.ts"}]}
+{
+  "numTotalTestSuites": 28,
+  "numPassedTestSuites": 28,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 267,
+  "numPassedTests": 266,
+  "numFailedTests": 0,
+  "numPendingTests": 1,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1792657902329,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "formal art set"
+          ],
+          "fullName": "formal art set ships all 36 formal SVG files",
+          "status": "passed",
+          "title": "ships all 36 formal SVG files",
+          "duration": 1.1014999999999873,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal art set"
+          ],
+          "fullName": "formal art set cover.svg is the approved cover, byte-for-byte",
+          "status": "passed",
+          "title": "cover.svg is the approved cover, byte-for-byte",
+          "duration": 0.5925000000000864,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cover.svg",
+          "status": "passed",
+          "title": "cover.svg",
+          "duration": 0.6008000000000493,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox background-meadow.svg",
+          "status": "passed",
+          "title": "background-meadow.svg",
+          "duration": 0.31910000000004857,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox background-roots.svg",
+          "status": "passed",
+          "title": "background-roots.svg",
+          "duration": 0.24900000000002365,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox background-marsh.svg",
+          "status": "passed",
+          "title": "background-marsh.svg",
+          "duration": 0.2357000000000653,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox background-amber.svg",
+          "status": "passed",
+          "title": "background-amber.svg",
+          "duration": 0.21629999999993288,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox nest-0.svg",
+          "status": "passed",
+          "title": "nest-0.svg",
+          "duration": 0.1816000000000031,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cannon-0.svg",
+          "status": "passed",
+          "title": "cannon-0.svg",
+          "duration": 0.21450000000004366,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox nest-1.svg",
+          "status": "passed",
+          "title": "nest-1.svg",
+          "duration": 0.21630000000004657,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cannon-1.svg",
+          "status": "passed",
+          "title": "cannon-1.svg",
+          "duration": 0.15459999999995944,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox nest-2.svg",
+          "status": "passed",
+          "title": "nest-2.svg",
+          "duration": 0.14039999999999964,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cannon-2.svg",
+          "status": "passed",
+          "title": "cannon-2.svg",
+          "duration": 0.12840000000005602,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox nest-3.svg",
+          "status": "passed",
+          "title": "nest-3.svg",
+          "duration": 0.13369999999997617,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cannon-3.svg",
+          "status": "passed",
+          "title": "cannon-3.svg",
+          "duration": 0.12189999999998236,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox nest-4.svg",
+          "status": "passed",
+          "title": "nest-4.svg",
+          "duration": 0.11069999999995161,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cannon-4.svg",
+          "status": "passed",
+          "title": "cannon-4.svg",
+          "duration": 0.10559999999998126,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-0.svg",
+          "status": "passed",
+          "title": "bug-agile-0.svg",
+          "duration": 0.11690000000010059,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-1.svg",
+          "status": "passed",
+          "title": "bug-agile-1.svg",
+          "duration": 0.11649999999997362,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-2.svg",
+          "status": "passed",
+          "title": "bug-agile-2.svg",
+          "duration": 0.11710000000005039,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-3.svg",
+          "status": "passed",
+          "title": "bug-agile-3.svg",
+          "duration": 0.12149999999996908,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-4.svg",
+          "status": "passed",
+          "title": "bug-agile-4.svg",
+          "duration": 0.11310000000003129,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-0.svg",
+          "status": "passed",
+          "title": "bug-fast-0.svg",
+          "duration": 0.12340000000006057,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-1.svg",
+          "status": "passed",
+          "title": "bug-fast-1.svg",
+          "duration": 0.12590000000000146,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-2.svg",
+          "status": "passed",
+          "title": "bug-fast-2.svg",
+          "duration": 0.11990000000002965,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-3.svg",
+          "status": "passed",
+          "title": "bug-fast-3.svg",
+          "duration": 0.12330000000008567,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-4.svg",
+          "status": "passed",
+          "title": "bug-fast-4.svg",
+          "duration": 0.12059999999996762,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-0.svg",
+          "status": "passed",
+          "title": "bug-strong-0.svg",
+          "duration": 0.1268999999999778,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-1.svg",
+          "status": "passed",
+          "title": "bug-strong-1.svg",
+          "duration": 0.1252999999999247,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-2.svg",
+          "status": "passed",
+          "title": "bug-strong-2.svg",
+          "duration": 0.12030000000004293,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-3.svg",
+          "status": "passed",
+          "title": "bug-strong-3.svg",
+          "duration": 0.15359999999998308,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-4.svg",
+          "status": "passed",
+          "title": "bug-strong-4.svg",
+          "duration": 0.14830000000006294,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox nest.svg",
+          "status": "passed",
+          "title": "nest.svg",
+          "duration": 0.12419999999997344,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox cannon.svg",
+          "status": "passed",
+          "title": "cannon.svg",
+          "duration": 0.12149999999996908,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile.svg",
+          "status": "passed",
+          "title": "bug-agile.svg",
+          "duration": 0.13430000000005293,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast.svg",
+          "status": "passed",
+          "title": "bug-fast.svg",
+          "duration": 0.1654999999999518,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong.svg",
+          "status": "passed",
+          "title": "bug-strong.svg",
+          "duration": 0.14390000000003056,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox emblem.svg",
+          "status": "passed",
+          "title": "emblem.svg",
+          "duration": 0.19319999999993342,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-0.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-agile-0.svg is a 96x32 four-frame sheet",
+          "duration": 0.2660999999999376,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-1.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-agile-1.svg is a 96x32 four-frame sheet",
+          "duration": 0.16620000000000346,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-2.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-agile-2.svg is a 96x32 four-frame sheet",
+          "duration": 0.15489999999999782,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-3.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-agile-3.svg is a 96x32 four-frame sheet",
+          "duration": 0.15070000000002892,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-agile-4.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-agile-4.svg is a 96x32 four-frame sheet",
+          "duration": 0.17090000000007421,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-0.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-fast-0.svg is a 96x32 four-frame sheet",
+          "duration": 0.155399999999986,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-1.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-fast-1.svg is a 96x32 four-frame sheet",
+          "duration": 0.14589999999998327,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-2.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-fast-2.svg is a 96x32 four-frame sheet",
+          "duration": 0.17090000000007421,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-3.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-fast-3.svg is a 96x32 four-frame sheet",
+          "duration": 0.16430000000002565,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-fast-4.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-fast-4.svg is a 96x32 four-frame sheet",
+          "duration": 0.16870000000005803,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-0.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-strong-0.svg is a 96x32 four-frame sheet",
+          "duration": 0.17670000000009622,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-1.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-strong-1.svg is a 96x32 four-frame sheet",
+          "duration": 0.16290000000003602,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-2.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-strong-2.svg is a 96x32 four-frame sheet",
+          "duration": 0.18450000000007094,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-3.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-strong-3.svg is a 96x32 four-frame sheet",
+          "duration": 0.1613999999999578,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG dimensions and viewBox"
+          ],
+          "fullName": "formal SVG dimensions and viewBox bug-strong-4.svg is a 96x32 four-frame sheet",
+          "status": "passed",
+          "title": "bug-strong-4.svg is a 96x32 four-frame sheet",
+          "duration": 0.15699999999992542,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained background-amber.svg",
+          "status": "passed",
+          "title": "background-amber.svg",
+          "duration": 1.000599999999963,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained background-marsh.svg",
+          "status": "passed",
+          "title": "background-marsh.svg",
+          "duration": 0.5022000000000162,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained background-meadow.svg",
+          "status": "passed",
+          "title": "background-meadow.svg",
+          "duration": 0.5570999999999913,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained background-roots.svg",
+          "status": "passed",
+          "title": "background-roots.svg",
+          "duration": 0.5027000000000044,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-agile-0.svg",
+          "status": "passed",
+          "title": "bug-agile-0.svg",
+          "duration": 0.3342999999999847,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-agile-1.svg",
+          "status": "passed",
+          "title": "bug-agile-1.svg",
+          "duration": 0.2960999999999103,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-agile-2.svg",
+          "status": "passed",
+          "title": "bug-agile-2.svg",
+          "duration": 0.3165000000000191,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-agile-3.svg",
+          "status": "passed",
+          "title": "bug-agile-3.svg",
+          "duration": 0.26470000000006166,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-agile-4.svg",
+          "status": "passed",
+          "title": "bug-agile-4.svg",
+          "duration": 0.27569999999991524,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-agile.svg",
+          "status": "passed",
+          "title": "bug-agile.svg",
+          "duration": 0.268100000000004,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-fast-0.svg",
+          "status": "passed",
+          "title": "bug-fast-0.svg",
+          "duration": 0.25660000000004857,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-fast-1.svg",
+          "status": "passed",
+          "title": "bug-fast-1.svg",
+          "duration": 0.23669999999992797,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-fast-2.svg",
+          "status": "passed",
+          "title": "bug-fast-2.svg",
+          "duration": 0.22889999999995325,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-fast-3.svg",
+          "status": "passed",
+          "title": "bug-fast-3.svg",
+          "duration": 0.22450000000003456,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-fast-4.svg",
+          "status": "passed",
+          "title": "bug-fast-4.svg",
+          "duration": 0.26310000000000855,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-fast.svg",
+          "status": "passed",
+          "title": "bug-fast.svg",
+          "duration": 0.23220000000003438,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-strong-0.svg",
+          "status": "passed",
+          "title": "bug-strong-0.svg",
+          "duration": 0.24939999999992324,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-strong-1.svg",
+          "status": "passed",
+          "title": "bug-strong-1.svg",
+          "duration": 0.26549999999997453,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-strong-2.svg",
+          "status": "passed",
+          "title": "bug-strong-2.svg",
+          "duration": 0.24670000000003256,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-strong-3.svg",
+          "status": "passed",
+          "title": "bug-strong-3.svg",
+          "duration": 0.22849999999993997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-strong-4.svg",
+          "status": "passed",
+          "title": "bug-strong-4.svg",
+          "duration": 0.25110000000006494,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained bug-strong.svg",
+          "status": "passed",
+          "title": "bug-strong.svg",
+          "duration": 0.2574000000000751,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cannon-0.svg",
+          "status": "passed",
+          "title": "cannon-0.svg",
+          "duration": 0.3038999999999987,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cannon-1.svg",
+          "status": "passed",
+          "title": "cannon-1.svg",
+          "duration": 0.21450000000004366,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cannon-2.svg",
+          "status": "passed",
+          "title": "cannon-2.svg",
+          "duration": 0.19889999999998054,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cannon-3.svg",
+          "status": "passed",
+          "title": "cannon-3.svg",
+          "duration": 0.1897999999999911,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cannon-4.svg",
+          "status": "passed",
+          "title": "cannon-4.svg",
+          "duration": 0.22709999999995034,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cannon.svg",
+          "status": "passed",
+          "title": "cannon.svg",
+          "duration": 0.49049999999999727,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained cover.svg",
+          "status": "passed",
+          "title": "cover.svg",
+          "duration": 0.5811000000001059,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained emblem.svg",
+          "status": "passed",
+          "title": "emblem.svg",
+          "duration": 0.5029999999999291,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained nest-0.svg",
+          "status": "passed",
+          "title": "nest-0.svg",
+          "duration": 0.4196999999999207,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained nest-1.svg",
+          "status": "passed",
+          "title": "nest-1.svg",
+          "duration": 0.664600000000064,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained nest-2.svg",
+          "status": "passed",
+          "title": "nest-2.svg",
+          "duration": 0.46649999999999636,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained nest-3.svg",
+          "status": "passed",
+          "title": "nest-3.svg",
+          "duration": 0.49509999999997945,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained nest-4.svg",
+          "status": "passed",
+          "title": "nest-4.svg",
+          "duration": 0.5285999999999831,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "formal SVG markup is self-contained"
+          ],
+          "fullName": "formal SVG markup is self-contained nest.svg",
+          "status": "passed",
+          "title": "nest.svg",
+          "duration": 0.46860000000003765,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "default UI SVG files match the documented owner variant"
+          ],
+          "fullName": "default UI SVG files match the documented owner variant nest.svg equals nest-0.svg",
+          "status": "passed",
+          "title": "nest.svg equals nest-0.svg",
+          "duration": 1.0595999999999322,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "default UI SVG files match the documented owner variant"
+          ],
+          "fullName": "default UI SVG files match the documented owner variant cannon.svg equals cannon-0.svg",
+          "status": "passed",
+          "title": "cannon.svg equals cannon-0.svg",
+          "duration": 0.8052999999999884,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "default UI SVG files match the documented owner variant"
+          ],
+          "fullName": "default UI SVG files match the documented owner variant bug-agile.svg equals bug-agile-1.svg",
+          "status": "passed",
+          "title": "bug-agile.svg equals bug-agile-1.svg",
+          "duration": 0.5874000000000024,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "default UI SVG files match the documented owner variant"
+          ],
+          "fullName": "default UI SVG files match the documented owner variant bug-fast.svg equals bug-fast-1.svg",
+          "status": "passed",
+          "title": "bug-fast.svg equals bug-fast-1.svg",
+          "duration": 0.5243000000000393,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "default UI SVG files match the documented owner variant"
+          ],
+          "fullName": "default UI SVG files match the documented owner variant bug-strong.svg equals bug-strong-1.svg",
+          "status": "passed",
+          "title": "bug-strong.svg equals bug-strong-1.svg",
+          "duration": 0.5163000000000011,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "owner variants carry a substantial, distinct body colour"
+          ],
+          "fullName": "owner variants carry a substantial, distinct body colour nest uses five visibly different owner colours",
+          "status": "passed",
+          "title": "nest uses five visibly different owner colours",
+          "duration": 5.891399999999976,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "owner variants carry a substantial, distinct body colour"
+          ],
+          "fullName": "owner variants carry a substantial, distinct body colour cannon uses five visibly different owner colours",
+          "status": "passed",
+          "title": "cannon uses five visibly different owner colours",
+          "duration": 2.6596000000000686,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "owner variants carry a substantial, distinct body colour"
+          ],
+          "fullName": "owner variants carry a substantial, distinct body colour bug-agile uses five visibly different owner colours",
+          "status": "passed",
+          "title": "bug-agile uses five visibly different owner colours",
+          "duration": 4.349699999999984,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "owner variants carry a substantial, distinct body colour"
+          ],
+          "fullName": "owner variants carry a substantial, distinct body colour bug-fast uses five visibly different owner colours",
+          "status": "passed",
+          "title": "bug-fast uses five visibly different owner colours",
+          "duration": 3.9026999999999816,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "owner variants carry a substantial, distinct body colour"
+          ],
+          "fullName": "owner variants carry a substantial, distinct body colour bug-strong uses five visibly different owner colours",
+          "status": "passed",
+          "title": "bug-strong uses five visibly different owner colours",
+          "duration": 2.7633999999999332,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "sunlit full-scene SVGs are not dark night art"
+          ],
+          "fullName": "sunlit full-scene SVGs are not dark night art cover.svg keeps a bright overall palette",
+          "status": "passed",
+          "title": "cover.svg keeps a bright overall palette",
+          "duration": 0.9820999999999458,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "sunlit full-scene SVGs are not dark night art"
+          ],
+          "fullName": "sunlit full-scene SVGs are not dark night art background-meadow.svg keeps a bright overall palette",
+          "status": "passed",
+          "title": "background-meadow.svg keeps a bright overall palette",
+          "duration": 0.803299999999922,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "sunlit full-scene SVGs are not dark night art"
+          ],
+          "fullName": "sunlit full-scene SVGs are not dark night art background-roots.svg keeps a bright overall palette",
+          "status": "passed",
+          "title": "background-roots.svg keeps a bright overall palette",
+          "duration": 0.5888999999999669,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "sunlit full-scene SVGs are not dark night art"
+          ],
+          "fullName": "sunlit full-scene SVGs are not dark night art background-marsh.svg keeps a bright overall palette",
+          "status": "passed",
+          "title": "background-marsh.svg keeps a bright overall palette",
+          "duration": 0.5085000000000264,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "sunlit full-scene SVGs are not dark night art"
+          ],
+          "fullName": "sunlit full-scene SVGs are not dark night art background-amber.svg keeps a bright overall palette",
+          "status": "passed",
+          "title": "background-amber.svg keeps a bright overall palette",
+          "duration": 0.553600000000074,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "scene palette exports stay available to the rest of the game"
+          ],
+          "fullName": "scene palette exports stay available to the rest of the game exports the five owner HEX and numeric COLORS entries in owner order",
+          "status": "passed",
+          "title": "exports the five owner HEX and numeric COLORS entries in owner order",
+          "duration": 0.9520999999999731,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903012,
+      "endTime": 1792657903063.9521,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/art.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "audio regressions"
+          ],
+          "fullName": "audio regressions uses conservative defaults and returns detached serializable diagnostics",
+          "status": "passed",
+          "title": "uses conservative defaults and returns detached serializable diagnostics",
+          "duration": 2.2959999999999923,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "audio regressions"
+          ],
+          "fullName": "audio regressions retains the rolling burst history and admits new hits after expiry",
+          "status": "passed",
+          "title": "retains the rolling burst history and admits new hits after expiry",
+          "duration": 0.8944999999999936,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "audio regressions"
+          ],
+          "fullName": "audio regressions falls back honestly when OGG is missing",
+          "status": "passed",
+          "title": "falls back honestly when OGG is missing",
+          "duration": 3.3980999999999995,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "audio regressions"
+          ],
+          "fullName": "audio regressions falls back honestly when OGG is unsupported",
+          "status": "passed",
+          "title": "falls back honestly when OGG is unsupported",
+          "duration": 1.168200000000013,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "audio regressions"
+          ],
+          "fullName": "audio regressions reports the actual compressed decode without a fictitious WAV",
+          "status": "passed",
+          "title": "reports the actual compressed decode without a fictitious WAV",
+          "duration": 0.6281000000000176,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903031,
+      "endTime": 1792657903039.6282,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/audio.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "campaign geometry and ownership"
+          ],
+          "fullName": "campaign geometry and ownership has thirteen distinct layouts, four biomes and legal factions",
+          "status": "passed",
+          "title": "has thirteen distinct layouts, four biomes and legal factions",
+          "duration": 19.81669999999997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 1 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 1 easy: five strategies <=600s",
+          "duration": 26.541099999999915,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 1 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 1 normal: five strategies <=600s",
+          "duration": 19.468799999999987,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 1 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 1 hard: five strategies <=600s",
+          "duration": 21.775999999999954,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 2 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 2 easy: five strategies <=600s",
+          "duration": 103.19169999999997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 2 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 2 normal: five strategies <=600s",
+          "duration": 87.13110000000006,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 2 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 2 hard: five strategies <=600s",
+          "duration": 50.57910000000004,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 3 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 3 easy: five strategies <=600s",
+          "duration": 20.679000000000087,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 3 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 3 normal: five strategies <=600s",
+          "duration": 30.087200000000166,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 3 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 3 hard: five strategies <=600s",
+          "duration": 72.08320000000003,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 4 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 4 easy: five strategies <=600s",
+          "duration": 24.620200000000068,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 4 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 4 normal: five strategies <=600s",
+          "duration": 18.13610000000017,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 4 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 4 hard: five strategies <=600s",
+          "duration": 18.780500000000075,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 5 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 5 easy: five strategies <=600s",
+          "duration": 27.33199999999988,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 5 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 5 normal: five strategies <=600s",
+          "duration": 20.268600000000106,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 5 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 5 hard: five strategies <=600s",
+          "duration": 52.201300000000174,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 6 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 6 easy: five strategies <=600s",
+          "duration": 36.33860000000004,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 6 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 6 normal: five strategies <=600s",
+          "duration": 17.719299999999976,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 6 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 6 hard: five strategies <=600s",
+          "duration": 27.789099999999962,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 7 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 7 easy: five strategies <=600s",
+          "duration": 75.70530000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 7 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 7 normal: five strategies <=600s",
+          "duration": 114.68129999999996,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 7 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 7 hard: five strategies <=600s",
+          "duration": 183.29200000000014,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 8 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 8 easy: five strategies <=600s",
+          "duration": 26.028600000000097,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 8 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 8 normal: five strategies <=600s",
+          "duration": 32.106899999999996,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 8 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 8 hard: five strategies <=600s",
+          "duration": 150.61390000000006,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 9 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 9 easy: five strategies <=600s",
+          "duration": 26.17970000000014,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 9 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 9 normal: five strategies <=600s",
+          "duration": 26.580900000000156,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 9 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 9 hard: five strategies <=600s",
+          "duration": 43.31770000000006,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 10 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 10 easy: five strategies <=600s",
+          "duration": 154.1868999999997,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 10 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 10 normal: five strategies <=600s",
+          "duration": 174.42869999999994,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 10 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 10 hard: five strategies <=600s",
+          "duration": 140.38540000000012,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 11 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 11 easy: five strategies <=600s",
+          "duration": 41.20060000000012,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 11 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 11 normal: five strategies <=600s",
+          "duration": 51.22400000000016,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 11 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 11 hard: five strategies <=600s",
+          "duration": 58.10850000000028,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 12 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 12 easy: five strategies <=600s",
+          "duration": 67.47649999999976,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 12 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 12 normal: five strategies <=600s",
+          "duration": 42.58550000000014,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 12 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 12 hard: five strategies <=600s",
+          "duration": 50.935199999999895,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 13 easy: five strategies <=600s",
+          "status": "passed",
+          "title": "level 13 easy: five strategies <=600s",
+          "duration": 59.665899999999965,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 13 normal: five strategies <=600s",
+          "status": "passed",
+          "title": "level 13 normal: five strategies <=600s",
+          "duration": 49.009900000000016,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "bounded campaign robot experiments"
+          ],
+          "fullName": "bounded campaign robot experiments level 13 hard: five strategies <=600s",
+          "status": "passed",
+          "title": "level 13 hard: five strategies <=600s",
+          "duration": 151.67270000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "scans conservative Agile opening garrisons",
+          "status": "skipped",
+          "title": "scans conservative Agile opening garrisons",
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "tutorial tolerates six seconds without player orders on normal",
+          "status": "passed",
+          "title": "tutorial tolerates six seconds without player orders on normal",
+          "duration": 2.583600000000388,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "campaign persistence"
+          ],
+          "fullName": "campaign persistence recovers broken JSON, wrong versions and malformed results",
+          "status": "passed",
+          "title": "recovers broken JSON, wrong versions and malformed results",
+          "duration": 2.3015000000000327,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "campaign persistence"
+          ],
+          "fullName": "campaign persistence round trips volume/mute/difficulty, clamps corrupt volume and resets",
+          "status": "passed",
+          "title": "round trips volume/mute/difficulty, clamps corrupt volume and resets",
+          "duration": 1.11200000000008,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "campaign persistence"
+          ],
+          "fullName": "campaign persistence keeps best stars, then best time, independently for each race",
+          "status": "passed",
+          "title": "keeps best stars, then best time, independently for each race",
+          "duration": 0.6355000000003201,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "campaign persistence"
+          ],
+          "fullName": "campaign persistence unlocks 13 stages and races, earns all achievements once and reloads",
+          "status": "passed",
+          "title": "unlocks 13 stages and races, earns all achievements once and reloads",
+          "duration": 2.994999999999891,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903118,
+      "endTime": 1792657905543.995,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/campaign.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation produces per second, never produces at cannon, no garrison cap",
+          "status": "passed",
+          "title": "produces per second, never produces at cannon, no garrison cap",
+          "duration": 2.868000000000052,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation has balanced, fast weak, and slow strong races",
+          "status": "passed",
+          "title": "has balanced, fast weak, and slow strong races",
+          "duration": 0.6610999999999194,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation dispatches integer batches with deduplicated sources and friendly reinforcement",
+          "status": "passed",
+          "title": "dispatches integer batches with deduplicated sources and friendly reinforcement",
+          "duration": 0.8052000000000135,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation captures neutral and resolves multi-faction weighted combat",
+          "status": "passed",
+          "title": "captures neutral and resolves multi-faction weighted combat",
+          "duration": 0.47270000000003165,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation cannons shoot enemy fleets without spending their garrison",
+          "status": "passed",
+          "title": "cannons shoot enemy fleets without spending their garrison",
+          "duration": 1.0452999999999975,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation skill needs full energy, spares friendly and neutral, does not capture",
+          "status": "passed",
+          "title": "skill needs full energy, spares friendly and neutral, does not capture",
+          "duration": 2.233799999999974,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation counts hostile and friendly in-flight survivors for ending",
+          "status": "passed",
+          "title": "counts hostile and friendly in-flight survivors for ending",
+          "duration": 1.5383000000000493,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation fixed stepping is frame-partition invariant and rejects invalid input",
+          "status": "passed",
+          "title": "fixed stepping is frame-partition invariant and rejects invalid input",
+          "duration": 14.802099999999996,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation AI coordinates, accounts for incoming, keeps reserves and does not invent units",
+          "status": "passed",
+          "title": "AI coordinates, accounts for incoming, keeps reserves and does not invent units",
+          "duration": 0.8848999999999023,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "pure deterministic simulation"
+          ],
+          "fullName": "pure deterministic simulation sanitizes initial extreme units and rates within 1–5",
+          "status": "passed",
+          "title": "sanitizes initial extreme units and rates within 1–5",
+          "duration": 0.2726999999999862,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions counts lost buildings, not dead soldiers, and excludes neutral kills",
+          "status": "passed",
+          "title": "counts lost buildings, not dead soldiers, and excludes neutral kills",
+          "duration": 0.35019999999997253,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions counts each building loss again after a recapture",
+          "status": "passed",
+          "title": "counts each building loss again after a recapture",
+          "duration": 0.1774000000000342,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions does not count a repelled attack or skill casualties as a building loss",
+          "status": "passed",
+          "title": "does not count a repelled attack or skill casualties as a building loss",
+          "duration": 0.1087999999999738,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions penalizes each lost building directly when rating",
+          "status": "passed",
+          "title": "penalizes each lost building directly when rating",
+          "duration": 0.08789999999999054,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI reinforces in time and does not repeatedly duplicate the reinforcement",
+          "status": "passed",
+          "title": "AI reinforces in time and does not repeatedly duplicate the reinforcement",
+          "duration": 0.6707999999999856,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI declines a reinforcement that cannot arrive before the attack",
+          "status": "passed",
+          "title": "AI declines a reinforcement that cannot arrive before the attack",
+          "duration": 0.12800000000004275,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI includes production during travel, declining an impossible growing target",
+          "status": "passed",
+          "title": "AI includes production during travel, declining an impossible growing target",
+          "duration": 0.7042999999999893,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI allocates sufficient troops for production during travel",
+          "status": "passed",
+          "title": "AI allocates sufficient troops for production during travel",
+          "duration": 0.5389000000000124,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI uses multiple sources for an attack no single source can win",
+          "status": "passed",
+          "title": "AI uses multiple sources for an attack no single source can win",
+          "duration": 0.1956000000000131,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI refreshes ownership between decisions and cannot use captured sources",
+          "status": "passed",
+          "title": "AI refreshes ownership between decisions and cannot use captured sources",
+          "duration": 0.16589999999996508,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions AI values a productive nest over an otherwise equal empty nest",
+          "status": "passed",
+          "title": "AI values a productive nest over an otherwise equal empty nest",
+          "duration": 0.1250999999999749,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions difficulty changes thinking cadence without production bonuses",
+          "status": "passed",
+          "title": "difficulty changes thinking cadence without production bonuses",
+          "duration": 0.6173000000000002,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "review regressions"
+          ],
+          "fullName": "review regressions irregular frame partitions preserve AI, combat, energy, stats and events",
+          "status": "passed",
+          "title": "irregular frame partitions preserve AI, combat, energy, stats and events",
+          "duration": 1.7550999999999704,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions clips the circle chord to the route and accounts for race speed",
+          "status": "passed",
+          "title": "clips the circle chord to the route and accounts for race speed",
+          "duration": 0.24220000000002528,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions handles off-path, friendly, neutral and overlapping cannons",
+          "status": "passed",
+          "title": "handles off-path, friendly, neutral and overlapping cannons",
+          "duration": 0.12060000000008131,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions does not dispatch repeatedly doomed small batches toward a cannon",
+          "status": "passed",
+          "title": "does not dispatch repeatedly doomed small batches toward a cannon",
+          "duration": 0.4781999999999016,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions does not mistake doomed existing fleets for a successful projected capture",
+          "status": "passed",
+          "title": "does not mistake doomed existing fleets for a successful projected capture",
+          "duration": 0.13879999999994652,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions uses only remaining route exposure for fleets already past a cannon",
+          "status": "passed",
+          "title": "uses only remaining route exposure for fleets already past a cannon",
+          "duration": 0.13060000000007221,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions Strong accumulates then actually breaks through on easy without one-unit cannon loops",
+          "status": "passed",
+          "title": "Strong accumulates then actually breaks through on easy without one-unit cannon loops",
+          "duration": 2.1782000000000608,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions Strong accumulates then actually breaks through on normal without one-unit cannon loops",
+          "status": "passed",
+          "title": "Strong accumulates then actually breaks through on normal without one-unit cannon loops",
+          "duration": 2.6843999999999824,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions Strong accumulates then actually breaks through on hard without one-unit cannon loops",
+          "status": "passed",
+          "title": "Strong accumulates then actually breaks through on hard without one-unit cannon loops",
+          "duration": 0.9888999999999442,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions never uses late friendly inbound to cancel an imminent hostile threat",
+          "status": "passed",
+          "title": "never uses late friendly inbound to cancel an imminent hostile threat",
+          "duration": 0.2960000000000491,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "cannon-aware AI regressions"
+          ],
+          "fullName": "cannon-aware AI regressions deducts production before distant inbound attacks instead of freezing all current troops",
+          "status": "passed",
+          "title": "deducts production before distant inbound attacks instead of freezing all current troops",
+          "duration": 0.20580000000006748,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903042,
+      "endTime": 1792657903081.296,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/core.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "keeps normal garrisons exact and extreme HUD totals compact",
+          "status": "passed",
+          "title": "keeps normal garrisons exact and extreme HUD totals compact",
+          "duration": 1.0500000000000114,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903024,
+      "endTime": 1792657903025.05,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/format.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector maps all four acts and gives level 13 its own finale",
+          "status": "passed",
+          "title": "maps all four acts and gives level 13 its own finale",
+          "duration": 2.28449999999998,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector does not treat one starting nest or initial imbalance as crisis",
+          "status": "passed",
+          "title": "does not treat one starting nest or initial imbalance as crisis",
+          "duration": 0.7744999999999891,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector aggregates all enemy factions, escalates pressure, then recovers at idle",
+          "status": "passed",
+          "title": "aggregates all enemy factions, escalates pressure, then recovers at idle",
+          "duration": 0.7155999999999949,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector ignores neutral strength and rejects a single small collision",
+          "status": "passed",
+          "title": "ignores neutral strength and rejects a single small collision",
+          "duration": 0.3628999999999678,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector smooths input and enforces minimum eight-second layer residence",
+          "status": "passed",
+          "title": "smooths input and enforces minimum eight-second layer residence",
+          "duration": 0.2878000000000043,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector freezes while paused and discards resume gaps even without paused ticks",
+          "status": "passed",
+          "title": "freezes while paused and discards resume gaps even without paused ticks",
+          "duration": 0.9363999999999919,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector resets retries, releases pause, and prevents result overwrite by stale ticks",
+          "status": "passed",
+          "title": "resets retries, releases pause, and prevents result overwrite by stale ticks",
+          "duration": 0.9079000000000406,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector reads frozen world without mutation and keeps extreme inputs serializable",
+          "status": "passed",
+          "title": "reads frozen world without mutation and keeps extreme inputs serializable",
+          "duration": 1.0195999999999685,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "MusicDirector"
+          ],
+          "fullName": "MusicDirector detects sustained engagement and recent territorial loss without transient event buffers",
+          "status": "passed",
+          "title": "detects sustained engagement and recent territorial loss without transient event buffers",
+          "duration": 0.3697999999999979,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903040,
+      "endTime": 1792657903047.3699,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/music-director.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "low frequency onboarding matrix",
+          "status": "passed",
+          "title": "low frequency onboarding matrix",
+          "duration": 77.70159999999998,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "grace is public, produces normally and thinks immediately at its boundary",
+          "status": "passed",
+          "title": "grace is public, produces normally and thinks immediately at its boundary",
+          "duration": 1.161899999999946,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [],
+          "fullName": "normal/easy limit offensive objectives, hard retains full planning",
+          "status": "passed",
+          "title": "normal/easy limit offensive objectives, hard retains full planning",
+          "duration": 0.6005999999999858,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903042,
+      "endTime": 1792657903121.6006,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/onboarding.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score contains exactly eight themes, eighteen logical stems and both codecs, not stale synthetic masters",
+          "status": "passed",
+          "title": "contains exactly eight themes, eighteen logical stems and both codecs, not stale synthetic masters",
+          "duration": 3.544499999999971,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-menu.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-menu.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.6159000000000106,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-menu.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-menu.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.7667999999999893,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-meadow-base.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-meadow-base.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.358000000000061,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-meadow-base.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-meadow-base.mp3 is a real non-placeholder local compressed asset",
+          "duration": 4.452099999999973,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-meadow-motion.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-meadow-motion.ogg is a real non-placeholder local compressed asset",
+          "duration": 2.380200000000059,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-meadow-motion.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-meadow-motion.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.7233000000001084,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-meadow-power.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-meadow-power.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.0498000000000047,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-meadow-power.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-meadow-power.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.5492000000000417,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-roots-base.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-roots-base.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.3318000000000438,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-roots-base.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-roots-base.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.639699999999948,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-roots-motion.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-roots-motion.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.9044999999999845,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-roots-motion.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-roots-motion.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.2720000000000482,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-roots-power.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-roots-power.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.9049999999999727,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-roots-power.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-roots-power.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.5061000000000604,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-marsh-base.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-marsh-base.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.0541999999999234,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-marsh-base.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-marsh-base.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.2769000000000688,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-marsh-motion.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-marsh-motion.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.9248999999999796,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-marsh-motion.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-marsh-motion.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.316500000000019,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-marsh-power.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-marsh-power.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.8528999999999769,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-marsh-power.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-marsh-power.mp3 is a real non-placeholder local compressed asset",
+          "duration": 2.1521000000000186,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-amber-base.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-amber-base.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.8264000000000351,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-amber-base.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-amber-base.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.3787000000000944,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-amber-motion.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-amber-motion.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.1345000000000027,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-amber-motion.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-amber-motion.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.469699999999989,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-amber-power.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-amber-power.ogg is a real non-placeholder local compressed asset",
+          "duration": 1.0652000000000044,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-amber-power.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-amber-power.mp3 is a real non-placeholder local compressed asset",
+          "duration": 0.8958999999999833,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-finale-base.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-finale-base.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.7536999999999807,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-finale-base.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-finale-base.mp3 is a real non-placeholder local compressed asset",
+          "duration": 0.875699999999938,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-finale-motion.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-finale-motion.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.6531999999999698,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-finale-motion.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-finale-motion.mp3 is a real non-placeholder local compressed asset",
+          "duration": 0.778699999999958,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-finale-power.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-finale-power.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.9191999999999325,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-finale-power.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-finale-power.mp3 is a real non-placeholder local compressed asset",
+          "duration": 1.1055999999999813,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-victory.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-victory.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.36760000000003856,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-victory.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-victory.mp3 is a real non-placeholder local compressed asset",
+          "duration": 0.3509000000000242,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-defeat.ogg is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-defeat.ogg is a real non-placeholder local compressed asset",
+          "duration": 0.7664999999999509,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score music-defeat.mp3 is a real non-placeholder local compressed asset",
+          "status": "passed",
+          "title": "music-defeat.mp3 is a real non-placeholder local compressed asset",
+          "duration": 0.7576000000000249,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score does not distribute repeated placeholders under different music names",
+          "status": "passed",
+          "title": "does not distribute repeated placeholders under different music names",
+          "duration": 70.14350000000002,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved capture sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved capture sound effect byte-for-byte",
+          "duration": 0.6277999999999793,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved click sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved click sound effect byte-for-byte",
+          "duration": 0.3807000000000471,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved dispatch sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved dispatch sound effect byte-for-byte",
+          "duration": 0.36559999999997217,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved hover sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved hover sound effect byte-for-byte",
+          "duration": 0.25649999999996,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved impact sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved impact sound effect byte-for-byte",
+          "duration": 0.2640999999999849,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved march sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved march sound effect byte-for-byte",
+          "duration": 0.27490000000000236,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved select sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved select sound effect byte-for-byte",
+          "duration": 0.185799999999972,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score preserves the approved skill sound effect byte-for-byte",
+          "status": "passed",
+          "title": "preserves the approved skill sound effect byte-for-byte",
+          "duration": 0.2557999999999083,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score ships pinned recorded-source provenance and the exact rendering script hash",
+          "status": "passed",
+          "title": "ships pinned recorded-source provenance and the exact rendering script hash",
+          "duration": 1.0396999999999252,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score binds all delivered codec bytes and exact lengths to the production manifest",
+          "status": "passed",
+          "title": "binds all delivered codec bytes and exact lengths to the production manifest",
+          "duration": 71.75450000000001,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score victory actually plays its final tonic before the release bar",
+          "status": "passed",
+          "title": "victory actually plays its final tonic before the release bar",
+          "duration": 0.45240000000001146,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score defeat actually plays its final tonic before the release bar",
+          "status": "passed",
+          "title": "defeat actually plays its final tonic before the release bar",
+          "duration": 0.15579999999999927,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "distributed orchestral score"
+          ],
+          "fullName": "distributed orchestral score calibrates all five timpani and renders real pitched, bounded modal references",
+          "status": "passed",
+          "title": "calibrates all five timpani and renders real pitched, bounded modal references",
+          "duration": 0.42349999999999,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903039,
+      "endTime": 1792657903235.4236,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/score-assets.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock uses the shared score math and short nonlooping outcomes",
+          "status": "passed",
+          "title": "uses the shared score math and short nonlooping outcomes",
+          "duration": 2.1317000000000235,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock queues before unlock, deduplicates, starts all stems on one clock and does not restart",
+          "status": "passed",
+          "title": "queues before unlock, deduplicates, starts all stems on one clock and does not restart",
+          "duration": 7.460699999999974,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock quantizes mix changes mathematically, replaces old automation, ducks and restores intensity",
+          "status": "passed",
+          "title": "quantizes mix changes mathematically, replaces old automation, ducks and restores intensity",
+          "duration": 1.797900000000027,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock cancels scheduled switches, quantizes cue changes and lets outcomes take over quickly",
+          "status": "passed",
+          "title": "cancels scheduled switches, quantizes cue changes and lets outcomes take over quickly",
+          "duration": 1.7337999999999738,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock discards stale async requests and releases music cache/promise entries and disposed decodes",
+          "status": "passed",
+          "title": "discards stale async requests and releases music cache/promise entries and disposed decodes",
+          "duration": 1.8666000000000054,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock evicts finished outgoing cue while keeping WAV SFX resident and degrades missing optional stems",
+          "status": "passed",
+          "title": "evicts finished outgoing cue while keeping WAV SFX resident and degrades missing optional stems",
+          "duration": 1.5797999999999774,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock keeps the playing base if the next base fails, and never caches late disposed decodes",
+          "status": "passed",
+          "title": "keeps the playing base if the next base fails, and never caches late disposed decodes",
+          "duration": 2.2655999999999494,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock reports effective intensity and audible gains only as the clock crosses the bar and settles",
+          "status": "passed",
+          "title": "reports effective intensity and audible gains only as the clock crosses the bar and settles",
+          "duration": 3.2992000000000417,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock aborts stale fetches before decode, suppresses fallback and failures, and aborts dispose",
+          "status": "passed",
+          "title": "aborts stale fetches before decode, suppresses fallback and failures, and aborts dispose",
+          "duration": 2.4978999999999587,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock rechecks ownership after the response body arrives, before expensive decoding",
+          "status": "passed",
+          "title": "rechecks ownership after the response body arrives, before expensive decoding",
+          "duration": 0.9080999999999904,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock bounds each format fetch/body to 15s, retries MP3 independently and degrades optional stems",
+          "status": "passed",
+          "title": "bounds each format fetch/body to 15s, retries MP3 independently and degrades optional stems",
+          "duration": 3.6772999999999456,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "adaptive score clock"
+          ],
+          "fullName": "adaptive score clock cleans network deadlines on eviction/dispose without waiting or falling back",
+          "status": "passed",
+          "title": "cleans network deadlines on eviction/dispose without waiting or falling back",
+          "duration": 1.209600000000023,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903032,
+      "endTime": 1792657903062.2097,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/score.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "storage failure hardening"
+          ],
+          "fullName": "storage failure hardening survives a localStorage getter SecurityError, not just getItem errors",
+          "status": "passed",
+          "title": "survives a localStorage getter SecurityError, not just getItem errors",
+          "duration": 1.3009000000000128,
+          "failureMessages": [],
+          "meta": {}
+        },
+        {
+          "ancestorTitles": [
+            "storage failure hardening"
+          ],
+          "fullName": "storage failure hardening skips a null record without discarding later results and settings",
+          "status": "passed",
+          "title": "skips a null record without discarding later results and settings",
+          "duration": 0.6886000000000081,
+          "failureMessages": [],
+          "meta": {}
+        }
+      ],
+      "startTime": 1792657903025,
+      "endTime": 1792657903026.6887,
+      "status": "passed",
+      "message": "",
+      "name": "C:/files/code/BugWar/tests/storage-hardening.test.ts"
+    }
+  ]
+}

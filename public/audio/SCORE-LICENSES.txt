@@ -1,0 +1,32 @@
+BugWar orchestral score — source and arrangement notice
+
+RECORDED INSTRUMENT SOURCE
+VSCO 2 Community Edition (Versilian Community Orchestra), by Versilian
+Studios / Sam Gossner and the contributing performers/recordists.
+Official source: https://versilian-studios.com/vsco-community/
+Raw sample repository: https://github.com/sgossner/VSCO-2-CE
+License: CC0 1.0 Universal public-domain dedication.
+Pinned source commit: 440300901dfe9275fd84e0b7763af1f8443ae62e
+Pinned Git tree: 0ecebcfca0c7e0fe501f71964027f8f59fa0e432
+License text: https://github.com/sgossner/VSCO-2-CE/blob/440300901dfe9275fd84e0b7763af1f8443ae62e/LICENSE
+Legal code: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+Full offline source license: VSCO-CC0-LICENSE.txt (unaltered repository LICENSE)
+The official page describes the Community Edition as CC0. The repository's
+LICENSE supplies the CC0 text. Neither source implies endorsement of BugWar.
+The precise repository tree SHA, every selected WAV path and SHA-256, and
+the downloaded license SHA-256 are recorded in score-manifest.json.
+Original WAVs are development-only and are not shipped with the game.
+
+ORIGINAL SCORE
+The eight compositions, nest-lantern leitmotif, orchestration, performance
+events, sample-rendering code, and resulting music-* masters were created
+specifically for BugWar in this production. No existing song, AI music
+service output, General MIDI soundtrack, or oscillator-generated instrument
+was used. The original composition/arrangement and rendered music are also
+dedicated under CC0 1.0 Universal by this production, to the extent the
+producer can dedicate those rights. Recorded-source CC0 and original-score
+CC0 are separate grants; no exclusive ownership of the source is claimed.
+
+Scope: music-menu; music-{meadow,roots,marsh,amber,finale}-{base,motion,power};
+music-victory; music-defeat (OGG and MP3). This notice does not alter any
+existing sound-effect license. See docs/score-production.md for limitations.

@@ -1,0 +1,366 @@
+{
+  "testedAt": "2026-10-22T08:23:23.596550+00:00",
+  "scope": "Independent final asset/source integrity, actual cache rejection, musical-event cadence and deterministic render evidence. Not human listening.",
+  "source": {
+    "commit": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+    "treeSha": "0ecebcfca0c7e0fe501f71964027f8f59fa0e432",
+    "selectedWavCount": 437,
+    "selectedWavBytes": 686880626,
+    "allSourceSHA256AndGitBlobSHA1Match": true,
+    "licenseSHA256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+    "officialPageCC0DeclarationPresent": true,
+    "corruptDisposableCacheRefetchedAndVerified": true,
+    "validCacheAvoidsNetwork": true,
+    "wrongDownloadedBlobRejected": true
+  },
+  "generatorSHA256": "cec42d468457b9b8c5ce8b54171c33a670519fcb23824b1c826caacd7e7d1884",
+  "musicFiles": 36,
+  "musicBytes": 60783213,
+  "maximumDecodedFullMixTruePeak4x": 0.8049737811088562,
+  "maximumDecodedFullMixTruePeakDbFS": -1.8843652971192115,
+  "loopEndpointDifference": {
+    "ogg": {
+      "min": 0.0018737688660621643,
+      "max": 0.014784172177314758,
+      "allLessThanLocalAdjacentDifference99Percentile": true
+    },
+    "mp3": {
+      "min": 0.004743412137031555,
+      "max": 0.012193284928798676,
+      "allLessThanLocalAdjacentDifference99Percentile": true
+    }
+  },
+  "endingChecks": {
+    "victory": {
+      "lastMelodyMidi": 50,
+      "tonicMidi": 50,
+      "lastMelodyBeat": 26.50334,
+      "lastAttackBeat": 26.50334,
+      "finalBarHasNoAttacks": true,
+      "finalSecondRMS": {
+        "ogg": 5.2031438826816157e-05,
+        "mp3": 4.9555306759430096e-05
+      }
+    },
+    "defeat": {
+      "lastMelodyMidi": 50,
+      "tonicMidi": 50,
+      "lastMelodyBeat": 25.98771,
+      "lastAttackBeat": 25.98771,
+      "finalBarHasNoAttacks": true,
+      "finalSecondRMS": {
+        "ogg": 0.0,
+        "mp3": 0.0
+      }
+    }
+  },
+  "timpani": {
+    "calibratedSamples": 20,
+    "renderedVariants": 231,
+    "targetMidiRange": [
+      38,
+      57
+    ],
+    "maxPrincipalModalErrorCents": 2.6395867604898386,
+    "note": "Principal (1,1) modal band reference, not a perceptual pitch or human-audition certificate."
+  },
+  "reproduction": {
+    "productionSeconds": 157.19,
+    "separateOutputReproductionSeconds": 156.84,
+    "identicalWavMasters": 18,
+    "identicalDecodedMusicFiles": 36,
+    "identicalMP3Containers": 18,
+    "oggHasRandomSerialAndDependentCRC": true,
+    "files": [
+      {
+        "file": "music-menu.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 120,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "a9bb33992010f26e8d57e38caeca49afaf2df06ebd423b7326478da98d3c37af"
+      },
+      {
+        "file": "music-menu.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "437bbd7fe1f5c9df78ae7452f2b8bf5dbaa6e12f387a45b1e93cb58376df3dde"
+      },
+      {
+        "file": "music-meadow-base.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 107,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "b4cb10c68e68f6842a944d756532f400d87f4037ee99714a83713c6864877d6a"
+      },
+      {
+        "file": "music-meadow-base.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "2bbd1e6603cbda3cdfd3705d59ec7f4093bea88fce40eeecdd1d8f9525955f06"
+      },
+      {
+        "file": "music-meadow-motion.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 107,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "1f0e0f3d63f78a91817a0ef728a42c4d531426fe0b3203becc6302d7cea4ed7b"
+      },
+      {
+        "file": "music-meadow-motion.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "a3c067ef2cdd709cf636a09b1baed36ff7e3418145cd9c4ff1b7628b9548a189"
+      },
+      {
+        "file": "music-meadow-power.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 107,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "5a3917630c0cd89bf8705dd18485ca6062ea648d037505e54baa063e2b9d73c3"
+      },
+      {
+        "file": "music-meadow-power.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "733264e9e7e3394b824b5efe0efa2d2bd9f822631dc9d3775cc5355178aa7b90"
+      },
+      {
+        "file": "music-roots-base.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 115,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "831aa35e87385e7b45b29bc436a2789a0cdf2f156ff623404b1fb9fa54aa82c7"
+      },
+      {
+        "file": "music-roots-base.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "ac98bc55ea34466fb515b3d54c7ecd2c6420bd6678749b5d21d8464516a80d38"
+      },
+      {
+        "file": "music-roots-motion.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 116,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "6096580643770d9506a9bd2094fa541e4ec02894a181056718b73eda4d1f4936"
+      },
+      {
+        "file": "music-roots-motion.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "117fac82d7e535fd7a70ad6d71ed84fa11c4ea1caa29413271db52992663fb86"
+      },
+      {
+        "file": "music-roots-power.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 115,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "ec2fa3462585eec602b60ee06c38445436193c48a577009b086aacd54a600dc3"
+      },
+      {
+        "file": "music-roots-power.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "dc9501539bb28b4de3610ff7ce38a19f0061a2e63708f091a6be67972a0a4511"
+      },
+      {
+        "file": "music-marsh-base.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 125,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "6ebc453546e44d146ab34c252854f11ff332b5193c3588b9f7862b069075c5ae"
+      },
+      {
+        "file": "music-marsh-base.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "7ba51c737b84691424cab99bb87b88b233fde917ab81a29902469afa5db7e611"
+      },
+      {
+        "file": "music-marsh-motion.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 125,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "e691662802b2683d460826340241425312fd9619f65581d3a45e25458322a6f4"
+      },
+      {
+        "file": "music-marsh-motion.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "4fc4d189082f88cb67c6c6f09ec2f5755517ef30d760a48949207f7a6118d180"
+      },
+      {
+        "file": "music-marsh-power.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 125,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "ab1010f80828d0150fb69cd81de503adf811a66a903a31e5dd2348f2a1a1aea6"
+      },
+      {
+        "file": "music-marsh-power.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "afe2729cbcc4463c19f25f0dd1fed0a567f140814291d884c8228cd3ce756a2a"
+      },
+      {
+        "file": "music-amber-base.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 100,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "27f53481863ec5536644124f53fa4e66eb2defe907dd083e71dd3f4ade428b29"
+      },
+      {
+        "file": "music-amber-base.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "939a32a93eff3ddddf3890abed6b4676e337ac83ba43acfc5f1e18311173196c"
+      },
+      {
+        "file": "music-amber-motion.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 100,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "abc0d11dc8386dbe8ccdac01112d5ab68c2d9553120593539438301bca6a94bd"
+      },
+      {
+        "file": "music-amber-motion.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "b85d9af222ac0737bee54834bf0a5245953169436e7866e53c4e5f0c55024d7f"
+      },
+      {
+        "file": "music-amber-power.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 100,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "1e6cc4d2deef63569be216fc2f1fc758b061d90f0f2cb93003b3ce2117394461"
+      },
+      {
+        "file": "music-amber-power.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "a10d6b85c888324d7c330f3e9aa52a25f8c9713991edd1c0e4f89a22619c30e7"
+      },
+      {
+        "file": "music-finale-base.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 97,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "4f22d3ba10cf5f6a50066cd049bf4e9e21291fd85cc6de55791305e3a6087169"
+      },
+      {
+        "file": "music-finale-base.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "dda85746a722d4ec73a538358f52fca42ad584e0dea4f4dcf8cb385e5177f5c5"
+      },
+      {
+        "file": "music-finale-motion.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 96,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "88d9d2da97d35a8254b4c477da82aeec19dd8546a37283d347beaa82ff0649db"
+      },
+      {
+        "file": "music-finale-motion.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "e920acaa336e0bab8c5c1ca3eed40f7c74c67fd51f1e3116fe5ecaa6e4c7c5b6"
+      },
+      {
+        "file": "music-finale-power.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 97,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "5e48425a70a981d03619c5b5079d42b6b5c40f864bd72f76582e0cf691abfb3b"
+      },
+      {
+        "file": "music-finale-power.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "dc707c6a1db9fc11cf879ab110fdfefe00759e12a3b00cc1a52703ab8a6dde7f"
+      },
+      {
+        "file": "music-victory.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 20,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "56f30086baf206eaa8e1b33c870bff7746c22886e495c789d251e4f3b179ff9b"
+      },
+      {
+        "file": "music-victory.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "95f70584ab2550848b8e3d29891cd20a62472b43a7d28d7b7c101abfa9fa46a2"
+      },
+      {
+        "file": "music-defeat.ogg",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": false,
+        "identicalExceptOggSerialAndCRC": true,
+        "pages": 27,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "4dd61ebf5299ec130e1b00522eaf2a710e322cfcc931bd1e71e92c3c300f58f5"
+      },
+      {
+        "file": "music-defeat.mp3",
+        "identicalWavMasterSHA256": true,
+        "identicalContainerBytes": true,
+        "identicalDecodedPCM": true,
+        "decodedPCMSHA256": "2ba47a407ede80e2a0897d41db2ca50c2f57d814281fe3c1e7b6bd1832fd6a26"
+      }
+    ]
+  },
+  "passed": true
+}

@@ -1,10 +1,12 @@
-"""Original Nest Lantern score, CC0. Offline development dependencies only:
+"""Legacy synthesized score + source of the unchanged eight SFX, CC0.
+This historical generator must NOT overwrite the current orchestral score.
 python -m pip install --target test-results/audio-tools numpy soundfile
-python scripts/generate-audio.py
-No runtime dependencies. PCM16/44100 masters retain all rendered voices;
-Vorbis derivatives are encoded from those quantized masters, not vice versa.
+python scripts/generate-audio.py --output test-results/legacy-audio
+Only copy the eight sfx-*.wav when intentionally regenerating SFX.
+Current orchestral production: scripts/generate-score.py.
 """
 from pathlib import Path
+import argparse
 import sys, json
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'test-results/audio-tools'))
@@ -12,8 +14,12 @@ import numpy as np
 import soundfile as sf
 SR = 44100
 rng = np.random.default_rng(5192026)
-OUT = ROOT / 'public/audio'
-OUT.mkdir(exist_ok=True)
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--output', type=Path, default=ROOT / 'public/audio')
+OUT = parser.parse_args().output.resolve()
+if OUT == (ROOT / 'public/audio').resolve() and (OUT / 'SCORE-LICENSES.txt').exists():
+    raise SystemExit('Refusing to overwrite the orchestral score. Use --output test-results/legacy-audio for historical/SFX regeneration; current music uses generate-score.py.')
+OUT.mkdir(parents=True, exist_ok=True)
 
 def smooth_noise(n, width=80):
     return np.convolve(rng.normal(size=n), np.ones(width)/width, mode='same')

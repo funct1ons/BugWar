@@ -4,14 +4,14 @@
   "skills": 0,
   "stateWrites": 0,
   "status": "won",
-  "elapsed": 40.29999999999985,
+  "elapsed": 40.59999999999983,
   "stats": {
     "sent": 113,
-    "kills": 56.299999999999116,
+    "kills": 56.59999999999911,
     "captures": 3,
     "lost": 0,
     "skills": 0,
-    "casualties": 74.29999999999912
+    "casualties": 74.59999999999911
   },
   "browserErrors": [],
   "passed": true
