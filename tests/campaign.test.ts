@@ -20,7 +20,11 @@ function run(level:typeof LEVELS[number],difficulty:Difficulty,strategy:typeof s
   const last:Record<number,number>={};
   const maxIdle:Record<number,number>={};
   let quiet=0,maxQuiet=0;
-  for(let tick=0;tick<800 && sim.world.status==='playing';tick++) {
+  // Bounded robot experiment: 900 s instead of the former 600 s. The approved garrison firepower
+  // table makes towers hit harder, which lengthened one symmetric production standoff
+  // (level 10 easy agile-pulse wins at 618.5 s, previously 518 s). This is a longer time budget
+  // for the same win/loss/dispatch assertions; "still playing" at the cap is never counted as a win.
+  for(let tick=0;tick<1200 && sim.world.status==='playing';tick++) {
     if(sim.world.elapsed>=openingDelay)think(sim.world,1,'hard',(s,t,r,o)=>{
       if(strategy.name!=='agile-guard')return sim.dispatch(s,t,r,o);
       let sent=0;
@@ -69,9 +73,9 @@ describe('campaign geometry and ownership',()=>{
 });
 
 describe('bounded campaign robot experiments',()=>{
-  for(const level of LEVELS)for(const difficulty of difficulties)it(`level ${level.id} ${difficulty}: five strategies <=600s`,()=>{
+  for(const level of LEVELS)for(const difficulty of difficulties)it(`level ${level.id} ${difficulty}: five strategies <=900s`,()=>{
     const results=strategies.map(strategy=>run(level,difficulty,strategy));
-    for(const result of results){expect(result.time).toBeLessThanOrEqual(600.01);expect(result.dispatches[1]??0).toBeGreaterThan(0);}
+    for(const result of results){expect(result.time).toBeLessThanOrEqual(900.01);expect(result.dispatches[1]??0).toBeGreaterThan(0);}
     console.log('CAMPAIGN_RESULT '+JSON.stringify(results));
     if(difficulty==='normal'||difficulty==='easy')expect(results.some(r=>(r.strategy==='agile-planner'||r.strategy==='agile-pulse')&&r.status==='won'),`Agile must win level ${level.id} ${difficulty}`).toBe(true);
   },120000);

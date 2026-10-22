@@ -2,11 +2,76 @@
  * Battle constants shared by the simulation, the AI planner and the codex.
  * This is the single source of truth so displayed numbers cannot drift from gameplay.
  */
+
+/** One cannon firepower anchor: the garrison count and the damage/interval it grants. */
+export interface CannonFirepowerNode { garrison:number; damage:number; cooldown:number }
+
+/**
+ * Cannon firepower scales with the live garrison. Between anchors the value is
+ * linearly interpolated; below the first and above the last anchor it is clamped.
+ * The last anchor is the firepower cap: extra defenders add no damage or rate.
+ */
+export const CANNON_FIREPOWER_NODES: readonly CannonFirepowerNode[] = [
+  { garrison: 0, damage: 2, cooldown: 0.9 },
+  { garrison: 10, damage: 3, cooldown: 0.8 },
+  { garrison: 30, damage: 5, cooldown: 0.65 },
+  { garrison: 60, damage: 6, cooldown: 0.5 },
+] as const;
+
+/** Garrison needed for maximum firepower; more troops do not make the cannon stronger. */
+export const CANNON_GARRISON_CAP = CANNON_FIREPOWER_NODES[CANNON_FIREPOWER_NODES.length - 1].garrison;
+
+/** Empty-tower reference values; also what an unselected cannon displays in the codex. */
+export const CANNON_BASE_FIREPOWER: CannonFirepowerNode = CANNON_FIREPOWER_NODES[0];
+
+export interface CannonFirepower extends CannonFirepowerNode {
+  /** True once the garrison reached the firepower cap; extra troops change nothing. */
+  capped: boolean;
+  /** Long-run damage per second at this garrison. */
+  dps: number;
+}
+
+const round4 = (value: number) => Number(value.toFixed(4));
+
+/** Pure garrison → firepower lookup shared by the simulation, the AI and the codex. */
+export function cannonFirepower(units: number): CannonFirepower {
+  const garrison = Number.isFinite(units) ? Math.max(0, units) : 0;
+  const capped = garrison >= CANNON_GARRISON_CAP;
+  const clamped = Math.min(garrison, CANNON_GARRISON_CAP);
+  let index = 0;
+  while (index < CANNON_FIREPOWER_NODES.length - 2 && clamped > CANNON_FIREPOWER_NODES[index + 1].garrison) index += 1;
+  const low = CANNON_FIREPOWER_NODES[index], high = CANNON_FIREPOWER_NODES[index + 1];
+  const span = high.garrison - low.garrison;
+  const t = span > 0 ? (clamped - low.garrison) / span : 1;
+  const damage = round4(low.damage + (high.damage - low.damage) * t);
+  const cooldown = round4(low.cooldown + (high.cooldown - low.cooldown) * t);
+  return { garrison, damage, cooldown, capped, dps: round4(damage / cooldown) };
+}
+
+/**
+ * Shots a ready cannon can land while a fleet stays inside its range for `exposure`
+ * seconds: one ready shot plus one per completed interval. The epsilon keeps exact
+ * multiples (0.9/0.45…) from rounding down. The AI route estimate and the codex
+ * growth table share this rule; the simulation tracks the same cadence as a charge.
+ */
+export function cannonHitsForExposure(exposure: number, cooldown: number): number {
+  if (!Number.isFinite(exposure) || exposure < 0) return 0;
+  if (!Number.isFinite(cooldown) || cooldown <= 0) return 1;
+  return 1 + Math.floor((exposure + 1e-9) / cooldown);
+}
+
+/** Expected losses for one cannon at the current garrison across `exposure` seconds. */
+export function cannonLossForExposure(units: number, exposure: number): number {
+  const firepower = cannonFirepower(units);
+  return round4(firepower.damage * cannonHitsForExposure(exposure, firepower.cooldown));
+}
+
 export const BATTLE_RULES = {
   nestProduction: 1,
   cannonRange: 200,
-  cannonDamage: 2,
-  cannonCooldown: 0.75,
+  /** Empty-tower base; a garrisoned cannon interpolates upwards, see CANNON_FIREPOWER_NODES. */
+  cannonDamage: CANNON_BASE_FIREPOWER.damage,
+  cannonCooldown: CANNON_BASE_FIREPOWER.cooldown,
   energyRate: 2,
   skillCost: 100,
   skillRadius: 135,

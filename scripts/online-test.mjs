@@ -26,6 +26,14 @@ try{
  assert.equal(await page.locator('#modal [data-action=codex-tab]').count(),3);
  await page.locator('#modal [data-action=codex-entry][data-value="race-fast"]').click();
  assert.match(await page.locator('#modal .codex-detail').innerText(),/锁定|未解锁/);
+ await page.locator('#modal [data-action=codex-tab][data-value="buildings"]').click();
+ await page.locator('#modal [data-action=codex-entry][data-value="building-cannon"]').click();
+ const cannonText=await page.locator('#modal .codex-detail').innerText();
+ assert.match(cannonText,/60 人封顶/);
+ assert.match(cannonText,/驻军火力成长/);
+ const growthRows=await page.locator('#modal .codex-firepower-table tbody tr').allTextContents();
+ assert.equal(growthRows.length,4,'approved 0/10/30/60 growth nodes are deployed');
+ report.cannonGrowth={text:cannonText,rows:growthRows};
  await page.keyboard.press('Escape');
  await page.locator('[data-action=lore]').click();
  assert.equal(await page.locator('.lore-grid article').count(),4);report.storyActs=4;

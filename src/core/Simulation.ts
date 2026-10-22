@@ -1,7 +1,7 @@
 import { RACES, type RaceId, type Difficulty, type LevelConfig, type World, type GameEvent, type Fleet, type Colony } from './types';
 import { think, THINK_INTERVAL } from './ai';
 import { cloneRoads, hasRoad } from './roads';
-import { BATTLE_RULES } from './rules';
+import { BATTLE_RULES, cannonFirepower } from './rules';
 const TICK=0.05;
 const safe=(n:number,fallback=0)=>Number.isFinite(n)?Math.max(0,Math.min(1e12,n)):fallback;
 export class Simulation {
@@ -10,7 +10,10 @@ export class Simulation {
   private accumulator=0;
   private nextFleet=1;
   private aiClock=0;
-  private shots=new Map<string,number>();
+  // Fire readiness per cannon, normalised to 0..1 instead of a stored interval. The garrison
+  // sets how fast this charge fills: changes affect the remaining recharge immediately,
+  // but never reset accumulated progress or grant an extra immediate shot.
+  private cannonCharge=new Map<string,number>();
   constructor(level:LevelConfig,race:RaceId='agile',private difficulty:Difficulty='normal') {
     this.openingGrace=safe(level.openingGrace?.[difficulty]??0);
     this.world={elapsed:0, colonies:level.colonies.map(c=>({...c,x:safe(c.x),y:safe(c.y),units:safe(c.units),production:c.kind==='cannon'?0:safe(c.production ?? BATTLE_RULES.nestProduction)})), factions:level.factions.map(f=>({...f,race:f.id===1?race:f.race})),roads:cloneRoads(level.roads),fleets:[],energy:{},status:'playing',stats:{sent:0,kills:0,captures:0,lost:0,skills:0,casualties:0},events:[]};
@@ -62,12 +65,15 @@ export class Simulation {
     for(const c of w.colonies) {c.units=safe(c.units);if(c.owner>0&&c.kind==='nest') c.units=safe(c.units+safe(c.production)*this.race(c.owner).production*TICK);}
     for(const f of w.factions) w.energy[f.id]=Math.min(BATTLE_RULES.skillCost,safe(w.energy[f.id])+TICK*BATTLE_RULES.energyRate);
     for(const c of w.colonies.filter(c=>c.kind==='cannon'&&c.owner>0)) {
-      let cooldown=(this.shots.get(c.id)??0)-TICK;
-      if(cooldown<=0) {
+      // Firepower is read from the live garrison every tick; ownership rules are unchanged
+      // (owner>0 only, never neutral towers, never buildings). One idle shot is banked at most.
+      const firepower=cannonFirepower(c.units);
+      let charge=Math.min(1,(this.cannonCharge.get(c.id)??1)+TICK/firepower.cooldown);
+      if(charge>=1-1e-9) {
         const enemy=w.fleets.find(f=>f.owner!==c.owner&&f.count>0&&Math.hypot(f.x-c.x,f.y-c.y)<=BATTLE_RULES.cannonRange);
-        if(enemy) {const n=Math.min(enemy.count,BATTLE_RULES.cannonDamage);enemy.count-=n;this.casualties(c.owner,enemy.owner,n,0);w.events.push({type:'shot',owner:c.owner,x:c.x,y:c.y,targetX:enemy.x,targetY:enemy.y,amount:n});cooldown=BATTLE_RULES.cannonCooldown;}
+        if(enemy) {const n=Math.min(enemy.count,firepower.damage);enemy.count-=n;this.casualties(c.owner,enemy.owner,n,0);w.events.push({type:'shot',owner:c.owner,x:c.x,y:c.y,targetX:enemy.x,targetY:enemy.y,amount:n});charge=Math.max(0,charge-1);}
       }
-      this.shots.set(c.id,cooldown);
+      this.cannonCharge.set(c.id,charge);
     }
     for(const f of [...w.fleets].sort((a,b)=>a.id-b.id)) {
       if(f.count<=0) continue;

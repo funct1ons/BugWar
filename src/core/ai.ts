@@ -1,28 +1,31 @@
 import { RACES, type Colony, type Difficulty, type World } from './types';
 import { hasRoad, roadDistances } from './roads';
-import { BATTLE_RULES } from './rules';
+import { BATTLE_RULES, cannonFirepower, cannonHitsForExposure } from './rules';
 export const THINK_INTERVAL: Record<Difficulty,number> = {easy:4,normal:2.7,hard:0.75};
 const distance=(a:{x:number;y:number},b:{x:number;y:number})=>Math.hypot(a.x-b.x,a.y-b.y);
 interface Arrival { time:number; owner:number; count:number; effectiveCount:number; attack:number; order:number }
 /** Conservative ready-to-fire estimate over the clipped straight-line/circle chord.
- * Does not assume that another fleet will absorb shots or that a cannon is cooling down.
+ * Uses each cannon's real garrison firepower (damage and interval interpolated from the
+ * shared table), not a fixed constant. Does not assume that another fleet will absorb
+ * shots or that a cannon is cooling down.
  */
 export function estimateCannonLoss(world:World,from:{x:number;y:number},to:{x:number;y:number},owner:number,speed:number):number {
   if(!Number.isFinite(speed)||speed<=0) return 0;
   const dx=to.x-from.x,dy=to.y-from.y,length=Math.hypot(dx,dy);
-  const range=BATTLE_RULES.cannonRange,damage=BATTLE_RULES.cannonDamage,cooldown=BATTLE_RULES.cannonCooldown;
   let loss=0;
   for(const cannon of world.colonies) {
     if(cannon.kind!=='cannon'||cannon.owner<=0||cannon.owner===owner) continue;
-    if(length===0) {if(distance(from,cannon)<=range) loss+=damage;continue;}
+    const firepower=cannonFirepower(cannon.units);
+    if(length===0) {if(distance(from,cannon)<=BATTLE_RULES.cannonRange) loss+=firepower.damage;continue;}
     const ux=dx/length,uy=dy/length,cx=cannon.x-from.x,cy=cannon.y-from.y;
     const along=cx*ux+cy*uy,perpendicularSquared=Math.max(0,cx*cx+cy*cy-along*along);
+    const range=BATTLE_RULES.cannonRange;
     if(perpendicularSquared>range*range) continue;
     const halfChord=Math.sqrt(range*range-perpendicularSquared);
     const entry=Math.max(0,along-halfChord),exit=Math.min(length,along+halfChord);
     if(exit<entry) continue;
     const exposure=(exit-entry)/speed;
-    loss+=damage*(1+Math.floor((exposure+1e-9)/cooldown));
+    loss+=firepower.damage*cannonHitsForExposure(exposure,firepower.cooldown);
   }
   return loss;
 }

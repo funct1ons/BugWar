@@ -5,9 +5,9 @@ import { MusicDirector } from './audio/MusicDirector';
 import { LEVELS, BIOMES } from './data/levels';
 import { ACHIEVEMENTS, SaveSystem } from './storage/SaveSystem';
 import { rateVictory } from './core/Simulation';
-import { BATTLE_RULES } from './core/rules';
+import { BATTLE_RULES, CANNON_BASE_FIREPOWER, CANNON_GARRISON_CAP, cannonFirepower } from './core/rules';
 import { formatUnits } from './ui/format';
-import type { RaceId } from './core/types';
+import type { Colony, RaceId } from './core/types';
 import { CODEX_ENTRIES, escapeIntent, normalizeCodexState, pauseKeyIntent, renderCodex, renderMinimapRoads, type CodexTabId, type SelectedColonyInfo } from './data/codex';
 import { ACTS, BRIEFINGS, LORE_NOTICE, actForLevel } from './data/lore';
 import './style.css';
@@ -23,6 +23,56 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const raceName = { agile: '敏捷族', fast: '疾行族', strong: '重甲族' };
 const raceText = { agile: '均衡的先锋 · 灵活扩张', fast: '更快的行军 · 轻甲突袭', strong: '强韧的甲壳 · 缓慢而有力' };
 
+/** 空塔到封顶的整条曲线都取自共享火力表，面板数字不会与模拟脱节。 */
+const CANNON_CAP_FIREPOWER = cannonFirepower(CANNON_GARRISON_CAP);
+const num = (value: number, digits = 2) => (Number.isInteger(value) ? String(value) : value.toFixed(digits));
+/** 射击间隔必须逐位准确（0.725 不能四舍五入成 0.72）：保留 3 位并去掉多余尾零。 */
+const sec = (value: number) => Number(value.toFixed(3)).toString();
+
+/**
+ * 战场炮塔面板：每座塔按当前驻军实时插值，多选时给出汇总并列出前几座。
+ * 纯字符串拼接，调用方按内容是否变化决定是否写回 DOM；无选中时调用方清空并隐藏。
+ */
+function cannonPanelHtml(selected: Colony[], ownCannons: Colony[]): string {
+  const rows = selected.map((colony) => ({ colony, firepower: cannonFirepower(colony.units) }));
+  const label = (colony: Colony) => `炮塔 ${ownCannons.indexOf(colony) + 1}`;
+  const capped = rows.filter((row) => row.firepower.capped).length;
+  const capLabel = capped === rows.length ? '已全部封顶' : capped ? `${capped} 座封顶` : '未封顶';
+  const capClass = capped === rows.length ? 'is-capped' : '';
+
+  if (rows.length === 1) {
+    const fp = rows[0].firepower;
+    const garrison = Math.floor(fp.garrison);
+    const remaining = Math.max(0, Math.ceil(CANNON_GARRISON_CAP - fp.garrison));
+    const damageBonus = fp.damage - CANNON_BASE_FIREPOWER.damage;
+    const cooldownGain = CANNON_BASE_FIREPOWER.cooldown - fp.cooldown;
+    return `<div class="cannon-head" data-cannon-id="${rows[0].colony.id}"><span class="cannon-glyph" aria-hidden="true">塔</span>
+      <div class="cannon-title"><span class="tiny">${label(rows[0].colony)} · 蓝方</span><b>${num(fp.damage)} 伤害 / ${sec(fp.cooldown)} 秒</b><small>驻军 ${garrison} / ${CANNON_GARRISON_CAP} · 约 ${num(fp.dps)} 伤害每秒</small></div>
+      <span class="cannon-cap ${fp.capped ? 'is-capped' : ''}">${fp.capped ? '已封顶' : '未封顶'}</span></div>
+      <div class="cannon-figures"><span><small>当前单发伤害</small><b>${num(fp.damage)}</b></span><span><small>射击间隔</small><b>${sec(fp.cooldown)}<em>秒</em></b></span><span><small>驻军加成</small><b>+${num(damageBonus)}<em>伤害</em></b></span></div>
+      <div class="cannon-track ${fp.capped ? 'is-capped' : ''}"><span style="width:${Math.round(Math.min(1, fp.garrison / CANNON_GARRISON_CAP) * 100)}%"></span></div>
+      <p class="cannon-note">${fp.capped
+        ? `驻军已达 ${CANNON_GARRISON_CAP} 人火力上限，继续增兵不会加伤害或缩间隔。`
+        : `再驻 ${remaining} 人达到 ${CANNON_GARRISON_CAP} 人上限；封顶时 ${num(CANNON_CAP_FIREPOWER.damage)} 伤害 / ${sec(CANNON_CAP_FIREPOWER.cooldown)} 秒。`} 间隔已比空塔缩短 ${sec(cooldownGain)} 秒。</p>`;
+  }
+
+  const totalUnits = Math.floor(rows.reduce((sum, row) => sum + row.firepower.garrison, 0));
+  const totalDps = rows.reduce((sum, row) => sum + row.firepower.dps, 0);
+  const avgDamage = rows.reduce((sum, row) => sum + row.firepower.damage, 0) / rows.length;
+  const avgCooldown = rows.reduce((sum, row) => sum + row.firepower.cooldown, 0) / rows.length;
+  const items = rows.slice(0, 3).map((row) => {
+    const garrison = Math.floor(row.firepower.garrison);
+    return `<li data-cannon-id="${row.colony.id}" class="${row.firepower.capped ? 'is-capped' : ''}"><b>${label(row.colony)}</b><span>驻军 ${garrison}</span><span>${num(row.firepower.damage)} 伤害 / ${sec(row.firepower.cooldown)} 秒</span><em>${row.firepower.capped ? '已封顶' : `再 ${Math.max(0, Math.ceil(CANNON_GARRISON_CAP - row.firepower.garrison))} 人封顶`}</em></li>`;
+  }).join('');
+  const more = rows.length > 3 ? `<span class="cannon-more">另有 ${rows.length - 3} 座已选炮塔未展开</span>` : '';
+  return `<div class="cannon-head"><span class="cannon-glyph" aria-hidden="true">塔</span>
+      <div class="cannon-title"><span class="tiny">守望炮塔 · 蓝方 · 已选 ${rows.length} 座</span><b>合计约 ${num(totalDps, 1)} 伤害每秒</b><small>平均 ${num(avgDamage)} 伤害 / ${sec(avgCooldown)} 秒 · 合计驻军 ${totalUnits} / ${CANNON_GARRISON_CAP * rows.length}</small></div>
+      <span class="cannon-cap ${capClass}">${capLabel}</span></div>
+      <div class="cannon-figures"><span><small>平均单发伤害</small><b>${num(avgDamage)}</b></span><span><small>平均间隔</small><b>${sec(avgCooldown)}<em>秒</em></b></span><span><small>封顶座数</small><b>${capped} / ${rows.length}</b></span></div>
+      <ul class="cannon-rows">${items}</ul>${more}
+      <p class="cannon-note">每座按当前驻军实时插值后相加；单塔 ${CANNON_GARRISON_CAP} 人封顶，再多驻军不加伤害、不缩间隔。</p>`;
+}
+
 /** 封面同款叶片标记，用于主按钮；不引入新素材依赖。 */
 const LEAF_ICON = `<span class="leaf-mark" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M20.5 3.5C9.5 3.5 3.5 9.5 3.5 20.5 14.5 20.5 20.5 14.5 20.5 3.5Z" fill="currentColor"/><path d="M18.2 5.8 7 17" fill="none" stroke="#fffdf7" stroke-width="1.3" stroke-linecap="round" opacity=".8"/></svg></span>`;
 
@@ -36,6 +86,7 @@ class Application {
   levelIndex = 0;
   modal = '';
   lastHUD = 0;
+  cannonSignature = '';
   toastTimer = 0;
   wasPaused = false;
   codexTab: CodexTabId = 'races';
@@ -289,9 +340,11 @@ class Application {
         <div class="battle-keys"><span><kbd>P</kbd>暂停</span><span><kbd>M</kbd>声音</span></div>
         <button class="bottom-help" data-action="help" aria-label="查看操作指南">?</button>
       </footer>
+      <div id="cannon-selection" class="cannon-selection" hidden></div>
       <span class="battle-watermark">VERDANT CROWN <span id="perf"></span></span>
     </section>`;
     this.lastHUD = 0;
+    this.cannonSignature = '';
     this.updateHUD();
   }
 
@@ -311,6 +364,8 @@ class Application {
     text('selection-count', this.scene.selected.size ? `已选 ${this.scene.selected.size} 座建筑` : '选择你的虫巢');
     text('send-count', `${Math.floor(own.filter((c) => this.scene.selected.has(c.id)).reduce((s, c) => s + Math.floor(c.units * this.scene.ratio), 0))} 兵`);
     document.getElementById('send-count')?.setAttribute('title', '按全部已选己方建筑计算的上限；实际只有与目标直接相邻的来源会出兵。');
+    const ownCannons = own.filter((c) => c.kind === 'cannon');
+    this.updateCannonSelection(ownCannons.filter((c) => this.scene.selected.has(c.id)), ownCannons);
     const energy = Math.floor(w.energy[1]);
     text('energy-value', `${energy}%`);
     text('energy-label', this.scene.skillArmed ? '点击战场施放 · 右键取消' : energy >= 100 ? '能量已满 · 按 A 选择区域' : '能量正在汇聚');
@@ -328,6 +383,20 @@ class Application {
     }).join('');
     text('perf', `${Math.round(this.scene.fps)} FPS`);
     document.getElementById('battle-tip')?.classList.toggle('faded', w.elapsed > 20);
+  }
+
+  /**
+   * 战场选中面板：只在选中己方炮塔时出现，未选中时保持 hidden 而不占版面。
+   * 数字随驻军实时变化，但只在内容真的变了才写回 DOM，避免每 100ms 重建节点。
+   */
+  private updateCannonSelection(selected: Colony[], ownCannons: Colony[]) {
+    const panel = document.getElementById('cannon-selection');
+    if (!panel) return;
+    const html = selected.length ? cannonPanelHtml(selected, ownCannons) : '';
+    if (html === this.cannonSignature) return;
+    this.cannonSignature = html;
+    panel.hidden = !html;
+    panel.innerHTML = html;
   }
 
   private end(status: string) {

@@ -1,5 +1,11 @@
 import { RACES, type RaceId, type Road } from '../core/types';
-import { BATTLE_RULES } from '../core/rules';
+import {
+  BATTLE_RULES,
+  CANNON_BASE_FIREPOWER,
+  CANNON_FIREPOWER_NODES,
+  CANNON_GARRISON_CAP,
+  cannonFirepower,
+} from '../core/rules';
 
 /**
  * Pure codex data and renderers.
@@ -30,6 +36,10 @@ const number = (value: number, digits = 2) => Number.isInteger(value) ? String(v
 const factor = (value: number) => `×${value.toFixed(2)}`;
 const percent = (value: number) => `${Math.round(value * 100)}%`;
 const productionFor = (race: RaceId) => RACES[race].production * BATTLE_RULES.nestProduction;
+/** Growth prose is generated from the shared table, never retyped by hand. */
+const FIREPOWER_GROWTH_TEXT = CANNON_FIREPOWER_NODES
+  .map((node) => `${number(node.garrison)} 人 ${number(node.damage)} 伤害 / ${number(node.cooldown)} 秒`)
+  .join('，');
 
 export function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]!));
@@ -196,16 +206,19 @@ export const BUILDING_CODEX_ENTRIES: readonly BuildingCodexEntry[] = [
     glyph: '塔',
     name: '守望炮塔',
     title: '不生产，只拦截',
-    summary: '不能自行补兵；会给射程内的敌方在途部队持续造成小额伤害。',
+    summary: '不能自行补兵；会给射程内的敌方在途部队持续造成小额伤害，驻军越多火力越强。',
     stats: [
       { label: '生产', value: `0 兵/秒`, note: '炮塔不产生任何兵力' },
-      { label: '射程', value: `${number(BATTLE_RULES.cannonRange)}`, note: '以炮塔为中心的距离半径' },
-      { label: '单发伤害', value: `${number(BATTLE_RULES.cannonDamage)}`, note: `每发最多削减 ${number(BATTLE_RULES.cannonDamage)} 只敌方行军中虫兵` },
-      { label: '射击冷却', value: `${number(BATTLE_RULES.cannonCooldown)} 秒`, note: '冷却结束后寻找下一支射程内敌军队列' },
+      { label: '射程', value: `${number(BATTLE_RULES.cannonRange)}`, note: '以炮塔为中心的距离半径，不随驻军变化' },
+      { label: '单发伤害', value: `${number(BATTLE_RULES.cannonDamage)}`, note: `空塔（0 驻军）基准；每发最多削减 ${number(BATTLE_RULES.cannonDamage)} 只敌方行军中虫兵，驻军越多伤害越高` },
+      { label: '射击冷却', value: `${number(BATTLE_RULES.cannonCooldown)} 秒`, note: '空塔（0 驻军）基准；冷却结束后寻找下一支射程内敌军队列，驻军越多间隔越短' },
+      { label: '驻军加成', value: `最多 +${number(cannonFirepower(CANNON_GARRISON_CAP).damage - CANNON_BASE_FIREPOWER.damage)} 伤害`, note: `${number(CANNON_GARRISON_CAP)} 人为火力上限；间隔由 ${number(CANNON_BASE_FIREPOWER.cooldown)} 秒缩短到 ${number(cannonFirepower(CANNON_GARRISON_CAP).cooldown)} 秒，超过上限不再提升` },
     ],
     notes: [
       '炮塔只自动射击射程内的敌方在途部队，不会攻击建筑驻军。',
-      '需要友军增援才能长期驻守；炮塔不生产，兵力损失后无法自行补充。',
+      '火力由实时驻军决定：' + FIREPOWER_GROWTH_TEXT + `；节点之间按驻军线性插值，${number(CANNON_GARRISON_CAP)} 人封顶。`,
+      '调整驻军立即改变伤害与剩余充能速率，但保留已积累的冷却进度，不会重置冷却或免费补射一发。',
+      '需要友军增援才能长期驻守；炮塔不生产，驻军损失后火力随之下降，无法自行补充。',
       '选中己方炮塔时，战场会显示射程圈；离开射程的舰队不再被该炮塔锁定。',
       '当前版本没有炮塔升级、范围伤害或特殊弹药。',
     ],
@@ -531,6 +544,41 @@ function renderSelectedProduction(options: CodexRenderOptions): string {
   return `<div class="codex-live"><b>战场实测 · 已选生产巢</b><ul>${rows}</ul>${more}<p>数值来自当前地图 production 与归属种族的生产倍率；打开图鉴不会改变战局。</p></div>`;
 }
 
+/** Always-visible firepower baseline + growth table (the no-selection view). */
+function renderCannonGrowth(): string {
+  const rows = CANNON_FIREPOWER_NODES.map((node) => {
+    const profile = cannonFirepower(node.garrison);
+    const cap = node.garrison >= CANNON_GARRISON_CAP ? '（上限）' : '';
+    return `<tr><th>${number(profile.garrison)} 人${cap}</th><td>${number(profile.damage)}</td><td>${number(profile.cooldown)} 秒</td><td>${number(profile.dps)}</td></tr>`;
+  }).join('');
+  return `<section class="codex-block codex-firepower"><h4>驻军火力成长</h4>
+    <table class="codex-firepower-table"><thead><tr><th>驻军</th><th>单发伤害</th><th>射击间隔</th><th>每秒伤害</th></tr></thead><tbody>${rows}</tbody></table>
+    <p>节点之间按实时驻军分段线性插值；${number(CANNON_GARRISON_CAP)} 人封顶，更多驻军不加伤害、不缩间隔。射程 ${number(BATTLE_RULES.cannonRange)} 不随驻军变化，炮塔始终不产兵。</p>
+  </section>`;
+}
+
+/** Selected-cannon readout: current damage, interval, garrison bonus and cap progress. */
+function renderSelectedCannon(options: CodexRenderOptions): string {
+  if (!options.inBattle) return '';
+  const cannons = (options.selectedColonies ?? []).filter((colony) => colony.kind === 'cannon');
+  if (!cannons.length) {
+    return `<div class="codex-live"><b>战场实测</b><p>打开图鉴前选中炮塔，可在这里查看它按当前驻军插值后的单发伤害、射击间隔、驻军加成和 ${number(CANNON_GARRISON_CAP)} 人上限进度；未选中时只显示空塔基准和上方成长表。</p></div>`;
+  }
+  const rows = cannons.slice(0, 3).map((colony) => {
+    const profile = cannonFirepower(colony.units);
+    const damageBonus = profile.damage - CANNON_BASE_FIREPOWER.damage;
+    const cooldownGain = CANNON_BASE_FIREPOWER.cooldown - profile.cooldown;
+    const status = colony.owner <= 0
+      ? '中立炮塔不射击；占领后按当时驻军生效'
+      : profile.capped
+        ? `已达 ${number(CANNON_GARRISON_CAP)} 人火力上限`
+        : `再驻 ${number(Math.max(0, Math.ceil(CANNON_GARRISON_CAP - colony.units)))} 人达到上限`;
+    return `<li><b>${escapeHtml(colony.id)}</b><span>${ownerLabel(colony.owner)} · 驻军 ${number(colony.units)} · 单发 ${number(profile.damage)} 伤害 / ${number(profile.cooldown)} 秒</span><small>驻军加成 +${number(damageBonus)} 伤害 / 间隔缩短 ${number(cooldownGain)} 秒 · 约 ${number(profile.dps)} 伤害/秒 · ${escapeHtml(status)}</small></li>`;
+  }).join('');
+  const more = cannons.length > 3 ? `<small class="codex-live-more">另有 ${cannons.length - 3} 座已选炮塔未展开。</small>` : '';
+  return `<div class="codex-live"><b>战场实测 · 已选炮塔</b><ul>${rows}</ul>${more}<p>数值来自当前驻军与共享火力表的实时插值；调整驻军不会重置冷却，也不会立刻补射一发。</p></div>`;
+}
+
 function renderBuildingDetail(entry: BuildingCodexEntry, options: CodexRenderOptions): string {
   const art = `${options.artBase ?? ''}art/${entry.building}.svg`;
   return `<div class="codex-detail-head">
@@ -544,7 +592,7 @@ function renderBuildingDetail(entry: BuildingCodexEntry, options: CodexRenderOpt
   </div>
   <div class="codex-stat-grid">${entry.stats.map((stat) => `<article class="codex-stat"><span>${escapeHtml(stat.label)}</span><strong>${escapeHtml(stat.value)}</strong><small>${escapeHtml(stat.note)}</small></article>`).join('')}</div>
   <section class="codex-block codex-rules"><h4>使用要点</h4><ul>${entry.notes.map((text) => `<li>${escapeHtml(text)}</li>`).join('')}</ul></section>
-  ${entry.building === 'nest' ? renderSelectedProduction(options) : ''}
+  ${entry.building === 'nest' ? renderSelectedProduction(options) : `${renderCannonGrowth()}${renderSelectedCannon(options)}`}
   <div class="codex-callout"><b>没有隐藏升级</b><span>图鉴只列出当前模拟真实存在的机制：生产、驻军、道路与战斗结算。没有升级按钮、科技树或未实现的特殊能力。</span></div>
   <p class="codex-note">出现条件：${escapeHtml(entry.unlock)}</p>`;
 }

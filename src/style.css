@@ -2519,6 +2519,51 @@ kbd {
   margin: 11px 0 13px;
 }
 
+/* Cannon growth table: every number comes from the shared firepower table. */
+.codex-firepower {
+  margin: 12px 0;
+}
+
+.codex-firepower-table {
+  width: 100%;
+  margin: 6px 0 5px;
+  border-collapse: collapse;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.codex-firepower-table th,
+.codex-firepower-table td {
+  padding: 5px 7px;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.codex-firepower-table thead th {
+  color: var(--muted);
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.codex-firepower-table tbody th {
+  color: var(--ink);
+  font: 11px Georgia,serif;
+  text-align: left;
+}
+
+.codex-firepower-table td {
+  color: var(--ink-soft);
+}
+
+.codex-firepower p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 8.5px;
+  line-height: 1.6;
+}
+
 .codex-fact {
   min-width: 0;
   padding: 7px 9px;
@@ -2622,4 +2667,217 @@ kbd {
     animation: none!important;
     transition: none!important;
   }
+}
+
+/* ---------- 战场炮塔选中面板 ---------- */
+
+/* 浮在底部工具栏上方的检查器：仅在选中己方炮塔时出现，hidden 时完全不占版面。 */
+.cannon-selection {
+  position: absolute;
+  left: 35px;
+  bottom: 116px;
+  z-index: 4;
+  width: 336px;
+  padding: 10px 14px 11px;
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--blue);
+  border-radius: 12px;
+  background: rgba(255,253,247,.96);
+  box-shadow: 0 8px 22px rgba(31,62,45,.14);
+  pointer-events: none;
+}
+
+.cannon-selection[hidden] {
+  display: none;
+}
+
+.cannon-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.cannon-glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  background: linear-gradient(160deg,#fff,#eef5e2);
+  color: var(--blue);
+  font: 12px Georgia,serif;
+}
+
+.cannon-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.cannon-title .tiny {
+  display: block;
+  overflow: hidden;
+  color: var(--green);
+  font-size: 9px;
+  letter-spacing: 1.3px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cannon-title b {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--ink);
+  font: 16px Georgia,serif;
+  letter-spacing: .6px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cannon-title small {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 9.5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cannon-cap {
+  flex: none;
+  align-self: flex-start;
+  padding: 3px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .6px;
+  white-space: nowrap;
+}
+
+.cannon-cap.is-capped {
+  border-color: rgba(94,143,109,.55);
+  background: rgba(94,143,109,.14);
+  color: var(--green);
+}
+
+.cannon-figures {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.cannon-figures>span {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f7fbf1;
+}
+
+.cannon-figures small {
+  display: block;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 8.5px;
+  letter-spacing: .5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cannon-figures b {
+  display: block;
+  margin-top: 2px;
+  color: var(--ink);
+  font: 13px Georgia,serif;
+  white-space: nowrap;
+}
+
+.cannon-figures em {
+  margin-left: 2px;
+  color: var(--muted-2);
+  font: 8.5px/1 sans-serif;
+  font-style: normal;
+}
+
+.cannon-track {
+  height: 5px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(31,62,45,.1);
+}
+
+.cannon-track>span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg,rgba(50,127,193,.65),var(--blue));
+}
+
+.cannon-track.is-capped>span {
+  background: linear-gradient(90deg,rgba(94,143,109,.75),var(--green));
+}
+
+.cannon-note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 8.5px;
+  line-height: 1.55;
+}
+
+.cannon-rows {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cannon-rows li {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 3px 7px;
+  border-radius: 7px;
+  background: rgba(247,251,241,.92);
+  color: var(--ink-soft);
+  font-size: 9.5px;
+  white-space: nowrap;
+}
+
+.cannon-rows li>b {
+  flex: none;
+  color: var(--ink);
+  font: 10px Georgia,serif;
+}
+
+.cannon-rows li>span {
+  flex: none;
+  color: var(--muted);
+}
+
+.cannon-rows li>em {
+  flex: none;
+  margin-left: auto;
+  overflow: hidden;
+  color: var(--muted-2);
+  font-size: 8.5px;
+  font-style: normal;
+  text-overflow: ellipsis;
+}
+
+.cannon-rows li.is-capped>em {
+  color: var(--green);
+}
+
+.cannon-more {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted-2);
+  font-size: 8.5px;
 }

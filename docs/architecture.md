@@ -40,7 +40,7 @@ export function rateVictory(time:number,lost:number,par:number):number; //1..5
 ```
 `src/core/roads.ts` 的 `hasRoad(roads,from,to)` 为无向直接邻接判断。LevelConfig与World必须携带显式roads，Simulation复制关卡道路；不将缺少道路解释成任意直达。dispatch对每个来源分别检查道路，只有直接相邻、己方且有整数兵力的来源可以出兵。军队抵达后合流／交战，不自动产生下一跳。
 
-World events only consumed with drainEvents; AI deterministic utility with incoming projections, reserve, coordinated attacks; cannot cheat resources. AI攻击、防守及后方补给均只从直接相邻来源派兵。地图拓扑可用于选择手动下令的下一跳，但不是给在途军队自动寻路。`src/core/rules.ts` 的 `BATTLE_RULES` 是模拟与图鉴共用的生产／炮塔／技能常量，种族继续读取RACES。 Cannon nonproducing, range fire at enemy marching fleets. Fleet counts logical separate from bounded sprite representation. Movement no mid-path retarget (unsupported). Battle weighted attrition on arrival; race attributes meaningful. Victory after all hostile colonies+fleets eliminated; neutral need not captured. Defeat player colonies+fleets eliminated. Player1. Factions2–4 AI.
+World events only consumed with drainEvents; AI deterministic utility with incoming projections, reserve, coordinated attacks; cannot cheat resources. AI攻击、防守及后方补给均只从直接相邻来源派兵。地图拓扑可用于选择手动下令的下一跳，但不是给在途军队自动寻路。`src/core/rules.ts` 的 `BATTLE_RULES` 是模拟与图鉴共用的生产／炮塔／技能常量，种族继续读取RACES。炮塔火力按实时驻军查 `CANNON_FIREPOWER_NODES` 并调用纯函数 `cannonFirepower`（模拟、AI路径估计、图鉴与选中面板同一来源）；射击准备以0–1充能记录，增减驻军不重置冷却。 Cannon nonproducing, range fire at enemy marching fleets. Fleet counts logical separate from bounded sprite representation. Movement no mid-path retarget (unsupported). Battle weighted attrition on arrival; race attributes meaningful. Victory after all hostile colonies+fleets eliminated; neutral need not captured. Defeat player colonies+fleets eliminated. Player1. Factions2–4 AI.
 
 ## 美术资源契约
 全部SVG自含viewBox，无外部资源／字体／脚本依赖，正式共36张。

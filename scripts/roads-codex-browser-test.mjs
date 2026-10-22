@@ -212,6 +212,36 @@ try{
   return rows;
  });
  await page.screenshot({path:`${out}/roads-final-layout.png`});
+ // Explicit UI-only fixture: select a friendly cannon and vary its garrison. Not a natural capture or campaign win.
+ const selectCannon=async units=>page.evaluate(units=>{
+  const app=window.__BUGWAR__;app.start(2);const scene=app.scene;
+  scene.paused=true;
+  const tower=scene.sim.world.colonies.find(c=>c.kind==='cannon');
+  if(!tower)throw Error('No cannon in level 3 fixture');
+  tower.owner=1;tower.units=units;scene.selected.clear();scene.selected.add(tower.id);app.updateHUD();
+  return tower.id;
+ },units);
+ report.cannonSelection=[];
+ for(const [units,damage,interval]of [[0,'2','0.9'],[20,'4','0.725'],[60,'6','0.5'],[90,'6','0.5']]){
+  const id=await selectCannon(units);
+  const panel=page.locator('#cannon-selection');await panel.waitFor({state:'visible'});
+  const text=await panel.innerText();
+  assert.ok(text.includes(damage)&&text.includes(interval),`live cannon ${units}: ${text}`);
+  assert.match(text,/60/);
+  assert.equal(await panel.locator(`[data-cannon-id="${id}"]`).count(),1);
+  report.cannonSelection.push({units,text});
+ }
+ await page.screenshot({path:`${out}/cannon-selection-cap.png`});
+ for(const width of [1280,1366,1600]){
+  await page.setViewportSize({width,height:900});await page.waitForTimeout(80);
+  const box=await page.locator('#cannon-selection').boundingBox();
+  assert.ok(box&&box.x>=-1&&box.y>=-1&&box.x+box.width<=width+1&&box.y+box.height<=901,`cannon panel fits ${width}`);
+ }
+ await page.setViewportSize({width:1600,height:900});
+ await page.evaluate(()=>{const app=window.__BUGWAR__,s=app.scene;const tower=s.sim.world.colonies.find(c=>c.kind==='cannon');s.sim.world.colonies.push({...tower,id:'cannon-panel-fixture',units:20});s.selected.add('cannon-panel-fixture');app.lastHUD=0;app.updateHUD();});
+ assert.equal(await page.locator('#cannon-selection [data-cannon-id]').count(),2,'multi-selection presents both towers');
+ await page.evaluate(()=>{const app=window.__BUGWAR__;app.scene.selected.clear();app.lastHUD=0;app.updateHUD();});
+ assert.equal(await page.locator('#cannon-selection:visible').count(),0,'no empty panel without a selected cannon');
  report.codex=await checkCodex(page);
  assert.deepEqual(report.errors,[]);assert.deepEqual(report.failedRequests,[]);report.passed=true;
 }catch(e){report.error=String(e);if(page)await page.screenshot({path:`${out}/roads-failure.png`}).catch(()=>{});throw e;}

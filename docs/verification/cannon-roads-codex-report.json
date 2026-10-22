@@ -1,0 +1,238 @@
+{
+  "passed": true,
+  "errors": [],
+  "failedRequests": [],
+  "checks": [
+    "click: illegal a-d rejected without resource/stat debit",
+    "drag: illegal a-d rejected without resource/stat debit",
+    "real UI a-b capture with AI-grace timing fixture, road travel, no automatic onward dispatch",
+    "fixture: friendly adjacent reinforcement, nonadjacent reselect, mixed legal-source filtering"
+  ],
+  "fixture": "Only explicitly labelled fixture sections mutate world state. Natural first-stage input is not represented as a campaign clear.",
+  "ai": [
+    {
+      "level": 1,
+      "distinctEnemyFleets": 26
+    },
+    {
+      "level": 2,
+      "distinctEnemyFleets": 45
+    },
+    {
+      "level": 3,
+      "distinctEnemyFleets": 52
+    },
+    {
+      "level": 4,
+      "distinctEnemyFleets": 81
+    },
+    {
+      "level": 5,
+      "distinctEnemyFleets": 50
+    },
+    {
+      "level": 6,
+      "distinctEnemyFleets": 59
+    },
+    {
+      "level": 7,
+      "distinctEnemyFleets": 56
+    },
+    {
+      "level": 8,
+      "distinctEnemyFleets": 42
+    },
+    {
+      "level": 9,
+      "distinctEnemyFleets": 66
+    },
+    {
+      "level": 10,
+      "distinctEnemyFleets": 76
+    },
+    {
+      "level": 11,
+      "distinctEnemyFleets": 69
+    },
+    {
+      "level": 12,
+      "distinctEnemyFleets": 23
+    },
+    {
+      "level": 13,
+      "distinctEnemyFleets": 45
+    }
+  ],
+  "network": [
+    {
+      "level": 1,
+      "edges": 4,
+      "thumbnailEdges": 4,
+      "visibleLanes": 4
+    },
+    {
+      "level": 2,
+      "edges": 7,
+      "thumbnailEdges": 7,
+      "visibleLanes": 7
+    },
+    {
+      "level": 3,
+      "edges": 6,
+      "thumbnailEdges": 6,
+      "visibleLanes": 6
+    },
+    {
+      "level": 4,
+      "edges": 9,
+      "thumbnailEdges": 9,
+      "visibleLanes": 9
+    },
+    {
+      "level": 5,
+      "edges": 8,
+      "thumbnailEdges": 8,
+      "visibleLanes": 8
+    },
+    {
+      "level": 6,
+      "edges": 10,
+      "thumbnailEdges": 10,
+      "visibleLanes": 10
+    },
+    {
+      "level": 7,
+      "edges": 8,
+      "thumbnailEdges": 8,
+      "visibleLanes": 8
+    },
+    {
+      "level": 8,
+      "edges": 10,
+      "thumbnailEdges": 10,
+      "visibleLanes": 10
+    },
+    {
+      "level": 9,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 10,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 11,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 12,
+      "edges": 11,
+      "thumbnailEdges": 11,
+      "visibleLanes": 11
+    },
+    {
+      "level": 13,
+      "edges": 14,
+      "thumbnailEdges": 14,
+      "visibleLanes": 14
+    }
+  ],
+  "cannonSelection": [
+    {
+      "units": 0,
+      "text": "塔\n炮塔 1 · 蓝方\n2 伤害 / 0.9 秒\n驻军 0 / 60 · 约 2.22 伤害每秒\n未封顶\n当前单发伤害\n2\n射击间隔\n0.9秒\n驻军加成\n+0伤害\n\n再驻 60 人达到 60 人上限；封顶时 6 伤害 / 0.5 秒。 间隔已比空塔缩短 0 秒。"
+    },
+    {
+      "units": 20,
+      "text": "塔\n炮塔 1 · 蓝方\n4 伤害 / 0.725 秒\n驻军 20 / 60 · 约 5.52 伤害每秒\n未封顶\n当前单发伤害\n4\n射击间隔\n0.725秒\n驻军加成\n+2伤害\n\n再驻 40 人达到 60 人上限；封顶时 6 伤害 / 0.5 秒。 间隔已比空塔缩短 0.175 秒。"
+    },
+    {
+      "units": 60,
+      "text": "塔\n炮塔 1 · 蓝方\n6 伤害 / 0.5 秒\n驻军 60 / 60 · 约 12 伤害每秒\n已封顶\n当前单发伤害\n6\n射击间隔\n0.5秒\n驻军加成\n+4伤害\n\n驻军已达 60 人火力上限，继续增兵不会加伤害或缩间隔。 间隔已比空塔缩短 0.4 秒。"
+    },
+    {
+      "units": 90,
+      "text": "塔\n炮塔 1 · 蓝方\n6 伤害 / 0.5 秒\n驻军 90 / 60 · 约 12 伤害每秒\n已封顶\n当前单发伤害\n6\n射击间隔\n0.5秒\n驻军加成\n+4伤害\n\n驻军已达 60 人火力上限，继续增兵不会加伤害或缩间隔。 间隔已比空塔缩短 0.4 秒。"
+    }
+  ],
+  "codex": {
+    "entries": [
+      {
+        "category": "races",
+        "entry": "race-agile",
+        "chars": 472
+      },
+      {
+        "category": "races",
+        "entry": "race-fast",
+        "chars": 500
+      },
+      {
+        "category": "races",
+        "entry": "race-strong",
+        "chars": 489
+      },
+      {
+        "category": "buildings",
+        "entry": "building-nest",
+        "chars": 421
+      },
+      {
+        "category": "buildings",
+        "entry": "building-cannon",
+        "chars": 788
+      },
+      {
+        "category": "command",
+        "entry": "command-roads",
+        "chars": 540
+      },
+      {
+        "category": "command",
+        "entry": "command-storm",
+        "chars": 306
+      },
+      {
+        "category": "command",
+        "entry": "command-ownership",
+        "chars": 413
+      },
+      {
+        "category": "command",
+        "entry": "command-controls",
+        "chars": 398
+      }
+    ],
+    "categories": [
+      {
+        "id": "races",
+        "title": "01族群3 支虫族"
+      },
+      {
+        "id": "buildings",
+        "title": "02建筑2 种建筑"
+      },
+      {
+        "id": "command",
+        "title": "03指挥4 条规则"
+      }
+    ],
+    "viewports": [
+      1280,
+      1366,
+      1600
+    ],
+    "pauseKeyboard": {
+      "repeatIgnored": true,
+      "secondPressResumes": true,
+      "codexBlocksP": true
+    },
+    "priorPauseInput": "P → C → Escape / close"
+  }
+}
