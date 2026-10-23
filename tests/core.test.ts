@@ -15,7 +15,7 @@ describe('pure deterministic simulation',()=>{
  });
  it('has balanced, fast weak, and slow strong races',()=>{expect(RACES.fast.speed).toBeGreaterThan(RACES.agile.speed);expect(RACES.fast.attack).toBeLessThan(1);expect(RACES.strong.speed).toBeLessThan(100);expect(RACES.strong.defense).toBeGreaterThan(1);});
  it('publishes the battle constants the simulation actually uses',()=>{
-  expect(BATTLE_RULES).toEqual({nestProduction:1,productionCap:100,hatcheryProduction:1.5,windSpeedMultiplier:1.35,broodCaptureBonus:8,cannonRange:200,cannonDamage:2,cannonCooldown:0.9,energyRate:2,skillCost:100,skillRadius:135,skillDamage:18});
+  expect(BATTLE_RULES).toEqual({nestProduction:1,productionCap:100,hatcheryProduction:1.5,windSpeedMultiplier:1.35,broodCaptureBonus:8,garrisonDefenseMultiplier:1.2,cannonRange:250,cannonDamage:4,cannonCooldown:0.9,energyRate:2,skillCost:100,skillRadius:135,skillDamage:18});
   const s=sim([colony('a',1,10)],[]);s.world.energy[1]=BATTLE_RULES.skillCost-1;expect(s.castSkill(1,0,300)).toBe(false);s.world.energy[1]=BATTLE_RULES.skillCost;expect(s.castSkill(1,0,300)).toBe(true);
  });
  it('dispatches integer batches with deduplicated sources and friendly reinforcement',()=>{
@@ -25,12 +25,12 @@ describe('pure deterministic simulation',()=>{
  it('captures neutral and resolves multi-faction weighted combat',()=>{
   const s=sim([colony('a',1,40),colony('n',0,10,10),colony('e',3,20,20)],[['a','n'],['e','n']]);
   s.dispatch(['a'],'n',1);s.step(.2);expect(s.world.colonies[1].owner).toBe(1);expect(s.world.colonies[1].units).toBeCloseTo(30);
-  s.dispatch(['e'],'n',1,3);s.step(.2);expect(s.world.colonies[1].owner).toBe(1);expect(s.world.colonies[1].units).toBeCloseTo(3);
+  s.dispatch(['e'],'n',1,3);s.step(.2);expect(s.world.colonies[1].owner).toBe(1);expect(s.world.colonies[1].units).toBeCloseTo(7.5);
  });
  it('cannons shoot enemy fleets with the garrison firepower without spending it',()=>{
   const s=sim([colony('a',1,10,0,'cannon'),colony('b',2,10,150)],[['b','a']]);s.dispatch(['b'],'a',1,2);s.step(.05);
-  // 10 defenders are exactly the second firepower node: 3 damage instead of the empty-tower 2.
-  expect(s.world.fleets[0].count).toBe(7);expect(s.world.colonies[0].units).toBe(10);expect(s.drainEvents().some(e=>e.type==='shot')).toBe(true);expect(s.drainEvents()).toEqual([]);
+  // 10 defenders are exactly the second firepower node: 6 damage instead of the empty-tower 4.
+  expect(s.world.fleets[0].count).toBe(4);expect(s.world.colonies[0].units).toBe(10);expect(s.drainEvents().some(e=>e.type==='shot')).toBe(true);expect(s.drainEvents()).toEqual([]);
  });
  it('skill needs full energy, spares friendly and neutral, does not capture',()=>{
   const s=sim([colony('a',1,30),colony('b',2,10,50),colony('n',0,10,70)],[]);
@@ -68,7 +68,7 @@ describe('review regressions',()=>{
   s.dispatch(['a'],'n',1);s.step(.2);
   expect(s.world.stats.kills).toBe(0);expect(s.world.stats.lost).toBe(0);expect(s.world.stats.casualties).toBeCloseTo(10);
   s.dispatch(['e'],'n',.5,2);s.step(.2);
-  expect(s.world.stats.lost).toBe(1);expect(s.world.stats.casualties).toBeCloseTo(40);expect(s.world.stats.kills).toBeCloseTo(30);
+  expect(s.world.stats.lost).toBe(1);expect(s.world.stats.casualties).toBeCloseTo(40);expect(s.world.stats.kills).toBeCloseTo(30*1.2);
  });
  it('counts each building loss again after a recapture',()=>{
   const s=sim([colony('a',1,10),colony('e',2,30,10),colony('r',1,100,20),colony('z',2,100,30)],[['e','a'],['r','a'],['z','a']]);
@@ -79,16 +79,17 @@ describe('review regressions',()=>{
  it('does not count a repelled attack or skill casualties as a building loss',()=>{
   const s=sim([colony('a',1,100),colony('e',2,20,10)],[['e','a']]);
   s.dispatch(['e'],'a',.5,2);s.step(.2);expect(s.world.stats.lost).toBe(0);
-  s.world.energy[2]=100;s.castSkill(2,0,300);expect(s.world.stats.lost).toBe(0);expect(s.world.stats.casualties).toBe(28);
+  s.world.energy[2]=100;s.castSkill(2,0,300);expect(s.world.stats.lost).toBe(0);expect(s.world.stats.casualties).toBeCloseTo(18+10/1.2);
  });
  it('penalizes each lost building directly when rating',()=>{
   expect(rateVictory(70,0,100)).toBe(5);expect(rateVictory(70,1,100)).toBe(4);
   expect(rateVictory(70,2,100)).toBe(3);expect(rateVictory(70,4,100)).toBe(1);
  });
  it('AI reinforces in time and does not repeatedly duplicate the reinforcement',()=>{
-  const s=sim([colony('p',1,40,800),colony('front',2,10,400),colony('rear',2,39,300)],[['p','front'],['rear','front']]);
+  // 33 = 28 reinforcements + 5 reserve: isolate duplicate defense from legitimate surplus logistics.
+  const s=sim([colony('p',1,40,800),colony('front',2,10,400),colony('rear',2,33,300)],[['p','front'],['rear','front']]);
   s.dispatch(['p'],'front',1);plan(s);
-  const help=s.world.fleets.filter(f=>f.owner===2&&f.to==='front');expect(help.length).toBe(1);expect(help[0].count).toBe(34);
+  const help=s.world.fleets.filter(f=>f.owner===2&&f.to==='front');expect(help.length).toBe(1);expect(help[0].count).toBe(28);
   plan(s);expect(s.world.fleets.filter(f=>f.owner===2&&f.to==='front').length).toBe(1);
  });
  it('AI declines a reinforcement that cannot arrive before the attack',()=>{
@@ -134,17 +135,17 @@ describe('review regressions',()=>{
 describe('cannon-aware AI regressions',()=>{
  it('clips the circle chord to the route and accounts for race speed',()=>{
   const s=sim([colony('a',2,100),colony('gun',1,0,500,'cannon')],[]);
-  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(10);
-  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,100)).toBe(6);
-  expect(estimateCannonLoss(s.world,{x:450,y:300},{x:500,y:300},2,100)).toBe(2);
-  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,72)).toBe(8);
-  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,145)).toBe(4);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(24);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,100)).toBe(12);
+  expect(estimateCannonLoss(s.world,{x:450,y:300},{x:500,y:300},2,100)).toBe(4);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,72)).toBe(16);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:500,y:300},2,145)).toBe(8);
  });
  it('handles off-path, friendly, neutral and overlapping cannons',()=>{
-  const s=sim([colony('a',2,100),{...colony('off',1,0,500,'cannon'),y:501},colony('friend',2,0,500,'cannon'),colony('neutral',0,0,500,'cannon')],[]);
+  const s=sim([colony('a',2,100),{...colony('off',1,0,500,'cannon'),y:551},colony('friend',2,0,500,'cannon'),colony('neutral',0,0,500,'cannon')],[]);
   expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(0);
   s.world.colonies.push({...colony('gun1',1,0,500,'cannon'),production:0},{...colony('gun2',3,0,500,'cannon'),production:0});
-  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(20);
+  expect(estimateCannonLoss(s.world,{x:0,y:300},{x:1000,y:300},2,100)).toBe(48);
  });
  it('does not dispatch repeatedly doomed small batches toward a cannon',()=>{
   const s=sim([colony('gun',1,0,500,'cannon'),colony('a',2,10)],[['a','gun']]);

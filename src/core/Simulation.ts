@@ -1,7 +1,7 @@
 import { RACES, type RaceId, type Difficulty, type LevelConfig, type World, type GameEvent, type Fleet, type Colony } from './types';
 import { think, THINK_INTERVAL } from './ai';
 import { cloneRoads, findDispatchPath, hasRoad } from './roads';
-import { BATTLE_RULES, ROAD_CLASH, cannonFirepower, defaultProduction, fleetSpeed, isProductive } from './rules';
+import { BATTLE_RULES, ROAD_CLASH, cannonFirepower, defaultProduction, fleetSpeed, garrisonDefenseMultiplier, isProductive } from './rules';
 const TICK=0.05;
 const safe=(n:number,fallback=0)=>Number.isFinite(n)?Math.max(0,Math.min(1e12,n)):fallback;
 const raceOf=(race:RaceId)=>RACES[race]??RACES.agile;
@@ -338,7 +338,7 @@ export class Simulation {
       c.units=safe(c.units+f.count);f.count=0;
       return;
     }
-    const old=c.owner,attack=raceOf(f.race).attack,defense=this.race(old).defense;
+    const old=c.owner,attack=raceOf(f.race).attack,defense=this.race(old).defense*garrisonDefenseMultiplier(old);
     const strength=f.count*attack-c.units*defense;
     if(strength>1e-9) {
       const lost=c.units*defense/attack;this.casualties(f.owner,old,c.units,lost);

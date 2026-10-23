@@ -138,7 +138,7 @@ describe('codex buildings and rules reflect live mechanics', () => {
     expect(storm).toContain('不改变归属');
 
     const ownership = renderCodex({ tab: 'command', entryId: 'command-ownership' });
-    expect(ownership).toContain('攻方兵力 × 攻击 &gt; 守方驻军 × 防御');
+    expect(ownership).toContain('攻方兵力 × 种族攻击 &gt; 守方驻军 × 种族防御 × 驻军防御加成');
     expect(ownership).toContain('敌方建筑与在途部队全部清空即胜');
     expect(ownership).toContain('蓝方占领它即胜利');
     expect(ownership).toContain('中立建筑不是默认胜利目标');

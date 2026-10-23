@@ -9,7 +9,7 @@
 |模块|职责|
 |---|---|
 |`src/core/types.ts`|共享类型、种族数值；不依赖表现层|
-|`src/core/rules.ts`|生产／加速／繁殖奖励／炮塔／技能常量及纯函数|
+|`src/core/rules.ts`|生产／加速／繁殖奖励／驻军防御／炮塔／技能常量及纯函数|
 |`src/core/roads.ts`|真实道路邻接与合法最短路径|
 |`src/core/Simulation.ts`|0.05 秒固定步、生产、行军、遭遇、抵达、统计、胜负|
 |`src/core/ai.ts`|可见状态规划；只能通过同一 dispatch 下令|
@@ -30,6 +30,10 @@
 - 中转时修改当前段和待行路线，保留批次编号和实际兵力；不合并中间巢的驻军，不再增加 sent。风巢仅给离开的下一路段加速，`haste` 不跨段叠加。
 - `engaging` / `combatPause` 为短暂道路交战表现／移动控制；炮击与技能仍能命中真实在途批次。
 - 事件新增 `clash` / `brood`，与 dispatch / impact / capture / shot / skill / end 一起由 `drainEvents()` 消费。音频导演只读取累计统计与当前世界，不抢走事件。
+
+驻军防御共享契约：`BATTLE_RULES.garrisonDefenseMultiplier = 1.2`；`garrisonDefenseMultiplier(owner: number)` 对有归属建筑返回该倍率，中立返回 1。攻城防守有效兵力为驻军 × 种族防御 × 该倍率，适用于所有建筑；道路遭遇不加，不新增炮塔专属装甲。图鉴与 UI 引用共享值，不自建平衡常量。
+
+炮塔射程 250、每发单目标、不产兵；共享火力表锚点驻军 0 / 10 / 30 / 60 对应伤害 4 / 6 / 8 / 10，冷却保持 0.9 / 0.8 / 0.65 / 0.5 秒，节点间线性插值，60 后火力封顶。
 
 ## 寻路与输入
 

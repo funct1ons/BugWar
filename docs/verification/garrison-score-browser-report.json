@@ -1,0 +1,2758 @@
+{
+  "testedAt": "2026-10-23T05:29:27.188Z",
+  "scope": "Real Edge decode/mixing/scheduling and synthetic battle-state fixtures; not human subjective listening.",
+  "errors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "browser": "155.0.4283.62",
+  "beforeGesture": {
+    "contextState": "suspended",
+    "decodedBuffers": 8,
+    "decodedFiles": [
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 0,
+    "currentTrack": null,
+    "pendingTrack": "menu",
+    "currentTrackTime": 0,
+    "currentTrackDuration": 0,
+    "musicLoop": false,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 0,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [],
+    "scheduledTransitionTime": null,
+    "nextBarTime": null,
+    "decodedBytes": 1146232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "assets": [
+    {
+      "cue": "menu",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-menu.ogg",
+          "bytes": 0,
+          "frames": 5292000,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 120,
+      "mixPeak": 0.7713557481765747,
+      "mixRms": 0.10717661590426636,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0018737688660621643,
+      "windowP10": 0.07709475327951096,
+      "windowP95": 0.13831643765931595,
+      "dynamicRatio": 1.794109608961879
+    },
+    {
+      "cue": "meadow",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-meadow-base.ogg",
+          "bytes": 0,
+          "frames": 4704000,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-meadow-motion.ogg",
+          "bytes": 0,
+          "frames": 4704000,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-meadow-power.ogg",
+          "bytes": 0,
+          "frames": 4704000,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 106.66666666666667,
+      "mixPeak": 0.7003766489215195,
+      "mixRms": 0.07272452582678472,
+      "clippedSamples": 0,
+      "endpointDifference": 0.01478417287580669,
+      "windowP10": 0.05209223917062874,
+      "windowP95": 0.0948133470418008,
+      "dynamicRatio": 1.8201050396631748
+    },
+    {
+      "cue": "roots",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-roots-base.ogg",
+          "bytes": 0,
+          "frames": 5080320,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-roots-motion.ogg",
+          "bytes": 0,
+          "frames": 5080320,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-roots-power.ogg",
+          "bytes": 0,
+          "frames": 5080320,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 115.2,
+      "mixPeak": 0.7160443235188723,
+      "mixRms": 0.08233037529668279,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0035709552466869354,
+      "windowP10": 0.05560103249914791,
+      "windowP95": 0.1115456778749535,
+      "dynamicRatio": 2.006179972946778
+    },
+    {
+      "cue": "marsh",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-marsh-base.ogg",
+          "bytes": 0,
+          "frames": 5522087,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-marsh-motion.ogg",
+          "bytes": 0,
+          "frames": 5522087,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-marsh-power.ogg",
+          "bytes": 0,
+          "frames": 5522087,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 125.21739229024944,
+      "mixPeak": 0.754168120212853,
+      "mixRms": 0.0864091221021394,
+      "clippedSamples": 0,
+      "endpointDifference": 0.004226097138598561,
+      "windowP10": 0.06080233681974874,
+      "windowP95": 0.1122948899965402,
+      "dynamicRatio": 1.8468844434292626
+    },
+    {
+      "cue": "amber",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-amber-base.ogg",
+          "bytes": 0,
+          "frames": 4379586,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-amber-motion.ogg",
+          "bytes": 0,
+          "frames": 4379586,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-amber-power.ogg",
+          "bytes": 0,
+          "frames": 4379586,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 99.31034013605442,
+      "mixPeak": 0.615892973728478,
+      "mixRms": 0.07497060797957263,
+      "clippedSamples": 0,
+      "endpointDifference": 0.011159406043589115,
+      "windowP10": 0.04637026809275009,
+      "windowP95": 0.11202801770077443,
+      "dynamicRatio": 2.415945007622024
+    },
+    {
+      "cue": "finale",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-finale-base.ogg",
+          "bytes": 0,
+          "frames": 4233600,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-finale-motion.ogg",
+          "bytes": 0,
+          "frames": 4233600,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-finale-power.ogg",
+          "bytes": 0,
+          "frames": 4233600,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 96,
+      "mixPeak": 0.7284530773758888,
+      "mixRms": 0.09904454973085107,
+      "clippedSamples": 0,
+      "endpointDifference": 0.013118668459355831,
+      "windowP10": 0.05888017577980489,
+      "windowP95": 0.1454106119104264,
+      "dynamicRatio": 2.469602204555583
+    },
+    {
+      "cue": "victory",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-victory.ogg",
+          "bytes": 0,
+          "frames": 784000,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 17.77777777777778,
+      "mixPeak": 0.7514337301254272,
+      "mixRms": 0.11625723934992406,
+      "clippedSamples": 0,
+      "endpointDifference": 0.000013461355592880864,
+      "windowP10": 0.02256640156341476,
+      "windowP95": 0.16720372915322976,
+      "dynamicRatio": 7.409410343220375
+    },
+    {
+      "cue": "defeat",
+      "format": "ogg",
+      "files": [
+        {
+          "file": "music-defeat.ogg",
+          "bytes": 0,
+          "frames": 1114105,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 25.26315192743764,
+      "mixPeak": 0.7764376401901245,
+      "mixRms": 0.1384493842345626,
+      "clippedSamples": 0,
+      "endpointDifference": 4.528175452378491e-7,
+      "windowP10": 0.02421549609773439,
+      "windowP95": 0.22577098984969945,
+      "dynamicRatio": 9.32340964391073
+    },
+    {
+      "cue": "menu",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-menu.mp3",
+          "bytes": 0,
+          "frames": 5292000,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 120,
+      "mixPeak": 0.7236515879631042,
+      "mixRms": 0.10165837113652791,
+      "clippedSamples": 0,
+      "endpointDifference": 0.012193217873573303,
+      "windowP10": 0.07300528653020776,
+      "windowP95": 0.1311129398112364,
+      "dynamicRatio": 1.7959376100384887
+    },
+    {
+      "cue": "meadow",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-meadow-base.mp3",
+          "bytes": 0,
+          "frames": 4704000,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-meadow-motion.mp3",
+          "bytes": 0,
+          "frames": 4704000,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-meadow-power.mp3",
+          "bytes": 0,
+          "frames": 4704000,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 106.66666666666667,
+      "mixPeak": 0.6783691057935357,
+      "mixRms": 0.06888836039133205,
+      "clippedSamples": 0,
+      "endpointDifference": 0.012048150645568967,
+      "windowP10": 0.04931932234240609,
+      "windowP95": 0.08982006460223636,
+      "dynamicRatio": 1.821194216308334
+    },
+    {
+      "cue": "roots",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-roots-base.mp3",
+          "bytes": 0,
+          "frames": 5080320,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-roots-motion.mp3",
+          "bytes": 0,
+          "frames": 5080320,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-roots-power.mp3",
+          "bytes": 0,
+          "frames": 5080320,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 115.2,
+      "mixPeak": 0.6803896687924862,
+      "mixRms": 0.07801744702276664,
+      "clippedSamples": 0,
+      "endpointDifference": 0.005258806981146336,
+      "windowP10": 0.05267327826476703,
+      "windowP95": 0.10606247478073771,
+      "dynamicRatio": 2.013591678262458
+    },
+    {
+      "cue": "marsh",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-marsh-base.mp3",
+          "bytes": 0,
+          "frames": 5522087,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-marsh-motion.mp3",
+          "bytes": 0,
+          "frames": 5522087,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-marsh-power.mp3",
+          "bytes": 0,
+          "frames": 5522087,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 125.21739229024944,
+      "mixPeak": 0.7379586934112012,
+      "mixRms": 0.08182115066316535,
+      "clippedSamples": 0,
+      "endpointDifference": 0.004743455530842766,
+      "windowP10": 0.05755721279989882,
+      "windowP95": 0.10620374184198583,
+      "dynamicRatio": 1.8451856279283303
+    },
+    {
+      "cue": "amber",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-amber-base.mp3",
+          "bytes": 0,
+          "frames": 4379586,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-amber-motion.mp3",
+          "bytes": 0,
+          "frames": 4379586,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-amber-power.mp3",
+          "bytes": 0,
+          "frames": 4379586,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 99.31034013605442,
+      "mixPeak": 0.6087127651553601,
+      "mixRms": 0.07098182703171928,
+      "clippedSamples": 0,
+      "endpointDifference": 0.0058425209717825055,
+      "windowP10": 0.04384038409630439,
+      "windowP95": 0.10620593167231519,
+      "dynamicRatio": 2.422559333399363
+    },
+    {
+      "cue": "finale",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-finale-base.mp3",
+          "bytes": 0,
+          "frames": 4233600,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-finale-motion.mp3",
+          "bytes": 0,
+          "frames": 4233600,
+          "sampleRate": 44100
+        },
+        {
+          "file": "music-finale-power.mp3",
+          "bytes": 0,
+          "frames": 4233600,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 96,
+      "mixPeak": 0.6922274399548769,
+      "mixRms": 0.09378078228440634,
+      "clippedSamples": 0,
+      "endpointDifference": 0.010177440475672483,
+      "windowP10": 0.055710504869709146,
+      "windowP95": 0.13765972976851562,
+      "dynamicRatio": 2.4709833466859106
+    },
+    {
+      "cue": "victory",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-victory.mp3",
+          "bytes": 0,
+          "frames": 784000,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 17.77777777777778,
+      "mixPeak": 0.7312305569648743,
+      "mixRms": 0.11038770848835933,
+      "clippedSamples": 0,
+      "endpointDifference": 0.00017672950343694538,
+      "windowP10": 0.02138563587377788,
+      "windowP95": 0.15853892697609118,
+      "dynamicRatio": 7.413337060063039
+    },
+    {
+      "cue": "defeat",
+      "format": "mp3",
+      "files": [
+        {
+          "file": "music-defeat.mp3",
+          "bytes": 0,
+          "frames": 1114105,
+          "sampleRate": 44100
+        }
+      ],
+      "seconds": 25.26315192743764,
+      "mixPeak": 0.7312563061714172,
+      "mixRms": 0.13123708988580382,
+      "clippedSamples": 0,
+      "endpointDifference": 0.00005479675382957794,
+      "windowP10": 0.02288428527246101,
+      "windowP95": 0.214023404700835,
+      "dynamicRatio": 9.35241813990106
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-meadow-base.ogg",
+          "music-meadow-motion.ogg",
+          "music-meadow-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "meadow",
+        "pendingTrack": null,
+        "currentTrackTime": 0.16000000000000014,
+        "currentTrackDuration": 106.66666666666667,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 8.552,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-meadow-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 7.832
+          },
+          {
+            "name": "motion",
+            "file": "music-meadow-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 7.832
+          },
+          {
+            "name": "power",
+            "file": "music-meadow-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 7.832
+          }
+        ],
+        "scheduledTransitionTime": 7.832,
+        "nextBarTime": 10.054222222222222,
+        "decodedBytes": 124026232,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "meadow",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 2,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-meadow-base.ogg",
+          "music-meadow-motion.ogg",
+          "music-meadow-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "meadow",
+        "pendingTrack": null,
+        "currentTrackTime": 0.1893333333333329,
+        "currentTrackDuration": 106.66666666666667,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 10.774222222222223,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-meadow-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 7.832
+          },
+          {
+            "name": "motion",
+            "file": "music-meadow-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 7.832
+          },
+          {
+            "name": "power",
+            "file": "music-meadow-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 7.832
+          }
+        ],
+        "scheduledTransitionTime": 10.054222222222222,
+        "nextBarTime": 10.054222222222222,
+        "decodedBytes": 124026232,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "meadow",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 3,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-meadow-base.ogg",
+          "music-meadow-motion.ogg",
+          "music-meadow-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "meadow",
+        "pendingTrack": null,
+        "currentTrackTime": 0.2079999999999993,
+        "currentTrackDuration": 106.66666666666667,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 10.774222222222223,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-meadow-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 7.832
+          },
+          {
+            "name": "motion",
+            "file": "music-meadow-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 7.832
+          },
+          {
+            "name": "power",
+            "file": "music-meadow-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 7.832
+          }
+        ],
+        "scheduledTransitionTime": 10.054222222222222,
+        "nextBarTime": 10.054222222222222,
+        "decodedBytes": 124026232,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "meadow",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 4,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-roots-base.ogg",
+          "music-roots-motion.ogg",
+          "music-roots-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "roots",
+        "pendingTrack": null,
+        "currentTrackTime": 0.15644444444444439,
+        "currentTrackDuration": 115.2,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 10.774222222222223,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-roots-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 10.054222222222222
+          },
+          {
+            "name": "motion",
+            "file": "music-roots-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 10.054222222222222
+          },
+          {
+            "name": "power",
+            "file": "music-roots-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 10.054222222222222
+          }
+        ],
+        "scheduledTransitionTime": 10.054222222222222,
+        "nextBarTime": 12.454222222222223,
+        "decodedBytes": 133856632,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "roots",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 5,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-roots-base.ogg",
+          "music-roots-motion.ogg",
+          "music-roots-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "roots",
+        "pendingTrack": null,
+        "currentTrackTime": 0.18577777777777804,
+        "currentTrackDuration": 115.2,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 13.174222222222223,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-roots-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 10.054222222222222
+          },
+          {
+            "name": "motion",
+            "file": "music-roots-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 10.054222222222222
+          },
+          {
+            "name": "power",
+            "file": "music-roots-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 10.054222222222222
+          }
+        ],
+        "scheduledTransitionTime": 12.454222222222223,
+        "nextBarTime": 12.454222222222223,
+        "decodedBytes": 133856632,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "roots",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 6,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-roots-base.ogg",
+          "music-roots-motion.ogg",
+          "music-roots-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "roots",
+        "pendingTrack": null,
+        "currentTrackTime": 0.21777777777777807,
+        "currentTrackDuration": 115.2,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 13.174222222222223,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-roots-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 10.054222222222222
+          },
+          {
+            "name": "motion",
+            "file": "music-roots-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 10.054222222222222
+          },
+          {
+            "name": "power",
+            "file": "music-roots-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 10.054222222222222
+          }
+        ],
+        "scheduledTransitionTime": 12.454222222222223,
+        "nextBarTime": 12.454222222222223,
+        "decodedBytes": 133856632,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "roots",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 7,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-marsh-base.ogg",
+          "music-marsh-motion.ogg",
+          "music-marsh-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "marsh",
+        "pendingTrack": null,
+        "currentTrackTime": 0.15644444444444439,
+        "currentTrackDuration": 125.217375,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 13.174222222222223,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-marsh-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 12.454222222222223
+          },
+          {
+            "name": "motion",
+            "file": "music-marsh-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 12.454222222222223
+          },
+          {
+            "name": "power",
+            "file": "music-marsh-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 12.454222222222223
+          }
+        ],
+        "scheduledTransitionTime": 12.454222222222223,
+        "nextBarTime": 15.062917874396135,
+        "decodedBytes": 145396648,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "marsh",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 8,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-marsh-base.ogg",
+          "music-marsh-motion.ogg",
+          "music-marsh-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "marsh",
+        "pendingTrack": null,
+        "currentTrackTime": 0.19644444444444353,
+        "currentTrackDuration": 125.217375,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 15.782917874396135,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-marsh-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 12.454222222222223
+          },
+          {
+            "name": "motion",
+            "file": "music-marsh-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 12.454222222222223
+          },
+          {
+            "name": "power",
+            "file": "music-marsh-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 12.454222222222223
+          }
+        ],
+        "scheduledTransitionTime": 15.062917874396135,
+        "nextBarTime": 15.062917874396135,
+        "decodedBytes": 145396648,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "marsh",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 9,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-marsh-base.ogg",
+          "music-marsh-motion.ogg",
+          "music-marsh-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "marsh",
+        "pendingTrack": null,
+        "currentTrackTime": 0.2257777777777772,
+        "currentTrackDuration": 125.217375,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 15.782917874396135,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-marsh-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 12.454222222222223
+          },
+          {
+            "name": "motion",
+            "file": "music-marsh-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 12.454222222222223
+          },
+          {
+            "name": "power",
+            "file": "music-marsh-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 12.454222222222223
+          }
+        ],
+        "scheduledTransitionTime": 15.062917874396135,
+        "nextBarTime": 15.062917874396135,
+        "decodedBytes": 145396648,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "marsh",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 10,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-amber-base.ogg",
+          "music-amber-motion.ogg",
+          "music-amber-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "amber",
+        "pendingTrack": null,
+        "currentTrackTime": 0.1584154589371991,
+        "currentTrackDuration": 99.31033333333333,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 15.782917874396135,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-amber-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 15.062917874396135
+          },
+          {
+            "name": "motion",
+            "file": "music-amber-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 15.062917874396135
+          },
+          {
+            "name": "power",
+            "file": "music-amber-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 15.062917874396135
+          }
+        ],
+        "scheduledTransitionTime": 15.062917874396135,
+        "nextBarTime": 17.131883391637516,
+        "decodedBytes": 115551736,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "amber",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 11,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-amber-base.ogg",
+          "music-amber-motion.ogg",
+          "music-amber-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "amber",
+        "pendingTrack": null,
+        "currentTrackTime": 0.18774879227053276,
+        "currentTrackDuration": 99.31033333333333,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": 0,
+        "mixSettledAt": 17.851883391637514,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-amber-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 15.062917874396135
+          },
+          {
+            "name": "motion",
+            "file": "music-amber-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 15.062917874396135
+          },
+          {
+            "name": "power",
+            "file": "music-amber-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 15.062917874396135
+          }
+        ],
+        "scheduledTransitionTime": 17.131883391637516,
+        "nextBarTime": 17.131883391637516,
+        "decodedBytes": 115551736,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "amber",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 12,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-roots-base.ogg",
+          "music-roots-motion.ogg",
+          "music-roots-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "roots",
+        "pendingTrack": null,
+        "currentTrackTime": 0.16944994169581662,
+        "currentTrackDuration": 115.2,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 17.851883391637514,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-roots-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 17.131883391637516
+          },
+          {
+            "name": "motion",
+            "file": "music-roots-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 17.131883391637516
+          },
+          {
+            "name": "power",
+            "file": "music-roots-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 17.131883391637516
+          }
+        ],
+        "scheduledTransitionTime": 17.131883391637516,
+        "nextBarTime": 19.531883391637514,
+        "decodedBytes": 133856632,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "roots",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 13,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-finale-base.ogg",
+          "music-finale-motion.ogg",
+          "music-finale-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "finale",
+        "pendingTrack": null,
+        "currentTrackTime": 0.15878327502915113,
+        "currentTrackDuration": 96,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 20.251883391637513,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-finale-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 19.531883391637514
+          },
+          {
+            "name": "motion",
+            "file": "music-finale-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 19.531883391637514
+          },
+          {
+            "name": "power",
+            "file": "music-finale-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 19.531883391637514
+          }
+        ],
+        "scheduledTransitionTime": 19.531883391637514,
+        "nextBarTime": 21.531883391637514,
+        "decodedBytes": 111738232,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "finale",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 14,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-meadow-base.ogg",
+          "music-meadow-motion.ogg",
+          "music-meadow-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "meadow",
+        "pendingTrack": null,
+        "currentTrackTime": 0.15878327502915113,
+        "currentTrackDuration": 106.66666666666667,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 22.251883391637513,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-meadow-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 21.531883391637514
+          },
+          {
+            "name": "motion",
+            "file": "music-meadow-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 21.531883391637514
+          },
+          {
+            "name": "power",
+            "file": "music-meadow-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 21.531883391637514
+          }
+        ],
+        "scheduledTransitionTime": 21.531883391637514,
+        "nextBarTime": 23.754105613859736,
+        "decodedBytes": 124026232,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "meadow",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 15,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-marsh-base.ogg",
+          "music-marsh-motion.ogg",
+          "music-marsh-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "marsh",
+        "pendingTrack": null,
+        "currentTrackTime": 0.15789438614026352,
+        "currentTrackDuration": 125.217375,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 24.474105613859734,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-marsh-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 23.754105613859736
+          },
+          {
+            "name": "motion",
+            "file": "music-marsh-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 23.754105613859736
+          },
+          {
+            "name": "power",
+            "file": "music-marsh-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 23.754105613859736
+          }
+        ],
+        "scheduledTransitionTime": 23.754105613859736,
+        "nextBarTime": 26.36280126603365,
+        "decodedBytes": 145396648,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "marsh",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 16,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-roots-base.ogg",
+          "music-roots-motion.ogg",
+          "music-roots-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "roots",
+        "pendingTrack": null,
+        "currentTrackTime": 0.1571987339663501,
+        "currentTrackDuration": 115.2,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 27.08280126603365,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-roots-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 26.36280126603365
+          },
+          {
+            "name": "motion",
+            "file": "music-roots-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 26.36280126603365
+          },
+          {
+            "name": "power",
+            "file": "music-roots-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 26.36280126603365
+          }
+        ],
+        "scheduledTransitionTime": 26.36280126603365,
+        "nextBarTime": 28.762801266033648,
+        "decodedBytes": 133856632,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "roots",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 17,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-amber-base.ogg",
+          "music-amber-motion.ogg",
+          "music-amber-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "amber",
+        "pendingTrack": null,
+        "currentTrackTime": 0.15719873396635364,
+        "currentTrackDuration": 99.31033333333333,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 29.482801266033647,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-amber-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 28.762801266033648
+          },
+          {
+            "name": "motion",
+            "file": "music-amber-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 28.762801266033648
+          },
+          {
+            "name": "power",
+            "file": "music-amber-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 28.762801266033648
+          }
+        ],
+        "scheduledTransitionTime": 28.762801266033648,
+        "nextBarTime": 30.83176678327503,
+        "decodedBytes": 115551736,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "amber",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    },
+    {
+      "level": 18,
+      "audio": {
+        "contextState": "running",
+        "decodedBuffers": 11,
+        "decodedFiles": [
+          "music-finale-base.ogg",
+          "music-finale-motion.ogg",
+          "music-finale-power.ogg",
+          "sfx-capture.wav",
+          "sfx-click.wav",
+          "sfx-dispatch.wav",
+          "sfx-hover.wav",
+          "sfx-impact.wav",
+          "sfx-march.wav",
+          "sfx-select.wav",
+          "sfx-skill.wav"
+        ],
+        "pendingLoads": 0,
+        "failedFiles": [],
+        "fallbackFiles": [],
+        "activeVoices": 0,
+        "activeMusicSources": 3,
+        "currentTrack": "finale",
+        "pendingTrack": null,
+        "currentTrackTime": 0.16823321672497116,
+        "currentTrackDuration": 96,
+        "musicLoop": true,
+        "crossfading": false,
+        "limiterReduction": 0,
+        "throttledPlays": 0,
+        "master": 0.72,
+        "music": 0.55,
+        "sfx": 0.65,
+        "muted": false,
+        "baseUrl": "./",
+        "intensity": 0,
+        "requestedIntensity": 0,
+        "paused": true,
+        "pauseGain": 0.3199999928474426,
+        "targetPauseGain": 0.32,
+        "pendingIntensity": null,
+        "mixSettledAt": 31.551766783275028,
+        "activeLayers": [
+          {
+            "name": "base",
+            "file": "music-finale-base.ogg",
+            "gain": 0.3199999928474426,
+            "targetGain": 0.32,
+            "startedAt": 30.83176678327503
+          },
+          {
+            "name": "motion",
+            "file": "music-finale-motion.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 30.83176678327503
+          },
+          {
+            "name": "power",
+            "file": "music-finale-power.ogg",
+            "gain": 0,
+            "targetGain": 0,
+            "startedAt": 30.83176678327503
+          }
+        ],
+        "scheduledTransitionTime": 30.83176678327503,
+        "nextBarTime": 32.83176678327503,
+        "decodedBytes": 111738232,
+        "cacheBudgetBytes": 201326592,
+        "cacheOverBudgetBytes": 0
+      },
+      "director": {
+        "mode": "battle",
+        "cue": "finale",
+        "paused": true,
+        "intensity": 0,
+        "modelSeconds": 0,
+        "heldSeconds": 0,
+        "pressure": 0,
+        "activity": 0,
+        "signals": {
+          "balance": 0,
+          "incoming": 0,
+          "nestLoss": 0,
+          "density": 0
+        }
+      }
+    }
+  ],
+  "pressureFixture": {
+    "fixture": true,
+    "method": "Detached world clone, synthetic 600-unit multi-faction incoming attack; no writes to live simulation.",
+    "director": {
+      "mode": "battle",
+      "cue": "finale",
+      "paused": false,
+      "intensity": 2,
+      "modelSeconds": 21,
+      "heldSeconds": 12.75,
+      "pressure": 0.9999724635506503,
+      "activity": 0,
+      "signals": {
+        "balance": 1,
+        "incoming": 1,
+        "nestLoss": 0,
+        "density": 1
+      }
+    },
+    "audio": {
+      "contextState": "running",
+      "decodedBuffers": 11,
+      "decodedFiles": [
+        "music-finale-base.ogg",
+        "music-finale-motion.ogg",
+        "music-finale-power.ogg",
+        "sfx-capture.wav",
+        "sfx-click.wav",
+        "sfx-dispatch.wav",
+        "sfx-hover.wav",
+        "sfx-impact.wav",
+        "sfx-march.wav",
+        "sfx-select.wav",
+        "sfx-skill.wav"
+      ],
+      "pendingLoads": 0,
+      "failedFiles": [],
+      "fallbackFiles": [],
+      "activeVoices": 0,
+      "activeMusicSources": 3,
+      "currentTrack": "finale",
+      "pendingTrack": null,
+      "currentTrackTime": 2.7282332167249734,
+      "currentTrackDuration": 96,
+      "musicLoop": true,
+      "crossfading": false,
+      "limiterReduction": 0,
+      "throttledPlays": 0,
+      "master": 0.72,
+      "music": 0.55,
+      "sfx": 0.65,
+      "muted": false,
+      "baseUrl": "./",
+      "intensity": 2,
+      "requestedIntensity": 2,
+      "paused": false,
+      "pauseGain": 0.9984258413314819,
+      "targetPauseGain": 1,
+      "pendingIntensity": null,
+      "mixSettledAt": null,
+      "activeLayers": [
+        {
+          "name": "base",
+          "file": "music-finale-base.ogg",
+          "gain": 0.9984258413314819,
+          "targetGain": 1,
+          "startedAt": 30.83176678327503
+        },
+        {
+          "name": "motion",
+          "file": "music-finale-motion.ogg",
+          "gain": 0.9961145006864385,
+          "targetGain": 1,
+          "startedAt": 30.83176678327503
+        },
+        {
+          "name": "power",
+          "file": "music-finale-power.ogg",
+          "gain": 0.9961145006864385,
+          "targetGain": 1,
+          "startedAt": 30.83176678327503
+        }
+      ],
+      "scheduledTransitionTime": null,
+      "nextBarTime": 34.83176678327503,
+      "decodedBytes": 111738232,
+      "cacheBudgetBytes": 201326592,
+      "cacheOverBudgetBytes": 0
+    }
+  },
+  "recoveryFixture": {
+    "mode": "battle",
+    "cue": "finale",
+    "paused": false,
+    "intensity": 0,
+    "modelSeconds": 86,
+    "heldSeconds": 52.25,
+    "pressure": 0.000002497981538430366,
+    "activity": 0,
+    "signals": {
+      "balance": 0,
+      "incoming": 0,
+      "nestLoss": 0,
+      "density": 0
+    }
+  },
+  "escalationScheduled": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-finale-base.ogg",
+      "music-finale-motion.ogg",
+      "music-finale-power.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 3,
+    "currentTrack": "finale",
+    "pendingTrack": null,
+    "currentTrackTime": 4.738899883391639,
+    "currentTrackDuration": 96,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 2,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": 2,
+    "mixSettledAt": 37.55176678327503,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-finale-base.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "motion",
+        "file": "music-finale-motion.ogg",
+        "gain": 0.0023086362052708864,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "power",
+        "file": "music-finale-power.ogg",
+        "gain": 0.0023086362052708864,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      }
+    ],
+    "scheduledTransitionTime": 36.83176678327503,
+    "nextBarTime": 36.83176678327503,
+    "decodedBytes": 111738232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "escalated": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-finale-base.ogg",
+      "music-finale-motion.ogg",
+      "music-finale-power.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 3,
+    "currentTrack": "finale",
+    "pendingTrack": null,
+    "currentTrackTime": 6.720233216724971,
+    "currentTrackDuration": 96,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 2,
+    "requestedIntensity": 2,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-finale-base.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "motion",
+        "file": "music-finale-motion.ogg",
+        "gain": 0.9975314736366272,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "power",
+        "file": "music-finale-power.ogg",
+        "gain": 0.9975314736366272,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      }
+    ],
+    "scheduledTransitionTime": null,
+    "nextBarTime": 38.83176678327503,
+    "decodedBytes": 111738232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "cancelledTransitions": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-finale-base.ogg",
+      "music-finale-motion.ogg",
+      "music-finale-power.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 3,
+    "currentTrack": "finale",
+    "pendingTrack": null,
+    "currentTrackTime": 8.728233216724973,
+    "currentTrackDuration": 96,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 0,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-finale-base.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "motion",
+        "file": "music-finale-motion.ogg",
+        "gain": 0.0023094485513865948,
+        "targetGain": 0,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "power",
+        "file": "music-finale-power.ogg",
+        "gain": 0.0023094485513865948,
+        "targetGain": 0,
+        "startedAt": 30.83176678327503
+      }
+    ],
+    "scheduledTransitionTime": null,
+    "nextBarTime": 40.83176678327503,
+    "decodedBytes": 111738232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "paused": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-finale-base.ogg",
+      "music-finale-motion.ogg",
+      "music-finale-power.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 3,
+    "currentTrack": "finale",
+    "pendingTrack": null,
+    "currentTrackTime": 10.728233216724973,
+    "currentTrackDuration": 96,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 0,
+    "paused": true,
+    "pauseGain": 0.32157427072525024,
+    "targetPauseGain": 0.32,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-finale-base.ogg",
+        "gain": 0.32157427072525024,
+        "targetGain": 0.32,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "motion",
+        "file": "music-finale-motion.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 30.83176678327503
+      },
+      {
+        "name": "power",
+        "file": "music-finale-power.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 30.83176678327503
+      }
+    ],
+    "scheduledTransitionTime": null,
+    "nextBarTime": 42.83176678327503,
+    "decodedBytes": 111738232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "terminal": {
+    "contextState": "running",
+    "decodedBuffers": 9,
+    "decodedFiles": [
+      "music-victory.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 1,
+    "currentTrack": "victory",
+    "pendingTrack": null,
+    "currentTrackTime": 3.1680000000000064,
+    "currentTrackDuration": 17.777770833333335,
+    "musicLoop": false,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 2,
+    "requestedIntensity": 2,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-victory.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 41.711999999999996
+      }
+    ],
+    "scheduledTransitionTime": null,
+    "nextBarTime": 46.15644444444444,
+    "decodedBytes": 7972896,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "victoryEnded": {
+    "contextState": "running",
+    "decodedBuffers": 8,
+    "decodedFiles": [
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 0,
+    "currentTrack": null,
+    "pendingTrack": null,
+    "currentTrackTime": 0,
+    "currentTrackDuration": 0,
+    "musicLoop": false,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 2,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [],
+    "scheduledTransitionTime": null,
+    "nextBarTime": null,
+    "decodedBytes": 1146232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "defeatStarted": {
+    "contextState": "running",
+    "decodedBuffers": 9,
+    "decodedFiles": [
+      "music-defeat.ogg",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 1,
+    "currentTrack": "defeat",
+    "pendingTrack": null,
+    "currentTrackTime": 0,
+    "currentTrackDuration": 25.263145833333333,
+    "musicLoop": false,
+    "crossfading": true,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 2,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": 2,
+    "mixSettledAt": 60.31066666666667,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-defeat.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 59.59066666666667
+      }
+    ],
+    "scheduledTransitionTime": 59.59066666666667,
+    "nextBarTime": 59.59066666666667,
+    "decodedBytes": 10847280,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "defeatEnded": {
+    "contextState": "running",
+    "decodedBuffers": 8,
+    "decodedFiles": [
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [],
+    "activeVoices": 0,
+    "activeMusicSources": 0,
+    "currentTrack": null,
+    "pendingTrack": null,
+    "currentTrackTime": 0,
+    "currentTrackDuration": 0,
+    "musicLoop": false,
+    "crossfading": false,
+    "limiterReduction": 0,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 2,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": null,
+    "activeLayers": [],
+    "scheduledTransitionTime": null,
+    "nextBarTime": null,
+    "decodedBytes": 1146232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "mp3Fallback": {
+    "contextState": "running",
+    "decodedBuffers": 11,
+    "decodedFiles": [
+      "music-meadow-base.mp3",
+      "music-meadow-motion.mp3",
+      "music-meadow-power.mp3",
+      "sfx-capture.wav",
+      "sfx-click.wav",
+      "sfx-dispatch.wav",
+      "sfx-hover.wav",
+      "sfx-impact.wav",
+      "sfx-march.wav",
+      "sfx-select.wav",
+      "sfx-skill.wav"
+    ],
+    "pendingLoads": 0,
+    "failedFiles": [],
+    "fallbackFiles": [
+      "music-meadow-base.mp3",
+      "music-meadow-motion.mp3",
+      "music-meadow-power.mp3"
+    ],
+    "activeVoices": 0,
+    "activeMusicSources": 3,
+    "currentTrack": "meadow",
+    "pendingTrack": null,
+    "currentTrackTime": 0.15066666666666662,
+    "currentTrackDuration": 106.66666666666667,
+    "musicLoop": true,
+    "crossfading": false,
+    "limiterReduction": -1.95,
+    "throttledPlays": 0,
+    "master": 0.72,
+    "music": 0.55,
+    "sfx": 0.65,
+    "muted": false,
+    "baseUrl": "./",
+    "intensity": 0,
+    "requestedIntensity": 0,
+    "paused": false,
+    "pauseGain": 1,
+    "targetPauseGain": 1,
+    "pendingIntensity": null,
+    "mixSettledAt": 1.26,
+    "activeLayers": [
+      {
+        "name": "base",
+        "file": "music-meadow-base.ogg",
+        "gain": 1,
+        "targetGain": 1,
+        "startedAt": 0.54
+      },
+      {
+        "name": "motion",
+        "file": "music-meadow-motion.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 0.54
+      },
+      {
+        "name": "power",
+        "file": "music-meadow-power.ogg",
+        "gain": 0,
+        "targetGain": 0,
+        "startedAt": 0.54
+      }
+    ],
+    "scheduledTransitionTime": 0.54,
+    "nextBarTime": 2.7622222222222224,
+    "decodedBytes": 124026232,
+    "cacheBudgetBytes": 201326592,
+    "cacheOverBudgetBytes": 0
+  },
+  "passed": true
+}

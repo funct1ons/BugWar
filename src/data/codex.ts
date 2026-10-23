@@ -6,6 +6,7 @@ import {
   CANNON_GARRISON_CAP,
   cannonFirepower,
   defaultProduction,
+  garrisonDefenseMultiplier,
   isProductive,
 } from '../core/rules';
 import { RACE_UNLOCK_LEVELS } from '../storage/SaveSystem';
@@ -309,7 +310,7 @@ export const BUILDING_CODEX_ENTRIES: readonly BuildingCodexEntry[] = [
       { label: '驻军加成', value: `最多 +${number(cannonFirepower(CANNON_GARRISON_CAP).damage - CANNON_BASE_FIREPOWER.damage)} 伤害`, note: `${number(CANNON_GARRISON_CAP)} 人为火力上限；间隔由 ${number(CANNON_BASE_FIREPOWER.cooldown)} 秒缩短到 ${number(cannonFirepower(CANNON_GARRISON_CAP).cooldown)} 秒，超过上限不再提升` },
     ],
     notes: [
-      '炮塔只自动射击射程内的敌方在途部队，不会攻击建筑驻军。',
+      '炮塔每发仅攻击一支射程内的敌方在途部队，不会攻击建筑驻军；无范围伤害。',
       '火力由实时驻军决定：' + FIREPOWER_GROWTH_TEXT + `；节点之间按驻军线性插值，${number(CANNON_GARRISON_CAP)} 人封顶。`,
       '调整驻军立即改变伤害与剩余充能速率，但保留已积累的冷却进度，不会重置冷却或免费补射一发。',
       '需要友军增援才能长期驻守；炮塔不生产，驻军损失后火力随之下降，无法自行补充。',
@@ -422,7 +423,7 @@ export const COMMAND_CODEX_ENTRIES: readonly CommandCodexEntry[] = [
       {
         heading: '占领如何发生',
         body: [
-          '军队抵达非友方建筑时，按攻方种族的攻击倍率与守方种族的防御倍率结算：攻方兵力 × 攻击 > 守方驻军 × 防御时占领，否则攻方被消耗。',
+          `军队抵达非友方建筑时，攻方兵力 × 种族攻击 > 守方驻军 × 种族防御 × 驻军防御加成时占领，否则攻方被消耗。有归属的所有建筑额外 ×${number(garrisonDefenseMultiplier(1))}，中立 ×${number(garrisonDefenseMultiplier(0))}；道路遭遇不享受驻军加成。`,
           '这里没有额外的阵营互克表；结果只由当前兵力、攻击、防御和抵达顺序决定。',
         ],
       },
@@ -622,7 +623,7 @@ function renderRaceDetail(entry: RaceCodexEntry, options: CodexRenderOptions): s
   <div class="codex-stat-grid">
     <article class="codex-stat"><span>行军速度</span><strong>${number(entry.speed)}</strong><small>战场距离 / 秒 · 敏捷族基准的 ${percent(speedRelative)}</small></article>
     <article class="codex-stat"><span>攻击倍率</span><strong>${factor(entry.attack)}</strong><small>抵达时乘在攻方兵力上</small></article>
-    <article class="codex-stat"><span>防御倍率</span><strong>${factor(entry.defense)}</strong><small>防守时乘在守方驻军上</small></article>
+    <article class="codex-stat"><span>防御倍率</span><strong>${factor(entry.defense)}</strong><small>种族基础防御；有归属建筑驻军另乘 ${factor(BATTLE_RULES.garrisonDefenseMultiplier)}，中立及道路遭遇不加</small></article>
     <article class="codex-stat"><span>生产倍率</span><strong>${factor(entry.production)}</strong><small>默认 ${number(entry.perSecond)} 兵/秒（${number(BATTLE_RULES.nestProduction)} × 种族）</small></article>
   </div>
   <div class="codex-two-col">
@@ -713,7 +714,7 @@ function renderBuildingDetail(entry: BuildingCodexEntry, options: CodexRenderOpt
   <div class="codex-stat-grid">${entry.stats.map((stat) => `<article class="codex-stat"><span>${escapeHtml(stat.label)}</span><strong>${escapeHtml(stat.value)}</strong><small>${escapeHtml(stat.note)}</small></article>`).join('')}</div>
   <section class="codex-block codex-rules"><h4>使用要点</h4><ul>${entry.notes.map((text) => `<li>${escapeHtml(text)}</li>`).join('')}</ul></section>
   ${live}
-  <div class="codex-callout"><b>没有隐藏升级</b><span>图鉴只列出当前模拟真实存在的机制：生产、自然上限、驻军、道路中转与战斗结算。没有升级按钮、科技树或未实现的特殊能力；超过 ${number(BATTLE_RULES.productionCap)} 的驻军可来自增援或繁育奖励。</span></div>
+  <div class="codex-callout"><b>没有隐藏升级</b><span>图鉴只列出当前模拟真实存在的机制：生产、自然上限、驻军、道路中转与战斗结算。所有有归属建筑（含炮塔、风巢）的驻军在种族防御之上额外 ${factor(BATTLE_RULES.garrisonDefenseMultiplier)}；中立和道路遭遇不加，也没有炮塔专属装甲。没有升级按钮、科技树或未实现的特殊能力；超过 ${number(BATTLE_RULES.productionCap)} 的驻军可来自增援或繁育奖励。</span></div>
   <p class="codex-note">出现条件：${escapeHtml(entry.unlock)}</p>`;
 }
 

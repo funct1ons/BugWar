@@ -33,7 +33,9 @@ try{
  assert.match(cannonText,/驻军火力成长/);
  const growthRows=await page.locator('#modal .codex-firepower-table tbody tr').allTextContents();
  assert.equal(growthRows.length,4,'approved 0/10/30/60 growth nodes are deployed');
- report.cannonGrowth={text:cannonText,rows:growthRows};
+ for(const [i,damage]of [4,6,8,10].entries())assert.equal((await page.locator('#modal .codex-firepower-table tbody tr').nth(i).locator('td').allTextContents())[0],String(damage),'deployed cannon damage anchor');
+ assert.match(cannonText,/250/);assert.match(cannonText,/1\.2/);
+ report.cannonGrowth={range:250,garrisonDefense:1.2,text:cannonText,rows:growthRows};
  await page.locator('#modal [data-action=codex-entry][data-value="building-hatchery"]').click();
  assert.match(await page.locator('#modal .codex-detail').innerText(),/1\.5/);
  assert.match(await page.locator('#modal .codex-detail').innerText(),/100/);

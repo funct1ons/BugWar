@@ -1,6 +1,6 @@
 import { RACES, type BuildingKind, type Colony, type Difficulty, type Fleet, type RaceId, type World } from './types';
 import { findDispatchPath, hasRoad, roadDistances } from './roads';
-import { BATTLE_RULES, cannonFirepower, cannonHitsForExposure, fleetSpeed, isProductive } from './rules';
+import { BATTLE_RULES, cannonFirepower, cannonHitsForExposure, fleetSpeed, garrisonDefenseMultiplier, isProductive } from './rules';
 export const THINK_INTERVAL: Record<Difficulty,number> = {easy:4,normal:2.7,hard:0.75};
 type RaceInfo = (typeof RACES)[RaceId];
 const distance=(a:{x:number;y:number},b:{x:number;y:number})=>Math.hypot(a.x-b.x,a.y-b.y);
@@ -108,9 +108,10 @@ export function think(world:World, owner:number, difficulty:Difficulty, send:(so
       time=a.time;
       if(a.owner===holder) units+=a.effectiveCount;
       else {
-        const strength=a.effectiveCount*a.attack-units*race(holder).defense;
+        const defense=race(holder).defense*garrisonDefenseMultiplier(holder);
+        const strength=a.effectiveCount*a.attack-units*defense;
         if(strength>1e-9) {holder=a.owner;units=strength/a.attack;}
-        else units=Math.max(0,-strength/race(holder).defense);
+        else units=Math.max(0,-strength/defense);
       }
     }
     return {owner:holder,units,time};
@@ -160,7 +161,7 @@ export function think(world:World, owner:number, difficulty:Difficulty, send:(so
       if(a.effectiveCount<=0) continue;
       if(a.owner===owner) deficit-=a.effectiveCount;
       else {
-        deficit+=a.effectiveCount*a.attack/ownRace.defense;
+        deficit+=a.effectiveCount*a.attack/(ownRace.defense*garrisonDefenseMultiplier(owner));
         const capped=Math.min(c.units,BATTLE_RULES.productionCap);
         const growth=isProductive(c.kind)?Math.max(0,Math.min(BATTLE_RULES.productionCap,capped+a.time*c.production*ownRace.production)-capped):0;
         result.push({time:a.time,units:Math.ceil(deficit-growth+4)});
@@ -245,7 +246,7 @@ export function think(world:World, owner:number, difficulty:Difficulty, send:(so
   };
   const score=(c:Colony,route:Route)=>{
     const growth=growthDuring(c,route.eta);
-    return (c.units+growth)*race(c.owner).defense/ownRace.attack+route.eta*2+route.loss-value(c)-(c.owner===0?8:0);
+    return (c.units+growth)*race(c.owner).defense*garrisonDefenseMultiplier(c.owner)/ownRace.attack+route.eta*2+route.loss-value(c)-(c.owner===0?8:0);
   };
   // Every foreign colony reachable through friendly territory is a legal multi-hop target.
   // Sources are priced by their own route, so a deep strike behind an owned corridor is
@@ -274,7 +275,10 @@ export function think(world:World, owner:number, difficulty:Difficulty, send:(so
       const {source,route,available}=sources[i];
       plan.push(extra(target,available,i,route));
       const projected=project(target,plan);
-      const buffer=3+(target.units*(margin-1)*race(target.owner).defense/ownRace.attack);
+      // Bound only the EXTRA safety margin: reinforced non-producers can grow without
+      // limit, but their real defenders and route losses above are still paid in full.
+      // Otherwise both sides can stockpile forever while waiting for a growing surplus.
+      const buffer=3+(Math.min(target.units,BATTLE_RULES.productionCap)*(margin-1)*race(target.owner).defense*garrisonDefenseMultiplier(target.owner)/ownRace.attack);
       if(projected.owner!==owner||projected.units<buffer) continue;
       // Minimal final contribution meeting the projected safety margin. Earlier sources
       // may soften defenders; production and travel time between arrivals are accounted for.

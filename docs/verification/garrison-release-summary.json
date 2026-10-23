@@ -1,0 +1,3351 @@
+{
+  "testedAt": "2026-10-23T07:57:55.575Z",
+  "scope": "Owned garrison defense x1.2; cannon range250 damage4/6/8/10. Deterministic robots plus real Edge and explicitly labelled controlled fixtures; not human playtesting.",
+  "unit": {
+    "passed": 497,
+    "failed": 0,
+    "skipped": 1,
+    "success": true
+  },
+  "build": {
+    "js": "index-CTW87c1m.js",
+    "sha256": "1df35853eebfde4304a65bb6a7ee74de4d07d0e60d837bf1e10e9270237582e9"
+  },
+  "browser": {
+    "lightweight-browser": {
+      "passed": true,
+      "testedAt": null
+    },
+    "browser": {
+      "passed": true,
+      "testedAt": null
+    },
+    "roads-codex": {
+      "passed": true,
+      "testedAt": null
+    },
+    "visual": {
+      "passed": true,
+      "testedAt": null
+    },
+    "score-browser": {
+      "passed": true,
+      "testedAt": "2026-10-23T05:29:27.188Z"
+    },
+    "onboarding-browser": {
+      "passed": true,
+      "testedAt": null
+    }
+  },
+  "naturalCampaign": {
+    "methodology": "Unmodified simulation; legal orders and existing pulse strategies, 900s cap unchanged; timeout is not a win. No injected captures or troops.",
+    "balance": {
+      "easy": {
+        "runs": 72,
+        "wins": 72,
+        "medianSeconds": 64.35,
+        "maxSeconds": 340.5
+      },
+      "normal": {
+        "runs": 72,
+        "wins": 72,
+        "medianSeconds": 61.55,
+        "maxSeconds": 535.5
+      }
+    },
+    "runs": [
+      {
+        "level": 1,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 33.45,
+        "lost": 0,
+        "dispatches": {
+          "1": 19
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 33
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 24.4,
+        "lost": 1,
+        "dispatches": {
+          "1": 14,
+          "2": 1
+        },
+        "maxIdle": {
+          "1": 5,
+          "2": 16
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 40.7,
+        "lost": 0,
+        "dispatches": {
+          "1": 24
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 40
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 28.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 17
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 29
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 26.7,
+        "lost": 0,
+        "dispatches": {
+          "1": 17,
+          "2": 1
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 14
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 26.65,
+        "lost": 1,
+        "dispatches": {
+          "1": 16,
+          "2": 1
+        },
+        "maxIdle": {
+          "1": 5,
+          "2": 14
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 30.2,
+        "lost": 0,
+        "dispatches": {
+          "1": 19,
+          "2": 1
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 16
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 1,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 28.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 17
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 29
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 30.55,
+        "lost": 0,
+        "dispatches": {
+          "1": 56
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 30
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 26.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 40
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 26
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 34.45,
+        "lost": 0,
+        "dispatches": {
+          "1": 65
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 34
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 30.55,
+        "lost": 0,
+        "dispatches": {
+          "1": 56
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 30
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 30.55,
+        "lost": 0,
+        "dispatches": {
+          "1": 56
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 30
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 26.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 40
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 26
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 34.45,
+        "lost": 0,
+        "dispatches": {
+          "1": 65
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 34
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 30.55,
+        "lost": 0,
+        "dispatches": {
+          "1": 56
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 30
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 55.1,
+        "lost": 0,
+        "dispatches": {
+          "1": 82,
+          "2": 7
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 20
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 52.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 65,
+          "2": 7
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 14
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 53.1,
+        "lost": 2,
+        "dispatches": {
+          "1": 80,
+          "2": 3
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 26
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 55.1,
+        "lost": 0,
+        "dispatches": {
+          "1": 78,
+          "2": 8
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 25
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 55.1,
+        "lost": 0,
+        "dispatches": {
+          "1": 85,
+          "2": 8
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 18
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 47.7,
+        "lost": 0,
+        "dispatches": {
+          "1": 56,
+          "2": 11
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 13
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 56.1,
+        "lost": 3,
+        "dispatches": {
+          "1": 82,
+          "2": 6
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 13
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 52.1,
+        "lost": 0,
+        "dispatches": {
+          "1": 71,
+          "2": 7
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 18
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 78.7,
+        "lost": 3,
+        "dispatches": {
+          "1": 154,
+          "2": 27
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 28
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 71.55,
+        "lost": 3,
+        "dispatches": {
+          "1": 132,
+          "2": 26
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 25
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 122.65,
+        "lost": 2,
+        "dispatches": {
+          "1": 237,
+          "2": 58
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 10
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 70.45,
+        "lost": 2,
+        "dispatches": {
+          "1": 148,
+          "2": 15
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 40
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 88.45,
+        "lost": 5,
+        "dispatches": {
+          "1": 185,
+          "2": 46
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 36
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 71.6,
+        "lost": 3,
+        "dispatches": {
+          "1": 133,
+          "2": 51
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 17
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 96.55,
+        "lost": 5,
+        "dispatches": {
+          "1": 223,
+          "2": 44
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 39
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 4,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 96.7,
+        "lost": 5,
+        "dispatches": {
+          "1": 215,
+          "2": 46
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 44
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 61.85,
+        "lost": 0,
+        "dispatches": {
+          "1": 143,
+          "2": 11,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 12,
+          "3": 17
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 60.9,
+        "lost": 0,
+        "dispatches": {
+          "1": 122,
+          "2": 11,
+          "3": 3
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 11,
+          "3": 12
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 103.6,
+        "lost": 4,
+        "dispatches": {
+          "1": 239,
+          "2": 20,
+          "3": 13
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 16,
+          "3": 11
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 61.85,
+        "lost": 0,
+        "dispatches": {
+          "1": 146,
+          "2": 11,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 12,
+          "3": 14
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 61.85,
+        "lost": 0,
+        "dispatches": {
+          "1": 143,
+          "2": 16,
+          "3": 4
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 11,
+          "3": 12
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 60.9,
+        "lost": 0,
+        "dispatches": {
+          "1": 115,
+          "2": 17,
+          "3": 4
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 7,
+          "3": 12
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 120.1,
+        "lost": 3,
+        "dispatches": {
+          "1": 267,
+          "2": 41,
+          "3": 16
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7,
+          "3": 10
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 61.85,
+        "lost": 0,
+        "dispatches": {
+          "1": 147,
+          "2": 16,
+          "3": 3
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 11,
+          "3": 11
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 40.05,
+        "lost": 1,
+        "dispatches": {
+          "1": 83,
+          "2": 11
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 11
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 45.05,
+        "lost": 1,
+        "dispatches": {
+          "1": 98,
+          "2": 13
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 59.25,
+        "lost": 3,
+        "dispatches": {
+          "1": 137,
+          "2": 16
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 14
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 51.2,
+        "lost": 0,
+        "dispatches": {
+          "1": 104,
+          "2": 14
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 34.8,
+        "lost": 0,
+        "dispatches": {
+          "1": 70,
+          "2": 13
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 37.55,
+        "lost": 1,
+        "dispatches": {
+          "1": 79,
+          "2": 13
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 5
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 49.05,
+        "lost": 1,
+        "dispatches": {
+          "1": 115,
+          "2": 17
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 6,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 54.05,
+        "lost": 1,
+        "dispatches": {
+          "1": 122,
+          "2": 23
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 90.4,
+        "lost": 0,
+        "dispatches": {
+          "1": 172,
+          "2": 30
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 27
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 49.7,
+        "lost": 2,
+        "dispatches": {
+          "1": 105,
+          "2": 15
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 18
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 139.8,
+        "lost": 1,
+        "dispatches": {
+          "1": 211,
+          "2": 65
+        },
+        "maxIdle": {
+          "1": 1,
+          "2": 8
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 121.9,
+        "lost": 0,
+        "dispatches": {
+          "1": 207,
+          "2": 48
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 22
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 93.4,
+        "lost": 0,
+        "dispatches": {
+          "1": 172,
+          "2": 47
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 22
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 64.7,
+        "lost": 1,
+        "dispatches": {
+          "1": 121,
+          "2": 29
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 19
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 86.35,
+        "lost": 0,
+        "dispatches": {
+          "1": 142,
+          "2": 55
+        },
+        "maxIdle": {
+          "1": 1,
+          "2": 8
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 7,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 68.2,
+        "lost": 1,
+        "dispatches": {
+          "1": 101,
+          "2": 20
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 35
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 58.3,
+        "lost": 3,
+        "dispatches": {
+          "1": 127,
+          "2": 12,
+          "3": 5
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 15,
+          "3": 6
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 55.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 113,
+          "2": 12,
+          "3": 6
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 17,
+          "3": 6
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 67.65,
+        "lost": 1,
+        "dispatches": {
+          "1": 155,
+          "2": 17,
+          "3": 3
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 9,
+          "3": 10
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 83.8,
+        "lost": 4,
+        "dispatches": {
+          "1": 212,
+          "2": 22,
+          "3": 4
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 23,
+          "3": 19
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 48.25,
+        "lost": 2,
+        "dispatches": {
+          "1": 118,
+          "2": 12,
+          "3": 6
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 11,
+          "3": 4
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 57.05,
+        "lost": 2,
+        "dispatches": {
+          "1": 116,
+          "2": 31,
+          "3": 7
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 10,
+          "3": 5
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 81,
+        "lost": 2,
+        "dispatches": {
+          "1": 198,
+          "2": 34,
+          "3": 7
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 8,
+          "3": 8
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 8,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 70.2,
+        "lost": 1,
+        "dispatches": {
+          "1": 177,
+          "2": 21,
+          "3": 6
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 11,
+          "3": 4
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 75.45,
+        "lost": 2,
+        "dispatches": {
+          "1": 177,
+          "2": 2,
+          "3": 4,
+          "4": 15
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 23,
+          "3": 8,
+          "4": 10
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 87.25,
+        "lost": 1,
+        "dispatches": {
+          "1": 158,
+          "2": 1,
+          "3": 4,
+          "4": 22
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 27,
+          "3": 19,
+          "4": 13
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 62.35,
+        "lost": 1,
+        "dispatches": {
+          "1": 135,
+          "2": 2,
+          "3": 1,
+          "4": 13
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 20,
+          "3": 20,
+          "4": 13
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 100.95,
+        "lost": 1,
+        "dispatches": {
+          "1": 225,
+          "2": 7,
+          "3": 3,
+          "4": 23
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 27,
+          "3": 16,
+          "4": 11
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 54.45,
+        "lost": 0,
+        "dispatches": {
+          "1": 145,
+          "2": 2,
+          "3": 3,
+          "4": 16
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 13,
+          "3": 8,
+          "4": 10
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 70.85,
+        "lost": 3,
+        "dispatches": {
+          "1": 108,
+          "2": 3,
+          "3": 5,
+          "4": 23
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 16,
+          "3": 11,
+          "4": 13
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 109.3,
+        "lost": 4,
+        "dispatches": {
+          "1": 169,
+          "2": 20,
+          "3": 2,
+          "4": 23
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 24,
+          "3": 22,
+          "4": 15
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 9,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 64.2,
+        "lost": 0,
+        "dispatches": {
+          "1": 155,
+          "2": 2,
+          "3": 3,
+          "4": 20
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 19,
+          "3": 8,
+          "4": 9
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 102.45,
+        "lost": 3,
+        "dispatches": {
+          "1": 209,
+          "2": 29
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 18
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 73.15,
+        "lost": 0,
+        "dispatches": {
+          "1": 152,
+          "2": 25
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 11
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 104.9,
+        "lost": 5,
+        "dispatches": {
+          "1": 214,
+          "2": 30
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 15
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 194.75,
+        "lost": 4,
+        "dispatches": {
+          "1": 401,
+          "2": 74
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 8
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 61.25,
+        "lost": 0,
+        "dispatches": {
+          "1": 136,
+          "2": 21
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 106.15,
+        "lost": 2,
+        "dispatches": {
+          "1": 232,
+          "2": 76
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 5
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 92.4,
+        "lost": 2,
+        "dispatches": {
+          "1": 211,
+          "2": 32
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 11
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 10,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 82.4,
+        "lost": 2,
+        "dispatches": {
+          "1": 188,
+          "2": 37
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 63.15,
+        "lost": 0,
+        "dispatches": {
+          "1": 166,
+          "2": 14,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 9,
+          "3": 55
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 64.8,
+        "lost": 0,
+        "dispatches": {
+          "1": 158,
+          "2": 9,
+          "3": 10
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 40,
+          "3": 12
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 63.9,
+        "lost": 2,
+        "dispatches": {
+          "1": 175,
+          "2": 14,
+          "3": 5
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 13,
+          "3": 39
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 67.65,
+        "lost": 0,
+        "dispatches": {
+          "1": 196,
+          "2": 15,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 7,
+          "3": 59
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 53.4,
+        "lost": 1,
+        "dispatches": {
+          "1": 180,
+          "2": 5,
+          "3": 16
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 42,
+          "3": 6
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 65.55,
+        "lost": 1,
+        "dispatches": {
+          "1": 151,
+          "2": 12,
+          "3": 15
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 40,
+          "3": 13
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 63.15,
+        "lost": 2,
+        "dispatches": {
+          "1": 189,
+          "2": 16,
+          "3": 8
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 6,
+          "3": 40
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 11,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 66.9,
+        "lost": 3,
+        "dispatches": {
+          "1": 168,
+          "2": 14,
+          "3": 16
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 42,
+          "3": 16
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 104,
+        "lost": 2,
+        "dispatches": {
+          "1": 202,
+          "2": 4,
+          "3": 6,
+          "4": 8
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 75,
+          "3": 8,
+          "4": 19
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 97.85,
+        "lost": 4,
+        "dispatches": {
+          "1": 193,
+          "2": 2,
+          "3": 5,
+          "4": 10
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 76,
+          "3": 8,
+          "4": 19
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 103.7,
+        "lost": 3,
+        "dispatches": {
+          "1": 211,
+          "2": 2,
+          "3": 3,
+          "4": 7
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 59,
+          "3": 44,
+          "4": 29
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 102.5,
+        "lost": 2,
+        "dispatches": {
+          "1": 213,
+          "2": 1,
+          "3": 5,
+          "4": 8
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 35,
+          "3": 60,
+          "4": 35
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 196.25,
+        "lost": 9,
+        "dispatches": {
+          "1": 347,
+          "2": 3,
+          "3": 5,
+          "4": 40
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 45,
+          "3": 9,
+          "4": 55
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 148.85,
+        "lost": 7,
+        "dispatches": {
+          "1": 275,
+          "2": 3,
+          "3": 6,
+          "4": 25
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 67,
+          "3": 17,
+          "4": 16
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 87.95,
+        "lost": 1,
+        "dispatches": {
+          "1": 183,
+          "2": 1,
+          "3": 6,
+          "4": 15
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 6,
+          "3": 18,
+          "4": 39
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 12,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 87.5,
+        "lost": 2,
+        "dispatches": {
+          "1": 183,
+          "2": 2,
+          "3": 6,
+          "4": 11
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 35,
+          "3": 17,
+          "4": 26
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 91.65,
+        "lost": 1,
+        "dispatches": {
+          "1": 260,
+          "2": 8,
+          "3": 2,
+          "4": 3
+        },
+        "maxIdle": {
+          "1": 1,
+          "2": 28,
+          "3": 27,
+          "4": 67
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 83.2,
+        "lost": 2,
+        "dispatches": {
+          "1": 219,
+          "2": 10,
+          "3": 3,
+          "4": 7
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 26,
+          "3": 26,
+          "4": 39
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 102.85,
+        "lost": 2,
+        "dispatches": {
+          "1": 314,
+          "2": 2,
+          "3": 6,
+          "4": 30
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 29,
+          "3": 11,
+          "4": 31
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 94.05,
+        "lost": 1,
+        "dispatches": {
+          "1": 260,
+          "2": 18,
+          "3": 3,
+          "4": 8
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 16,
+          "3": 26,
+          "4": 47
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 71.45,
+        "lost": 3,
+        "dispatches": {
+          "1": 173,
+          "2": 11,
+          "3": 4,
+          "4": 16
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 33,
+          "3": 10,
+          "4": 20
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 102.95,
+        "lost": 0,
+        "dispatches": {
+          "1": 350,
+          "2": 22,
+          "3": 3,
+          "4": 3
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 29,
+          "3": 23,
+          "4": 31
+        },
+        "maxQuiet": 4,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 72.1,
+        "lost": 1,
+        "dispatches": {
+          "1": 228,
+          "2": 2,
+          "3": 7,
+          "4": 15
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 20,
+          "3": 20,
+          "4": 18
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 13,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 107.55,
+        "lost": 7,
+        "dispatches": {
+          "1": 262,
+          "2": 5,
+          "3": 7,
+          "4": 9
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 37,
+          "3": 45,
+          "4": 29
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 169.25,
+        "lost": 2,
+        "dispatches": {
+          "1": 266,
+          "2": 99
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 17
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 89.15,
+        "lost": 0,
+        "dispatches": {
+          "1": 187,
+          "2": 35
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 20
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 340.5,
+        "lost": 1,
+        "dispatches": {
+          "1": 498,
+          "2": 214
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 23
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 117.5,
+        "lost": 1,
+        "dispatches": {
+          "1": 254,
+          "2": 51
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 16
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 104.75,
+        "lost": 1,
+        "dispatches": {
+          "1": 210,
+          "2": 68
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 15
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 93,
+        "lost": 1,
+        "dispatches": {
+          "1": 188,
+          "2": 56
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 19
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 535.5,
+        "lost": 1,
+        "dispatches": {
+          "1": 721,
+          "2": 541
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 19
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 14,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 113,
+        "lost": 1,
+        "dispatches": {
+          "1": 239,
+          "2": 76
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 12
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 57.45,
+        "lost": 5,
+        "dispatches": {
+          "1": 76,
+          "2": 14,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 16,
+          "3": 16
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 49.15,
+        "lost": 3,
+        "dispatches": {
+          "1": 62,
+          "2": 10,
+          "3": 3
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 11,
+          "3": 11
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 66.1,
+        "lost": 2,
+        "dispatches": {
+          "1": 107,
+          "2": 8,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 16,
+          "3": 20
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 59.6,
+        "lost": 3,
+        "dispatches": {
+          "1": 83,
+          "2": 13,
+          "3": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 11,
+          "3": 16
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 40.25,
+        "lost": 0,
+        "dispatches": {
+          "1": 57,
+          "2": 14,
+          "3": 3
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 5,
+          "3": 5
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 36.15,
+        "lost": 0,
+        "dispatches": {
+          "1": 45,
+          "2": 7,
+          "3": 4
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 14,
+          "3": 8
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 79.4,
+        "lost": 4,
+        "dispatches": {
+          "1": 115,
+          "2": 23,
+          "3": 7
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 11,
+          "3": 15
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 15,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 28.85,
+        "lost": 0,
+        "dispatches": {
+          "1": 47,
+          "2": 6,
+          "3": 1
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 20,
+          "3": 7
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 54.45,
+        "lost": 3,
+        "dispatches": {
+          "1": 123,
+          "2": 1,
+          "3": 1,
+          "4": 8
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 7,
+          "3": 16,
+          "4": 20
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 45.3,
+        "lost": 1,
+        "dispatches": {
+          "1": 79,
+          "2": 1,
+          "3": 5,
+          "4": 3
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 7,
+          "3": 16,
+          "4": 15
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 80.4,
+        "lost": 3,
+        "dispatches": {
+          "1": 167,
+          "2": 1,
+          "3": 1,
+          "4": 17
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 7,
+          "3": 20,
+          "4": 20
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 55.2,
+        "lost": 3,
+        "dispatches": {
+          "1": 123,
+          "2": 1,
+          "3": 3,
+          "4": 5
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 7,
+          "3": 16,
+          "4": 14
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 36.45,
+        "lost": 0,
+        "dispatches": {
+          "1": 91,
+          "2": 1,
+          "3": 1,
+          "4": 5
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 7,
+          "3": 10,
+          "4": 10
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 40.8,
+        "lost": 2,
+        "dispatches": {
+          "1": 89,
+          "2": 1,
+          "3": 1,
+          "4": 7
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 11,
+          "3": 17,
+          "4": 13
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 39.9,
+        "lost": 0,
+        "dispatches": {
+          "1": 88,
+          "2": 1,
+          "3": 1,
+          "4": 6
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 4,
+          "3": 8,
+          "4": 10
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 16,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 33.45,
+        "lost": 0,
+        "dispatches": {
+          "1": 80,
+          "2": 1,
+          "3": 1,
+          "4": 5
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 7,
+          "3": 10,
+          "4": 10
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 59.2,
+        "lost": 3,
+        "dispatches": {
+          "1": 100,
+          "2": 6,
+          "3": 3,
+          "4": 2
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 22,
+          "3": 11,
+          "4": 32
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 58.65,
+        "lost": 3,
+        "dispatches": {
+          "1": 101,
+          "2": 4,
+          "3": 1,
+          "4": 4
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 20,
+          "3": 16,
+          "4": 23
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 94.7,
+        "lost": 10,
+        "dispatches": {
+          "1": 205,
+          "2": 9,
+          "4": 9
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 23,
+          "3": 25,
+          "4": 23
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 53.4,
+        "lost": 4,
+        "dispatches": {
+          "1": 118,
+          "2": 5,
+          "3": 2,
+          "4": 3
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 20,
+          "3": 20,
+          "4": 20
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 44.15,
+        "lost": 1,
+        "dispatches": {
+          "1": 95,
+          "2": 10,
+          "4": 4
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 13,
+          "3": 7,
+          "4": 13
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 67.65,
+        "lost": 0,
+        "dispatches": {
+          "1": 136,
+          "2": 9,
+          "4": 9
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 21,
+          "3": 7,
+          "4": 18
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 45.8,
+        "lost": 1,
+        "dispatches": {
+          "1": 101,
+          "2": 10,
+          "4": 4
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 10,
+          "3": 7,
+          "4": 13
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 17,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 50.3,
+        "lost": 3,
+        "dispatches": {
+          "1": 111,
+          "2": 7,
+          "4": 3
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 15,
+          "3": 7,
+          "4": 26
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "easy",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 51.3,
+        "lost": 2,
+        "dispatches": {
+          "1": 122,
+          "2": 3,
+          "3": 2,
+          "4": 12
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 19,
+          "3": 11,
+          "4": 15
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "easy",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 74.3,
+        "lost": 3,
+        "dispatches": {
+          "1": 154,
+          "2": 7,
+          "4": 5
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 28,
+          "3": 24,
+          "4": 26
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "easy",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 66.75,
+        "lost": 2,
+        "dispatches": {
+          "1": 150,
+          "2": 5,
+          "3": 1,
+          "4": 10
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 16,
+          "3": 20,
+          "4": 22
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "easy",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 63.3,
+        "lost": 3,
+        "dispatches": {
+          "1": 162,
+          "2": 4,
+          "3": 1,
+          "4": 7
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 15,
+          "3": 28,
+          "4": 19
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "normal",
+        "strategy": "agile-pulse",
+        "status": "won",
+        "time": 39.3,
+        "lost": 1,
+        "dispatches": {
+          "1": 106,
+          "2": 9,
+          "4": 5
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 12,
+          "3": 8,
+          "4": 18
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "normal",
+        "strategy": "strong-pulse",
+        "status": "won",
+        "time": 45.05,
+        "lost": 2,
+        "dispatches": {
+          "1": 96,
+          "2": 11,
+          "4": 5
+        },
+        "maxIdle": {
+          "1": 4,
+          "2": 8,
+          "3": 8,
+          "4": 26
+        },
+        "maxQuiet": 5,
+        "survivors": [
+          1,
+          4
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "normal",
+        "strategy": "fast-pulse",
+        "status": "won",
+        "time": 48,
+        "lost": 0,
+        "dispatches": {
+          "1": 139,
+          "2": 10,
+          "4": 4
+        },
+        "maxIdle": {
+          "1": 2,
+          "2": 11,
+          "3": 8,
+          "4": 26
+        },
+        "maxQuiet": 2,
+        "survivors": [
+          1
+        ]
+      },
+      {
+        "level": 18,
+        "difficulty": "normal",
+        "strategy": "brood-pulse",
+        "status": "won",
+        "time": 40.8,
+        "lost": 2,
+        "dispatches": {
+          "1": 114,
+          "2": 8,
+          "4": 6
+        },
+        "maxIdle": {
+          "1": 3,
+          "2": 11,
+          "3": 8,
+          "4": 15
+        },
+        "maxQuiet": 3,
+        "survivors": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "onboarding": {
+    "methodology": "Same visible-state low-frequency bot, delays 8/10/12s, periods3/3.5/4s, optional skipped action, no skill or future planning.",
+    "runs": [
+      {
+        "id": 1,
+        "period": 3,
+        "delay": 8,
+        "hesitate": false,
+        "status": "won",
+        "time": 84.9,
+        "lost": 2
+      },
+      {
+        "id": 1,
+        "period": 3,
+        "delay": 8,
+        "hesitate": true,
+        "status": "won",
+        "time": 68.4,
+        "lost": 2
+      },
+      {
+        "id": 1,
+        "period": 3.5,
+        "delay": 10,
+        "hesitate": false,
+        "status": "won",
+        "time": 78.7,
+        "lost": 2
+      },
+      {
+        "id": 1,
+        "period": 3.5,
+        "delay": 10,
+        "hesitate": true,
+        "status": "won",
+        "time": 78.7,
+        "lost": 2
+      },
+      {
+        "id": 1,
+        "period": 4,
+        "delay": 12,
+        "hesitate": false,
+        "status": "won",
+        "time": 88.35,
+        "lost": 2
+      },
+      {
+        "id": 1,
+        "period": 4,
+        "delay": 12,
+        "hesitate": true,
+        "status": "won",
+        "time": 88.35,
+        "lost": 2
+      },
+      {
+        "id": 2,
+        "period": 3,
+        "delay": 8,
+        "hesitate": false,
+        "status": "won",
+        "time": 66.35,
+        "lost": 0
+      },
+      {
+        "id": 2,
+        "period": 3,
+        "delay": 8,
+        "hesitate": true,
+        "status": "won",
+        "time": 69.35,
+        "lost": 0
+      },
+      {
+        "id": 2,
+        "period": 3.5,
+        "delay": 10,
+        "hesitate": false,
+        "status": "won",
+        "time": 150.85,
+        "lost": 3
+      },
+      {
+        "id": 2,
+        "period": 3.5,
+        "delay": 10,
+        "hesitate": true,
+        "status": "won",
+        "time": 112.35,
+        "lost": 1
+      },
+      {
+        "id": 2,
+        "period": 4,
+        "delay": 12,
+        "hesitate": false,
+        "status": "won",
+        "time": 108.35,
+        "lost": 1
+      },
+      {
+        "id": 2,
+        "period": 4,
+        "delay": 12,
+        "hesitate": true,
+        "status": "won",
+        "time": 92.35,
+        "lost": 1
+      },
+      {
+        "id": 3,
+        "period": 3,
+        "delay": 8,
+        "hesitate": false,
+        "status": "won",
+        "time": 93.1,
+        "lost": 0
+      },
+      {
+        "id": 3,
+        "period": 3,
+        "delay": 8,
+        "hesitate": true,
+        "status": "won",
+        "time": 86.85,
+        "lost": 2
+      },
+      {
+        "id": 3,
+        "period": 3.5,
+        "delay": 10,
+        "hesitate": false,
+        "status": "won",
+        "time": 80.35,
+        "lost": 0
+      },
+      {
+        "id": 3,
+        "period": 3.5,
+        "delay": 10,
+        "hesitate": true,
+        "status": "won",
+        "time": 108.6,
+        "lost": 0
+      },
+      {
+        "id": 3,
+        "period": 4,
+        "delay": 12,
+        "hesitate": false,
+        "status": "won",
+        "time": 108.1,
+        "lost": 0
+      },
+      {
+        "id": 3,
+        "period": 4,
+        "delay": 12,
+        "hesitate": true,
+        "status": "won",
+        "time": 431.85,
+        "lost": 7
+      }
+    ]
+  }
+}

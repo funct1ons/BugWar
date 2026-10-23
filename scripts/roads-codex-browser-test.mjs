@@ -224,7 +224,7 @@ try{
   return tower.id;
  },units);
  report.cannonSelection=[];
- for(const [units,damage,interval]of [[0,'2','0.9'],[20,'4','0.725'],[60,'6','0.5'],[90,'6','0.5']]){
+ for(const [units,damage,interval]of [[0,'4','0.9'],[20,'7','0.725'],[60,'10','0.5'],[90,'10','0.5']]){
   const id=await selectCannon(units);
   const panel=page.locator('#cannon-selection');await panel.waitFor({state:'visible'});
   const text=await panel.innerText();

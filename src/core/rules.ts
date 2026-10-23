@@ -14,10 +14,10 @@ export interface CannonFirepowerNode { garrison:number; damage:number; cooldown:
  * The last anchor is the firepower cap: extra defenders add no damage or rate.
  */
 export const CANNON_FIREPOWER_NODES: readonly CannonFirepowerNode[] = [
-  { garrison: 0, damage: 2, cooldown: 0.9 },
-  { garrison: 10, damage: 3, cooldown: 0.8 },
-  { garrison: 30, damage: 5, cooldown: 0.65 },
-  { garrison: 60, damage: 6, cooldown: 0.5 },
+  { garrison: 0, damage: 4, cooldown: 0.9 },
+  { garrison: 10, damage: 6, cooldown: 0.8 },
+  { garrison: 30, damage: 8, cooldown: 0.65 },
+  { garrison: 60, damage: 10, cooldown: 0.5 },
 ] as const;
 
 /** Garrison needed for maximum firepower; more troops do not make the cannon stronger. */
@@ -78,7 +78,9 @@ export const BATTLE_RULES = {
   windSpeedMultiplier: 1.35,
   /** Extra troops a Brood fleet receives when it first takes a neutral production colony. */
   broodCaptureBonus: 8,
-  cannonRange: 200,
+  /** Settled defenders only; neutrals and road clashes keep their race defence. */
+  garrisonDefenseMultiplier: 1.2,
+  cannonRange: 250,
   /** Empty-tower base; a garrisoned cannon interpolates upwards, see CANNON_FIREPOWER_NODES. */
   cannonDamage: CANNON_BASE_FIREPOWER.damage,
   cannonCooldown: CANNON_BASE_FIREPOWER.cooldown,
@@ -87,6 +89,11 @@ export const BATTLE_RULES = {
   skillRadius: 135,
   skillDamage: 18,
 } as const;
+
+/** Additional defence of an occupied building; never used for marching fleets. */
+export function garrisonDefenseMultiplier(owner: number): number {
+  return owner > 0 ? BATTLE_RULES.garrisonDefenseMultiplier : 1;
+}
 
 /** True for the two building kinds that generate troops on their own. */
 export function isProductive(kind: BuildingKind): boolean {

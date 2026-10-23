@@ -2,6 +2,8 @@ import {it,expect} from 'vitest';
 import {Simulation} from '../src/core/Simulation';
 import {think,THINK_INTERVAL} from '../src/core/ai';
 import {hasRoad} from '../src/core/roads';
+import {garrisonDefenseMultiplier} from '../src/core/rules';
+import {RACES} from '../src/core/types';
 import {LEVELS} from '../src/data/levels';
 // Visible current colonies only; no planner, future projection, skills or multi-selection.
 function run(id:number,period:number,delay:number,hesitate=false){
@@ -18,8 +20,9 @@ function run(id:number,period:number,delay:number,hesitate=false){
   if(s.world.elapsed+1e-8>=next){next+=period;
    if(!(hesitate&&orders===2)){const visible=s.world.colonies.map(c=>({...c,units:Math.floor(c.units)}));const own=visible.filter(c=>c.owner===1);const targets=visible.filter(c=>c.owner!==1);
     const pairs=own.flatMap(a=>targets.filter(b=>hasRoad(s.world.roads,a.id,b.id)).map(b=>({a,b,d:Math.hypot(a.x-b.x,a.y-b.y)})));
-    const neutrals=pairs.filter(p=>p.b.owner===0&&p.a.units*.5>p.b.units+5).sort((a,b)=>a.d-b.d);
-    const enemies=pairs.filter(p=>p.b.owner>1&&p.a.units*.75>p.b.units+20).sort((a,b)=>a.d-b.d);
+    const effectiveDefenders=(owner:number,units:number)=>units*RACES[s.world.factions.find(f=>f.id===owner)?.race??'agile'].defense*garrisonDefenseMultiplier(owner)/RACES.agile.attack;
+    const neutrals=pairs.filter(p=>p.b.owner===0&&p.a.units*.5>effectiveDefenders(p.b.owner,p.b.units)+5).sort((a,b)=>a.d-b.d);
+    const enemies=pairs.filter(p=>p.b.owner>1&&p.a.units*.75>effectiveDefenders(p.b.owner,p.b.units)+20).sort((a,b)=>a.d-b.d);
     const p=neutrals[0]??enemies[0];
     if(p)send(p.a.id,p.b.id,p.b.owner===0?.5:.75);
     else {

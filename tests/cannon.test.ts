@@ -44,35 +44,35 @@ const run = (s: Simulation, fleet: Fleet, ticks: number) => {
 describe('cannon firepower table', () => {
   it('publishes the approved garrison nodes as the single source', () => {
     expect(CANNON_FIREPOWER_NODES.map((node) => [node.garrison, node.damage, node.cooldown])).toEqual([
-      [0, 2, 0.9],
-      [10, 3, 0.8],
-      [30, 5, 0.65],
-      [60, 6, 0.5],
+      [0, 4, 0.9],
+      [10, 6, 0.8],
+      [30, 8, 0.65],
+      [60, 10, 0.5],
     ]);
     expect(CANNON_GARRISON_CAP).toBe(60);
-    expect(CANNON_BASE_FIREPOWER).toEqual({ garrison: 0, damage: 2, cooldown: 0.9 });
-    // The empty-tower constants stay the base of the same table, the range is untouched.
+    expect(CANNON_BASE_FIREPOWER).toEqual({ garrison: 0, damage: 4, cooldown: 0.9 });
+    // The empty-tower constants stay the base of the same table, the range is 250 pixels.
     expect(BATTLE_RULES.cannonDamage).toBe(CANNON_BASE_FIREPOWER.damage);
     expect(BATTLE_RULES.cannonCooldown).toBe(CANNON_BASE_FIREPOWER.cooldown);
-    expect(BATTLE_RULES.cannonRange).toBe(200);
+    expect(BATTLE_RULES.cannonRange).toBe(250);
   });
 
   it('interpolates linearly between nodes', () => {
-    expect(cannonFirepower(0)).toMatchObject({ garrison: 0, damage: 2, cooldown: 0.9, capped: false });
-    expect(cannonFirepower(5)).toMatchObject({ garrison: 5, damage: 2.5, cooldown: 0.85 });
-    expect(cannonFirepower(10)).toMatchObject({ damage: 3, cooldown: 0.8 });
-    expect(cannonFirepower(20)).toMatchObject({ damage: 4, cooldown: 0.725 });
-    expect(cannonFirepower(30)).toMatchObject({ damage: 5, cooldown: 0.65 });
-    expect(cannonFirepower(45)).toMatchObject({ damage: 5.5, cooldown: 0.575 });
-    expect(cannonFirepower(59.5)).toMatchObject({ damage: 5.9833, cooldown: 0.5025, capped: false });
+    expect(cannonFirepower(0)).toMatchObject({ garrison: 0, damage: 4, cooldown: 0.9, capped: false });
+    expect(cannonFirepower(5)).toMatchObject({ garrison: 5, damage: 5, cooldown: 0.85 });
+    expect(cannonFirepower(10)).toMatchObject({ damage: 6, cooldown: 0.8 });
+    expect(cannonFirepower(20)).toMatchObject({ damage: 7, cooldown: 0.725 });
+    expect(cannonFirepower(30)).toMatchObject({ damage: 8, cooldown: 0.65 });
+    expect(cannonFirepower(45)).toMatchObject({ damage: 9, cooldown: 0.575 });
+    expect(cannonFirepower(59.5)).toMatchObject({ damage: 9.9667, cooldown: 0.5025, capped: false });
     // One decimal step near a node stays continuous instead of jumping.
-    expect(cannonFirepower(10.5).damage).toBeCloseTo(3.05, 6);
+    expect(cannonFirepower(10.5).damage).toBeCloseTo(6.05, 6);
     expect(cannonFirepower(10.5).cooldown).toBeCloseTo(0.7963, 6);
   });
 
   it('caps firepower at 60 defenders and never buffs past the cap', () => {
     for (const units of [60, 61, 120, 1e6]) {
-      expect(cannonFirepower(units)).toMatchObject({ damage: 6, cooldown: 0.5, capped: true, dps: 12 });
+      expect(cannonFirepower(units)).toMatchObject({ damage: 10, cooldown: 0.5, capped: true, dps: 20 });
     }
     expect(cannonFirepower(60).capped).toBe(true);
     expect(cannonFirepower(59.9).capped).toBe(false);
@@ -80,7 +80,7 @@ describe('cannon firepower table', () => {
 
   it('sanitizes defensive input to the base profile', () => {
     for (const units of [-5, Number.NaN, Number.POSITIVE_INFINITY]) {
-      expect(cannonFirepower(units)).toMatchObject({ garrison: 0, damage: 2, cooldown: 0.9, capped: false });
+      expect(cannonFirepower(units)).toMatchObject({ garrison: 0, damage: 4, cooldown: 0.9, capped: false });
     }
   });
 
@@ -91,9 +91,9 @@ describe('cannon firepower table', () => {
     expect(cannonHitsForExposure(-1, 0.9)).toBe(0);
     expect(cannonHitsForExposure(Number.NaN, 0.9)).toBe(0);
     expect(cannonHitsForExposure(1, 0)).toBe(1);
-    expect(cannonLossForExposure(0, 4)).toBe(10);
-    expect(cannonLossForExposure(60, 4)).toBe(54);
-    expect(cannonLossForExposure(20, 4)).toBe(24);
+    expect(cannonLossForExposure(0, 4)).toBe(20);
+    expect(cannonLossForExposure(60, 4)).toBe(90);
+    expect(cannonLossForExposure(20, 4)).toBe(42);
   });
 });
 
@@ -103,7 +103,7 @@ describe('simulation fires with the live garrison', () => {
     const shots = run(s, fleet, 40);
     // Ready on the first tick, then one shot per 0.90 s (18 ticks).
     expect(shots.map((shot) => shot.tick)).toEqual([1, 19, 37]);
-    expect(shots.every((shot) => shot.amount === 2)).toBe(true);
+    expect(shots.every((shot) => shot.amount === 4)).toBe(true);
     expect(s.world.colonies[0].units).toBe(0);
   });
 
@@ -112,17 +112,38 @@ describe('simulation fires with the live garrison', () => {
     const shots = run(s, fleet, 40);
     // One shot per 0.50 s (10 ticks).
     expect(shots.map((shot) => shot.tick)).toEqual([1, 11, 21, 31]);
-    expect(shots.every((shot) => shot.amount === 6)).toBe(true);
+    expect(shots.every((shot) => shot.amount === 10)).toBe(true);
     expect(s.world.colonies[0].units).toBe(60);
   });
 
   it('uses the interpolated values between nodes while garrison changes', () => {
-    for (const [units, damage] of [[5, 2.5], [20, 4], [45, 5.5]] as const) {
+    for (const [units, damage] of [[5, 5], [20, 7], [45, 9]] as const) {
       const { s, fleet } = towerSim(units);
       const shots = run(s, fleet, 40);
       expect(shots[0].tick).toBe(1);
       expect(shots.every((shot) => shot.amount === damage)).toBe(true);
       expect(shots.length).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it('uses a 250px circle and never hits beyond its radius', () => {
+    for (const [x, fires] of [[225, true], [250, true], [250.01, false]] as const) {
+      const { s, fleet } = towerSim(0);
+      // Park without motion, away from the home endpoint.
+      fleet.x = x; fleet.combatPause = 1;
+      s.step(TICK);
+      const shots = s.drainEvents().filter(event => event.type === 'shot');
+      expect(shots).toHaveLength(fires ? 1 : 0);
+      expect(fleet.count).toBe(fires ? 1e6 - 4 : 1e6);
+    }
+  });
+
+  it('caps live firepower above 60 and applies no new racial shell resistance', () => {
+    for (const units of [60, 120, 1e6]) for (const race of ['agile', 'fast', 'strong', 'brood'] as const) {
+      const { s, fleet } = towerSim(units);
+      fleet.race = race;
+      expect(run(s, fleet, 31)).toEqual([1, 11, 21, 31].map(tick => ({ tick, amount: 10 })));
+      expect(s.world.colonies[0].units).toBe(units);
     }
   });
 
@@ -142,13 +163,13 @@ describe('simulation fires with the live garrison', () => {
     run(reinforced.s, reinforced.fleet, 1);
     expect(run(reinforced.s, reinforced.fleet, 9)).toHaveLength(0); // half of 0.90 s
     reinforced.s.world.colonies[0].units = 60;
-    expect(run(reinforced.s, reinforced.fleet, 5)).toEqual([{ tick: 5, amount: 6 }]);
+    expect(run(reinforced.s, reinforced.fleet, 5)).toEqual([{ tick: 5, amount: 10 }]);
 
     const stripped = towerSim(60);
     run(stripped.s, stripped.fleet, 1);
     expect(run(stripped.s, stripped.fleet, 5)).toHaveLength(0); // half of 0.50 s
     stripped.s.world.colonies[0].units = 0;
-    expect(run(stripped.s, stripped.fleet, 9)).toEqual([{ tick: 9, amount: 2 }]);
+    expect(run(stripped.s, stripped.fleet, 9)).toEqual([{ tick: 9, amount: 4 }]);
   });
 
   it('cannot farm extra shots by toggling the garrison every tick', () => {
@@ -171,7 +192,7 @@ describe('simulation fires with the live garrison', () => {
     const enemy = towerSim(60, 2, 1);
     const hits = run(enemy.s, enemy.fleet, 20);
     expect(hits.length).toBeGreaterThan(0);
-    expect(hits.every((shot) => shot.amount === 6)).toBe(true);
+    expect(hits.every((shot) => shot.amount === 10)).toBe(true);
 
     const neutral = towerSim(60, 0, 1);
     expect(run(neutral.s, neutral.fleet, 40)).toHaveLength(0);
@@ -189,17 +210,17 @@ describe('AI loss estimation uses the real garrison', () => {
 
   it('matches the shared exposure helper instead of the old constant', () => {
     const empty = world(0);
-    expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100)).toBe(10);
+    expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100)).toBe(24);
     expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100))
-      .toBe(cannonLossForExposure(0, 4));
+      .toBe(cannonLossForExposure(0, 5));
 
     empty.world.colonies[0].units = 60;
-    expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100)).toBe(54);
+    expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100)).toBe(110);
     expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100))
-      .toBe(cannonLossForExposure(60, 4));
+      .toBe(cannonLossForExposure(60, 5));
 
     empty.world.colonies[0].units = 20;
-    expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100)).toBe(24);
+    expect(estimateCannonLoss(empty.world, { x: 0, y: 300 }, { x: 1000, y: 300 }, 2, 100)).toBe(49);
   });
 
   it('prices a garrisoned tower as a loss the planner must actually pay', () => {
@@ -209,7 +230,7 @@ describe('AI loss estimation uses the real garrison', () => {
       return s;
     };
     expect(plan(0).world.fleets.some((fleet) => fleet.owner === 2)).toBe(true);
-    // 20 usable attackers cannot cross 30 estimated damage from the full garrison.
+    // 20 usable attackers cannot cross the capped tower’s estimated damage from the full garrison.
     expect(plan(60).world.fleets).toHaveLength(0);
   });
 });
